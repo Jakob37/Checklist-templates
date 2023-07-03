@@ -15,6 +15,9 @@ import {
   TextInput,
   View,
 } from 'react-native'
+import { IconButton } from './src/views/iconbutton'
+import { ds } from './src/ux/design'
+import { icons } from './src/ux/icons'
 
 type SectionProps = PropsWithChildren<{
   title: string
@@ -59,11 +62,15 @@ function App(): JSX.Element {
       <FlatList
         data={tasks}
         renderItem={({ item }) => (
-          <View>
-            <Text>{item.title}</Text>
-            <Button
-              title="Remove"
-              onPress={() => handleRemoveTask(item.id)}></Button>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={{ fontSize: ds.font.sizes.topBar }}>{item.title}</Text>
+            <IconButton
+              onPress={() => {
+                handleRemoveTask(item.id)
+              }}
+              icon={icons.trash}
+              size={ds.font.sizes.topBar}
+              color="white"></IconButton>
           </View>
         )}></FlatList>
     </View>
