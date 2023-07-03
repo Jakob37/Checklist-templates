@@ -5,8 +5,8 @@
  * @format
  */
 
-import type {PropsWithChildren} from 'react';
-import React, {useState} from 'react';
+import type { PropsWithChildren } from 'react'
+import React, { useState } from 'react'
 import {
   Button,
   FlatList,
@@ -14,37 +14,37 @@ import {
   Text,
   TextInput,
   View,
-} from 'react-native';
+} from 'react-native'
 
 type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+  title: string
+}>
 
 interface Task {
-  id: string;
-  title: string;
+  id: string
+  title: string
 }
 
 function App(): JSX.Element {
-  const [task, setTask] = useState('');
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [task, setTask] = useState('')
+  const [tasks, setTasks] = useState<Task[]>([])
 
   const handleAddTask = () => {
-    console.log(task);
+    console.log(task)
     if (task !== '') {
       const newTask: Task = {
         id: String(Date.now()),
         title: task,
-      };
-      setTasks([...tasks, newTask]);
-      setTask('');
+      }
+      setTasks([...tasks, newTask])
+      setTask('')
     }
-  };
+  }
 
   const handleRemoveTask = (id: string) => {
-    const updatedTasks = tasks.filter(task => task.id !== id);
-    setTasks(updatedTasks);
-  };
+    const updatedTasks = tasks.filter(task => task.id !== id)
+    setTasks(updatedTasks)
+  }
 
   return (
     <View>
@@ -58,7 +58,7 @@ function App(): JSX.Element {
       <Button title="Add" onPress={handleAddTask}></Button>
       <FlatList
         data={tasks}
-        renderItem={({item}) => (
+        renderItem={({ item }) => (
           <View>
             <Text>{item.title}</Text>
             <Button
@@ -67,7 +67,7 @@ function App(): JSX.Element {
           </View>
         )}></FlatList>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -87,6 +87,6 @@ const styles = StyleSheet.create({
   highlight: {
     fontWeight: '700',
   },
-});
+})
 
-export default App;
+export default App
