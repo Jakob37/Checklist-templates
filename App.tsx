@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from 'react'
-import React, { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Button,
   FlatList,
@@ -12,7 +12,17 @@ import { IconButton } from './src/views/iconbutton'
 import { ds } from './src/ux/design'
 import { icons } from './src/ux/icons'
 
-import { StorageProvider } from '@minimalist_tools/library'
+import {
+  helloWorld,
+  helloWorld2,
+  HelloWorldView,
+  loadDataFromStorage,
+} from '@minimalist_tools/library'
+// import { AsyncStorage } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import React from 'react'
+
+const STORAGE_KEY = '@checklists/storage'
 
 type SectionProps = PropsWithChildren<{
   title: string
@@ -23,11 +33,65 @@ interface Task {
   title: string
 }
 
+const StorageContext = React.createContext<{
+  entries: Object[]
+  saveEntries: (entries: Object[]) => void
+}>({
+  entries: [],
+  saveEntries: _entries => {
+    console.error('This placeholder should not be called')
+  },
+})
+
+interface DataProviderProps {
+  storage_key: string
+  children: React.ReactNode
+}
+
+const StorageProviderLocal: React.FC<DataProviderProps> = props => {
+  const [entries, setEntries] = useState<Object[]>([])
+
+  // Load data from async storage
+  const fetchData = async () => {
+    try {
+      const storedData = await AsyncStorage.getItem(props.storage_key)
+      if (storedData) {
+        setEntries(JSON.parse(storedData))
+      }
+    } catch (error) {
+      console.log('Error retrieving data from async storage:', error)
+    }
+  }
+
+  useEffect(() => {
+    console.log('Local storage function')
+    helloWorld()
+    helloWorld2()
+    fetchData()
+  }, [])
+
+  const saveEntries = async (updatedData: Object[]) => {
+    try {
+      await AsyncStorage.setItem(props.storage_key, JSON.stringify(updatedData))
+      setEntries(updatedData)
+    } catch (error) {
+      console.log('Error saving data to async storage', error)
+    }
+  }
+
+  return (
+    <StorageContext.Provider value={{ entries, saveEntries }}>
+      {props.children}
+    </StorageContext.Provider>
+  )
+}
+
 function App(): JSX.Element {
   const [task, setTask] = useState('')
   const [tasks, setTasks] = useState<Task[]>([])
 
   const handleAddTask = () => {
+    helloWorld()
     console.log(task)
     if (task !== '') {
       const newTask: Task = {
@@ -44,10 +108,18 @@ function App(): JSX.Element {
     setTasks(updatedTasks)
   }
 
+  const handleLoad = () => {
+    console.log('Loading')
+    loadDataFromStorage(STORAGE_KEY, (entries: any[]) => {
+      console.log('Loaded', entries)
+    })
+  }
+
   return (
-    <StorageProvider>
+    <StorageProviderLocal storage_key={STORAGE_KEY}>
       <View>
         <Text>Checklist</Text>
+        <HelloWorldView />
         <View>
           <TextInput
             placeholder="Enter..."
@@ -55,6 +127,7 @@ function App(): JSX.Element {
             onChangeText={text => setTask(text)}></TextInput>
         </View>
         <Button title="Add" onPress={handleAddTask}></Button>
+        <Button title="Load" onPress={handleLoad}></Button>
         <FlatList
           data={tasks}
           renderItem={({ item }) => (
@@ -72,7 +145,7 @@ function App(): JSX.Element {
             </View>
           )}></FlatList>
       </View>
-    </StorageProvider>
+    </StorageProviderLocal>
   )
 }
 
