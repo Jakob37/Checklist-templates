@@ -9,7 +9,7 @@
     "start": "react-native start"
   },
   "dependencies": {
-    "@minimalist_tools/library": "github:Jakob37/App-tools-shared-library#1932347",
+    "@minimalist_tools/library": "github:Jakob37/App-tools-shared-library#25d5e3f",
     "@react-native-async-storage/async-storage": "^1.19.0",
     "react": "18.2.0",
     "react-native": "0.71.11",
