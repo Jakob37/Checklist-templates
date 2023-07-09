@@ -1,10 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import type { PropsWithChildren } from 'react'
 import React, { useState } from 'react'
 import {
@@ -18,6 +11,8 @@ import {
 import { IconButton } from './src/views/iconbutton'
 import { ds } from './src/ux/design'
 import { icons } from './src/ux/icons'
+
+import { StorageProvider } from '@minimalist_tools/library'
 
 type SectionProps = PropsWithChildren<{
   title: string
@@ -50,30 +45,34 @@ function App(): JSX.Element {
   }
 
   return (
-    <View>
-      <Text>Checklist</Text>
+    <StorageProvider>
       <View>
-        <TextInput
-          placeholder="Enter..."
-          value={task}
-          onChangeText={text => setTask(text)}></TextInput>
+        <Text>Checklist</Text>
+        <View>
+          <TextInput
+            placeholder="Enter..."
+            value={task}
+            onChangeText={text => setTask(text)}></TextInput>
+        </View>
+        <Button title="Add" onPress={handleAddTask}></Button>
+        <FlatList
+          data={tasks}
+          renderItem={({ item }) => (
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={{ fontSize: ds.font.sizes.topBar }}>
+                {item.title}
+              </Text>
+              <IconButton
+                onPress={() => {
+                  handleRemoveTask(item.id)
+                }}
+                icon={icons.trash}
+                size={ds.font.sizes.topBar}
+                color="white"></IconButton>
+            </View>
+          )}></FlatList>
       </View>
-      <Button title="Add" onPress={handleAddTask}></Button>
-      <FlatList
-        data={tasks}
-        renderItem={({ item }) => (
-          <View style={{ flexDirection: 'row' }}>
-            <Text style={{ fontSize: ds.font.sizes.topBar }}>{item.title}</Text>
-            <IconButton
-              onPress={() => {
-                handleRemoveTask(item.id)
-              }}
-              icon={icons.trash}
-              size={ds.font.sizes.topBar}
-              color="white"></IconButton>
-          </View>
-        )}></FlatList>
-    </View>
+    </StorageProvider>
   )
 }
 
