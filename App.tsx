@@ -1,38 +1,10 @@
-import type { PropsWithChildren } from 'react'
 import { useEffect, useState } from 'react'
-import {
-  Button,
-  FlatList,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native'
-import { IconButton } from './src/views/iconbutton'
-import { ds } from './src/ux/design'
-import { icons } from './src/ux/icons'
-
-import {
-  helloWorld,
-  helloWorld2,
-  HelloWorldView,
-  loadDataFromStorage,
-} from '@minimalist_tools/library'
-// import { AsyncStorage } from 'react-native'
+import { helloWorld, helloWorld2 } from '@minimalist_tools/library'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import React from 'react'
 import Main from './src/screens/main'
 import { STORAGE_KEY } from './src/storage/storage'
-
-const StorageContext = React.createContext<{
-  entries: Object[]
-  saveEntries: (entries: Object[]) => void
-}>({
-  entries: [],
-  saveEntries: _entries => {
-    console.error('This placeholder should not be called')
-  },
-})
+import { StorageContext } from './src/storage/context'
 
 interface DataProviderProps {
   storage_key: string

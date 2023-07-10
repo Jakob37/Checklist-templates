@@ -9,8 +9,9 @@ import {
 import { IconButton } from '../views/iconbutton'
 import { icons } from '../ux/icons'
 import { ds } from '../ux/design'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { STORAGE_KEY } from '../storage/storage'
+import { StorageContext } from '../storage/context'
 
 interface Task {
   id: string
@@ -19,7 +20,9 @@ interface Task {
 
 function Main() {
   const [task, setTask] = useState('')
-  const [tasks, setTasks] = useState<Task[]>([])
+  //   const [tasks, setTasks] = useState<Task[]>([])
+
+  const { entries, saveEntries } = useContext(StorageContext)
 
   const handleAddTask = () => {
     helloWorld()
@@ -29,23 +32,15 @@ function Main() {
         id: String(Date.now()),
         title: task,
       }
-      setTasks([...tasks, newTask])
+      saveEntries([...entries, newTask])
       setTask('')
     }
   }
 
   const handleRemoveTask = (id: string) => {
-    const updatedTasks = tasks.filter(task => task.id !== id)
-    setTasks(updatedTasks)
+    const updatedTasks = entries.filter(task => task.id !== id)
+    saveEntries(updatedTasks)
   }
-
-  const handleLoad = () => {
-    loadDataFromStorage(STORAGE_KEY, (entries: any[]) => {
-      console.log('Loaded', entries)
-    })
-  }
-
-  const handleSave = () => {}
 
   return (
     <View>
@@ -58,10 +53,8 @@ function Main() {
           onChangeText={text => setTask(text)}></TextInput>
       </View>
       <Button title="Add" onPress={handleAddTask}></Button>
-      <Button title="Load" onPress={handleLoad}></Button>
-      <Button title="Save" onPress={handleSave}></Button>
       <FlatList
-        data={tasks}
+        data={entries}
         renderItem={({ item }) => (
           <View style={{ flexDirection: 'row' }}>
             <Text style={{ fontSize: ds.font.sizes.topBar }}>{item.title}</Text>
