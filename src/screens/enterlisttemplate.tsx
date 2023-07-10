@@ -1,27 +1,19 @@
 import { Button, FlatList, Text, TextInput, View } from 'react-native'
 
-import {
-  helloWorld,
-  helloWorld2,
-  HelloWorldView,
-  loadDataFromStorage,
-} from '@minimalist_tools/library'
-import { IconButton } from '../views/iconbutton'
-import { icons } from '../ux/icons'
-import { ds } from '../ux/design'
+import { helloWorld } from '@minimalist_tools/library'
 import { useContext, useState } from 'react'
-import { STORAGE_KEY } from '../storage/storage'
 import { StorageContext } from '../storage/context'
+import { ds } from '../ux/design'
+import { icons } from '../ux/icons'
+import { IconButton } from '../views/iconbutton'
 
 interface Task {
   id: string
   title: string
 }
 
-function Main() {
+function EnterListTemplate() {
   const [task, setTask] = useState('')
-  //   const [tasks, setTasks] = useState<Task[]>([])
-
   const { entries, saveEntries } = useContext(StorageContext)
 
   const handleAddTask = () => {
@@ -44,8 +36,7 @@ function Main() {
 
   return (
     <View>
-      <Text>Checklist</Text>
-      <HelloWorldView />
+      <Text>Make checklist template</Text>
       <View>
         <TextInput
           placeholder="Enter..."
@@ -71,4 +62,4 @@ function Main() {
   )
 }
 
-export default Main
+export default EnterListTemplate

@@ -1,10 +1,5 @@
 import { createContext } from 'react'
 
-interface Task {
-  id: string
-  title: string
-}
-
 const StorageContext = createContext<{
   entries: Task[]
   saveEntries: (entries: Task[]) => void
