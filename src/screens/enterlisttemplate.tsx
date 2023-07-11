@@ -12,20 +12,26 @@ interface Task {
   title: string
 }
 
+interface Checkbox {
+  id: string
+  label: string
+}
+
 function EnterListTemplate() {
-  const [task, setTask] = useState('')
+  const [newCheckboxLabel, setNewCheckboxLabel] = useState('')
   const { entries, saveEntries } = useContext(StorageContext)
 
-  const handleAddTask = () => {
-    helloWorld()
-    console.log(task)
-    if (task !== '') {
-      const newTask: Task = {
+  const [checkboxes, setCheckboxes] = useState<Checkbox[]>([])
+
+  const handleAddCheckbox = () => {
+    if (newCheckboxLabel !== '') {
+      const newCheckbox: Checkbox = {
         id: String(Date.now()),
-        title: task,
+        label: newCheckboxLabel,
       }
-      saveEntries([...entries, newTask])
-      setTask('')
+      // saveEntries([...entries, newTask])
+      setCheckboxes([...checkboxes, newCheckbox])
+      setNewCheckboxLabel('')
     }
   }
 
@@ -34,17 +40,25 @@ function EnterListTemplate() {
     saveEntries(updatedTasks)
   }
 
+  const handleSubmitList = () => {
+    console.log('Submit list')
+    setNewCheckboxLabel('')
+  }
+
   return (
     <View>
-      <Text>Make checklist template</Text>
       <View>
         <TextInput
           placeholder="Enter..."
-          value={task}
-          onChangeText={text => setTask(text)}></TextInput>
+          value={newCheckboxLabel}
+          onChangeText={text => setNewCheckboxLabel(text)}></TextInput>
       </View>
-      <Button title="Add" onPress={handleAddTask}></Button>
+      <Button title="Add checkbox" onPress={handleAddCheckbox}></Button>
+      <Text>Checkboxes</Text>
       <FlatList
+        data={checkboxes}
+        renderItem={({ item }) => <Text>{item.label}</Text>}></FlatList>
+      {/* <FlatList
         data={entries}
         renderItem={({ item }) => (
           <View style={{ flexDirection: 'row' }}>
@@ -57,7 +71,8 @@ function EnterListTemplate() {
               size={ds.font.sizes.topBar}
               color="white"></IconButton>
           </View>
-        )}></FlatList>
+        )}></FlatList> */}
+      <Button title="Submit list" onPress={handleSubmitList}></Button>
     </View>
   )
 }
