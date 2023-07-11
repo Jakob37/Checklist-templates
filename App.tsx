@@ -6,6 +6,7 @@ import { DefaultTheme, NavigationContainer } from '@react-navigation/native'
 import EnterListTemplate from './src/screens/enterlisttemplate'
 import SelectChecklist from './src/screens/selectchecklist'
 import { StorageProvider } from './src/storage/provider'
+import OngoingChecklists from './src/screens/ongoingchecklists'
 
 const MyTheme = {
   ...DefaultTheme,
@@ -27,12 +28,13 @@ function App(): JSX.Element {
             name="Make template"
             component={EnterListTemplate}></Drawer.Screen>
           <Drawer.Screen
-            name="Checklists"
+            name="Select checklist"
             component={SelectChecklist}></Drawer.Screen>
+          <Drawer.Screen
+            name="Ongoing checklists"
+            component={OngoingChecklists}></Drawer.Screen>
         </Drawer.Navigator>
       </NavigationContainer>
-
-      <EnterListTemplate></EnterListTemplate>
     </StorageProvider>
   )
 }
