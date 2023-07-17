@@ -47,32 +47,49 @@ function EnterListTemplate() {
 
   return (
     <View>
-      <View>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <IconButton
+          style={{ paddingHorizontal: 10 }}
+          onPress={handleAddCheckbox}
+          icon={icons.plus}
+          size={ds.icons.size}
+          color={ds.colors.primary}></IconButton>
+
         <TextInput
           placeholder="Enter..."
           value={newCheckboxLabel}
           onChangeText={text => setNewCheckboxLabel(text)}></TextInput>
       </View>
-      <Button title="Add checkbox" onPress={handleAddCheckbox}></Button>
-      <Text>Checkboxes</Text>
+
       <FlatList
         data={checkboxes}
-        renderItem={({ item }) => <Text>{item.label}</Text>}></FlatList>
-      {/* <FlatList
-        data={entries}
         renderItem={({ item }) => (
           <View style={{ flexDirection: 'row' }}>
-            <Text style={{ fontSize: ds.font.sizes.topBar }}>{item.title}</Text>
             <IconButton
               onPress={() => {
                 handleRemoveTask(item.id)
               }}
               icon={icons.trash}
-              size={ds.font.sizes.topBar}
-              color="white"></IconButton>
+              size={ds.icons.size}
+              color="white"
+              style={{ paddingHorizontal: 10 }}></IconButton>
+            <Text style={{ fontSize: ds.font.sizes.major }}>{item.label}</Text>
           </View>
-        )}></FlatList> */}
-      <Button title="Submit list" onPress={handleSubmitList}></Button>
+        )}></FlatList>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          paddingTop: 10,
+        }}>
+        <IconButton
+          style={{ paddingHorizontal: 10 }}
+          onPress={handleSubmitList}
+          icon={icons.save}
+          size={ds.icons.size}
+          color={ds.colors.primary}></IconButton>
+        <Text>Save template</Text>
+      </View>
     </View>
   )
 }

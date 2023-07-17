@@ -3,5 +3,6 @@ export const icons = {
   trash: 'trash-o',
   save: 'save',
   tag: 'tag',
+  plus: 'plus',
   floppy: 'floppy-o',
 }
