@@ -36,13 +36,14 @@ function EnterListTemplate() {
   }
 
   const handleRemoveTask = (id: string) => {
-    const updatedTasks = entries.filter(task => task.id !== id)
-    saveEntries(updatedTasks)
+    console.log('Removing ID', id)
+    const updatedCheckboxes = checkboxes.filter(checkbox => checkbox.id !== id)
+    setCheckboxes(updatedCheckboxes)
   }
 
   const handleSubmitList = () => {
-    console.log('Submit list')
     setNewCheckboxLabel('')
+    setCheckboxes([])
   }
 
   return (
