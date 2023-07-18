@@ -7,12 +7,20 @@ import { ds } from '../ux/design'
 import { icons } from '../ux/icons'
 import { IconButton } from '../views/iconbutton'
 
-interface Task {
+// FIXME: Shared location for the interfaces
+interface ChecklistTemplate {
   id: string
-  title: string
+  label: string
+  stacks: TaskStack[]
 }
 
-interface Checkbox {
+interface TaskStack {
+  id: string
+  label: string
+  tasks: Task[]
+}
+
+interface Task {
   id: string
   label: string
 }
@@ -22,39 +30,40 @@ function EnterTemplate() {
   const [taskLabel, setTaskLabel] = useState('')
   const { templates, saveTemplates } = useContext(StorageContext)
 
-  const [checkboxes, setCheckboxes] = useState<Checkbox[]>([])
+  const [tasks, setTasks] = useState<Task[]>([])
 
   const handleAddCheckbox = () => {
     if (taskLabel !== '') {
-      const newCheckbox: Checkbox = {
+      const newTask: Task = {
         id: String(Date.now()),
         label: taskLabel,
       }
       // saveEntries([...entries, newTask])
-      setCheckboxes([...checkboxes, newCheckbox])
+      setTasks([...tasks, newTask])
       setTaskLabel('')
     }
   }
 
   const handleRemoveTask = (id: string) => {
     console.log('Removing ID', id)
-    const updatedCheckboxes = checkboxes.filter(checkbox => checkbox.id !== id)
-    setCheckboxes(updatedCheckboxes)
+    const updatedCheckboxes = tasks.filter(checkbox => checkbox.id !== id)
+    setTasks(updatedCheckboxes)
   }
 
   const handleSubmitList = () => {
+    const updatingTemplates = [...templates]
+    const template = makeDummyTemplate(templateName)
+
+    updatingTemplates.push(template)
+    saveTemplates(updatingTemplates)
+
+    reset()
+  }
+
+  function reset() {
     setTaskLabel('')
-    setCheckboxes([])
-
-    const prevTemplates = [...templates]
-
-    const template = {
-      // FIXME: ID function
-      id: String(Date.now()),
-      label: 
-    }
-
-    const newTemplates = templates.push()
+    setTemplateName('')
+    setTasks([])
   }
 
   return (
@@ -62,8 +71,7 @@ function EnterTemplate() {
       <TextInput
         placeholder="Name"
         value={templateName}
-        onChangeText={text => setTemplateName(templateName)}
-      ></TextInput>
+        onChangeText={text => setTemplateName(text)}></TextInput>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <IconButton
           style={{ paddingHorizontal: 10 }}
@@ -79,7 +87,7 @@ function EnterTemplate() {
       </View>
 
       <FlatList
-        data={checkboxes}
+        data={tasks}
         renderItem={({ item }) => (
           <View style={{ flexDirection: 'row' }}>
             <IconButton
@@ -109,6 +117,31 @@ function EnterTemplate() {
       </View>
     </View>
   )
+}
+
+function makeDummyTemplate(templateName: string): ChecklistTemplate {
+  return {
+    // FIXME: ID function
+    id: `template-${String(Date.now())}`,
+    label: templateName,
+    // FIXME: Include the tasks
+    stacks: [
+      {
+        id: `stack-${String(Date.now())}`,
+        label: 'Default',
+        tasks: [
+          {
+            id: `task-${String(Date.now())}-1`,
+            label: 'Dummy task 1',
+          },
+          {
+            id: `task-${String(Date.now())}-2`,
+            label: 'Dummy task 2',
+          },
+        ],
+      },
+    ],
+  }
 }
 
 export default EnterTemplate
