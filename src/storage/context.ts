@@ -1,16 +1,28 @@
 import { createContext } from 'react'
 
+interface Template {
+  id: string
+  label: string
+  stacks: TaskStack[]
+}
+
+interface TaskStack {
+  id: string
+  label: string
+  tasks: Task[]
+}
+
 interface Task {
   id: string
   label: string
 }
 
 const StorageContext = createContext<{
-  entries: Task[]
-  saveEntries: (entries: Task[]) => void
+  templates: Template[]
+  saveTemplates: (templates: Template[]) => void
 }>({
-  entries: [],
-  saveEntries: _entries => {
+  templates: [],
+  saveTemplates: _templates => {
     console.error('This placeholder should not be called')
   },
 })

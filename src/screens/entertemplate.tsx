@@ -17,21 +17,22 @@ interface Checkbox {
   label: string
 }
 
-function EnterListTemplate() {
-  const [newCheckboxLabel, setNewCheckboxLabel] = useState('')
-  const { entries, saveEntries } = useContext(StorageContext)
+function EnterTemplate() {
+  const [templateName, setTemplateName] = useState('')
+  const [taskLabel, setTaskLabel] = useState('')
+  const { templates, saveTemplates } = useContext(StorageContext)
 
   const [checkboxes, setCheckboxes] = useState<Checkbox[]>([])
 
   const handleAddCheckbox = () => {
-    if (newCheckboxLabel !== '') {
+    if (taskLabel !== '') {
       const newCheckbox: Checkbox = {
         id: String(Date.now()),
-        label: newCheckboxLabel,
+        label: taskLabel,
       }
       // saveEntries([...entries, newTask])
       setCheckboxes([...checkboxes, newCheckbox])
-      setNewCheckboxLabel('')
+      setTaskLabel('')
     }
   }
 
@@ -42,12 +43,27 @@ function EnterListTemplate() {
   }
 
   const handleSubmitList = () => {
-    setNewCheckboxLabel('')
+    setTaskLabel('')
     setCheckboxes([])
+
+    const prevTemplates = [...templates]
+
+    const template = {
+      // FIXME: ID function
+      id: String(Date.now()),
+      label: 
+    }
+
+    const newTemplates = templates.push()
   }
 
   return (
     <View>
+      <TextInput
+        placeholder="Name"
+        value={templateName}
+        onChangeText={text => setTemplateName(templateName)}
+      ></TextInput>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <IconButton
           style={{ paddingHorizontal: 10 }}
@@ -58,8 +74,8 @@ function EnterListTemplate() {
 
         <TextInput
           placeholder="Enter..."
-          value={newCheckboxLabel}
-          onChangeText={text => setNewCheckboxLabel(text)}></TextInput>
+          value={taskLabel}
+          onChangeText={text => setTaskLabel(text)}></TextInput>
       </View>
 
       <FlatList
@@ -95,4 +111,4 @@ function EnterListTemplate() {
   )
 }
 
-export default EnterListTemplate
+export default EnterTemplate

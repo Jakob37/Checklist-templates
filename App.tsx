@@ -3,7 +3,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer'
 import { STORAGE_KEY } from './src/storage/storage'
 
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native'
-import EnterListTemplate from './src/screens/enterlisttemplate'
+import EnterTemplate from './src/screens/entertemplate'
 import SelectChecklist from './src/screens/selectchecklist'
 import { StorageProvider } from './src/storage/provider'
 import OngoingChecklists from './src/screens/ongoingchecklists'
@@ -26,7 +26,7 @@ function App(): JSX.Element {
         <Drawer.Navigator>
           <Drawer.Screen
             name="Make template"
-            component={EnterListTemplate}></Drawer.Screen>
+            component={EnterTemplate}></Drawer.Screen>
           <Drawer.Screen
             name="Select checklist"
             component={SelectChecklist}></Drawer.Screen>
