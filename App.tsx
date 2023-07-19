@@ -1,19 +1,22 @@
 import React from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
-import { STORAGE_KEY } from './src/storage/storage'
 
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native'
 import EnterTemplate from './src/screens/entertemplate'
-import SelectChecklist from './src/screens/selectchecklist'
+import SelectChecklist from './src/screens/templates'
 import { StorageProvider } from './src/storage/provider'
 import OngoingChecklists from './src/screens/ongoingchecklists'
+import {
+  CHECKLISTS_STORAGE_KEY,
+  TEMPLATES_STORAGE_KEY,
+} from './src/storage/storage'
 
 const MyTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    dark: 'gray',
-    background: 'gray',
+    dark: '#1F3B4D',
+    background: '#1F3B4D',
   },
 }
 
@@ -21,17 +24,19 @@ const Drawer = createDrawerNavigator()
 
 function App(): JSX.Element {
   return (
-    <StorageProvider storage_key={STORAGE_KEY}>
+    <StorageProvider
+      templates_storage_key={TEMPLATES_STORAGE_KEY}
+      checklists_storage_key={CHECKLISTS_STORAGE_KEY}>
       <NavigationContainer theme={MyTheme}>
         <Drawer.Navigator>
+          <Drawer.Screen
+            name="Templates"
+            component={SelectChecklist}></Drawer.Screen>
           <Drawer.Screen
             name="Make template"
             component={EnterTemplate}></Drawer.Screen>
           <Drawer.Screen
-            name="Select checklist"
-            component={SelectChecklist}></Drawer.Screen>
-          <Drawer.Screen
-            name="Ongoing checklists"
+            name="Checklists"
             component={OngoingChecklists}></Drawer.Screen>
         </Drawer.Navigator>
       </NavigationContainer>

@@ -1,8 +1,4 @@
-const STORAGE_KEY = '@checklists/storage'
+const TEMPLATES_STORAGE_KEY = '@checklists/storage'
+const CHECKLISTS_STORAGE_KEY = '@checklists/checklists'
 
-export interface Task {
-  id: string
-  title: string
-}
-
-export { STORAGE_KEY }
+export { TEMPLATES_STORAGE_KEY, CHECKLISTS_STORAGE_KEY }

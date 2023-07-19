@@ -2,20 +2,22 @@ import { useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { helloWorld } from '@minimalist_tools/library'
 import { StorageContext } from './context'
-import { ChecklistTemplate } from './interfaces'
+import { Checklist, ChecklistTemplate } from './interfaces'
 
 interface DataProviderProps {
-  storage_key: string
+  templates_storage_key: string
+  checklists_storage_key: string
   children: React.ReactNode
 }
 
 const StorageProvider: React.FC<DataProviderProps> = props => {
   const [templates, setTemplates] = useState<ChecklistTemplate[]>([])
+  const [checklists, setChecklists] = useState<Checklist[]>([])
 
   // Load data from async storage
   const fetchData = async () => {
     try {
-      const storedData = await AsyncStorage.getItem(props.storage_key)
+      const storedData = await AsyncStorage.getItem(props.templates_storage_key)
       if (storedData) {
         setTemplates(JSON.parse(storedData))
       }
@@ -33,10 +35,22 @@ const StorageProvider: React.FC<DataProviderProps> = props => {
   const saveTemplates = async (updatedTemplates: ChecklistTemplate[]) => {
     try {
       await AsyncStorage.setItem(
-        props.storage_key,
+        props.templates_storage_key,
         JSON.stringify(updatedTemplates),
       )
       setTemplates(updatedTemplates)
+    } catch (error) {
+      console.log('Error saving data to async storage', error)
+    }
+  }
+
+  const saveChecklists = async (updatedChecklists: Checklist[]) => {
+    try {
+      await AsyncStorage.setItem(
+        props.checklists_storage_key,
+        JSON.stringify(updatedChecklists),
+      )
+      setChecklists(updatedChecklists)
     } catch (error) {
       console.log('Error saving data to async storage', error)
     }
@@ -47,6 +61,8 @@ const StorageProvider: React.FC<DataProviderProps> = props => {
       value={{
         templates: templates,
         saveTemplates: saveTemplates,
+        checklists: checklists,
+        saveChecklists: saveChecklists,
       }}>
       {props.children}
     </StorageContext.Provider>

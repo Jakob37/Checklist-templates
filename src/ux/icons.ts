@@ -5,4 +5,5 @@ export const icons = {
   tag: 'tag',
   plus: 'plus',
   floppy: 'floppy-o',
+  copy: 'copy',
 }

@@ -1,28 +1,19 @@
 import { createContext } from 'react'
+import { Checklist, ChecklistTemplate } from './interfaces'
 
-interface Template {
-  id: string
-  label: string
-  stacks: TaskStack[]
-}
-
-interface TaskStack {
-  id: string
-  label: string
-  tasks: Task[]
-}
-
-interface Task {
-  id: string
-  label: string
-}
-
+// FIXME: Better understand this
 const StorageContext = createContext<{
-  templates: Template[]
-  saveTemplates: (templates: Template[]) => void
+  templates: ChecklistTemplate[]
+  saveTemplates: (templates: ChecklistTemplate[]) => void
+  checklists: Checklist[]
+  saveChecklists: (checklists: Checklist[]) => void
 }>({
   templates: [],
   saveTemplates: _templates => {
+    console.error('This placeholder should not be called')
+  },
+  checklists: [],
+  saveChecklists: _checklists => {
     console.error('This placeholder should not be called')
   },
 })
