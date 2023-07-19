@@ -4,7 +4,6 @@ import { StorageContext } from '../storage/context'
 import { IconButton } from '../views/iconbutton'
 import { icons } from '../ux/icons'
 import { ds } from '../ux/design'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Checklist } from '../storage/interfaces'
 
 function SelectChecklist() {
