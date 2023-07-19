@@ -2,24 +2,7 @@ import { useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { helloWorld } from '@minimalist_tools/library'
 import { StorageContext } from './context'
-
-// FIXME: Shared location for the interfaces
-interface ChecklistTemplate {
-  id: string
-  label: string
-  stacks: TaskStack[]
-}
-
-interface TaskStack {
-  id: string
-  label: string
-  tasks: Task[]
-}
-
-interface Task {
-  id: string
-  label: string
-}
+import { ChecklistTemplate } from './interfaces'
 
 interface DataProviderProps {
   storage_key: string

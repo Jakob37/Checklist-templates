@@ -6,24 +6,7 @@ import { StorageContext } from '../storage/context'
 import { ds } from '../ux/design'
 import { icons } from '../ux/icons'
 import { IconButton } from '../views/iconbutton'
-
-// FIXME: Shared location for the interfaces
-interface ChecklistTemplate {
-  id: string
-  label: string
-  stacks: TaskStack[]
-}
-
-interface TaskStack {
-  id: string
-  label: string
-  tasks: Task[]
-}
-
-interface Task {
-  id: string
-  label: string
-}
+import { ChecklistTemplate, Task } from '../storage/interfaces'
 
 function EnterTemplate() {
   const [templateName, setTemplateName] = useState('')
