@@ -21,21 +21,20 @@ function SelectChecklist() {
 
   return (
     <View>
-      {templates.map(template => (
+      {templates.map((template, i) => (
         <View
+          key={String(i)}
           style={{
             flexDirection: 'row',
             alignItems: 'center',
             paddingVertical: 10,
             paddingLeft: 10,
           }}>
-          <Text>{template.label}</Text>
           <IconButton
             style={{ paddingHorizontal: 10 }}
             onPress={instantiateTemplate}
             icon={icons.copy}
-            size={ds.icons.size}
-            color={ds.colors.primary}></IconButton>
+            label={template.label}></IconButton>
         </View>
       ))}
     </View>
