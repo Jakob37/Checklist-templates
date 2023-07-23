@@ -1,4 +1,6 @@
-function generateId(type: string) {
+import { ChecklistTemplate } from '../storage/interfaces'
+
+function generateId(type: string): string {
   return `${type}-${String(Date.now())}`
 }
 
@@ -27,4 +29,10 @@ function makeDummyTemplate(templateName: string): ChecklistTemplate {
   }
 }
 
-export { generateId, makeDummyTemplate }
+function assert(logic: boolean, message: string): void {
+  if (logic) {
+    console.log(message)
+  }
+}
+
+export { generateId, makeDummyTemplate, assert }

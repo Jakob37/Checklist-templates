@@ -4,19 +4,38 @@ import { StorageContext } from '../storage/context'
 import { IconButton } from '../views/iconbutton'
 import { icons } from '../ux/icons'
 import { ds } from '../ux/design'
-import { Checklist } from '../storage/interfaces'
+import {
+  CheckboxStatus,
+  Checklist,
+  ChecklistTemplate,
+} from '../storage/interfaces'
+import { assert, generateId } from '../util/util'
 
 function SelectChecklist() {
   const { templates, checklists, saveChecklists } = useContext(StorageContext)
 
-  function instantiateTemplate() {
-    const dummyChecklist: Checklist = {
-      id: String(Date.now()),
-      template: templates[0],
-      checkboxes: [],
+  function instantiateTemplate(template: ChecklistTemplate) {
+    const defaultStacks = template.stacks.filter(
+      stack => stack.label === 'default',
+    )
+
+    assert(defaultStacks.length === 1, 'One default stack expected')
+    const defaultStack = defaultStacks[0]
+
+    const checkboxes = defaultStack.tasks.map(task => {
+      return {
+        id: generateId('checkbox'),
+        label: task.label,
+        checked: CheckboxStatus.unchecked,
+      }
+    })
+    const newChecklist: Checklist = {
+      id: generateId('checklist'),
+      template: template,
+      checkboxes,
     }
-    saveChecklists([dummyChecklist])
-    console.log('Instantiating checklist')
+    saveChecklists([newChecklist])
+    console.log('Instantiating checklist', newChecklist)
   }
 
   return (
@@ -32,7 +51,7 @@ function SelectChecklist() {
           }}>
           <IconButton
             style={{ paddingHorizontal: 10 }}
-            onPress={instantiateTemplate}
+            onPress={() => instantiateTemplate(template)}
             icon={icons.copy}
             label={template.label}></IconButton>
         </View>
