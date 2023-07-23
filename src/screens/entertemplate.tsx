@@ -6,7 +6,7 @@ import { StorageContext } from '../storage/context'
 import { ds } from '../ux/design'
 import { icons } from '../ux/icons'
 import { IconButton } from '../views/iconbutton'
-import { ChecklistTemplate, Task } from '../storage/interfaces'
+import { ChecklistTemplate, Task, TaskStack } from '../storage/interfaces'
 
 function EnterTemplate() {
   const [templateName, setTemplateName] = useState('')
@@ -35,7 +35,13 @@ function EnterTemplate() {
 
   const handleSubmitList = () => {
     const updatingTemplates = [...templates]
-    const template = makeDummyTemplate(templateName)
+
+    const template = makeTemplate(
+      templateName,
+      // FIXME: Omit this double work
+      tasks.map(task => task.label),
+    )
+    // const template = makeDummyTemplate(templateName)
 
     updatingTemplates.push(template)
     saveTemplates(updatingTemplates)
@@ -100,6 +106,38 @@ function EnterTemplate() {
       </View>
     </View>
   )
+}
+
+function makeTemplate(
+  templateName: string,
+  taskLabels: string[],
+): ChecklistTemplate {
+  const templateId = generateId('template')
+
+  const tasks: Task[] = taskLabels.map(label => {
+    return {
+      id: generateId('task'),
+      label,
+    }
+  })
+
+  const stackId = generateId('stack')
+  const stack: TaskStack = {
+    id: stackId,
+    label: 'default',
+    tasks,
+  }
+  const stacks: TaskStack[] = [stack]
+
+  return {
+    id: templateId,
+    label: templateName,
+    stacks,
+  }
+}
+
+function generateId(type: string) {
+  return `${type}-${String(Date.now())}`
 }
 
 function makeDummyTemplate(templateName: string): ChecklistTemplate {
