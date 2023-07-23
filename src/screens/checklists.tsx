@@ -9,7 +9,18 @@ function Checklists() {
     <View>
       <Text>Ongoing checklists</Text>
       {checklists.map(checklist => (
-        <Text>{checklist.template.label}</Text>
+        <View>
+          <Text style={{ fontWeight: 'bold' }}>{checklist.template.label}</Text>
+          {checklist.checkboxes.map(checkbox => {
+            return (
+              <View>
+                <Text>{checkbox.label}</Text>
+                <Text>Status: {checkbox.checked}</Text>
+              </View>
+            )
+          })}
+          <Text></Text>
+        </View>
       ))}
     </View>
   )
