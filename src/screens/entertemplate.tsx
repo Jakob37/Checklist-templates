@@ -1,12 +1,14 @@
-import { Button, FlatList, Text, TextInput, View } from 'react-native'
+import { FlatList, Text, TextInput, View } from 'react-native'
 
-import { helloWorld } from '@minimalist_tools/library'
 import { useContext, useState } from 'react'
 import { StorageContext } from '../storage/context'
 import { ds } from '../ux/design'
 import { icons } from '../ux/icons'
 import { IconButton } from '../views/iconbutton'
 import { ChecklistTemplate, Task, TaskStack } from '../storage/interfaces'
+import { generateId } from '../util/util'
+
+const PADDING_TEMP = 10
 
 function EnterTemplate() {
   const [templateName, setTemplateName] = useState('')
@@ -21,14 +23,12 @@ function EnterTemplate() {
         id: String(Date.now()),
         label: taskLabel,
       }
-      // saveEntries([...entries, newTask])
       setTasks([...tasks, newTask])
       setTaskLabel('')
     }
   }
 
   const handleRemoveTask = (id: string) => {
-    console.log('Removing ID', id)
     const updatedCheckboxes = tasks.filter(checkbox => checkbox.id !== id)
     setTasks(updatedCheckboxes)
   }
@@ -41,7 +41,6 @@ function EnterTemplate() {
       // FIXME: Omit this double work
       tasks.map(task => task.label),
     )
-    // const template = makeDummyTemplate(templateName)
 
     updatingTemplates.push(template)
     saveTemplates(updatingTemplates)
@@ -63,7 +62,7 @@ function EnterTemplate() {
         onChangeText={text => setTemplateName(text)}></TextInput>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <IconButton
-          style={{ paddingHorizontal: 10 }}
+          style={{ paddingHorizontal: PADDING_TEMP }}
           onPress={handleAddCheckbox}
           icon={icons.plus}
           size={ds.icons.size}
@@ -86,7 +85,7 @@ function EnterTemplate() {
               icon={icons.trash}
               size={ds.icons.size}
               color="white"
-              style={{ paddingHorizontal: 10 }}></IconButton>
+              style={{ paddingHorizontal: PADDING_TEMP }}></IconButton>
             <Text style={{ fontSize: ds.font.sizes.major }}>{item.label}</Text>
           </View>
         )}></FlatList>
@@ -94,10 +93,10 @@ function EnterTemplate() {
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          paddingTop: 10,
+          paddingTop: PADDING_TEMP,
         }}>
         <IconButton
-          style={{ paddingHorizontal: 10 }}
+          style={{ paddingHorizontal: PADDING_TEMP }}
           onPress={handleSubmitList}
           icon={icons.save}
           size={ds.icons.size}
@@ -133,35 +132,6 @@ function makeTemplate(
     id: templateId,
     label: templateName,
     stacks,
-  }
-}
-
-function generateId(type: string) {
-  return `${type}-${String(Date.now())}`
-}
-
-function makeDummyTemplate(templateName: string): ChecklistTemplate {
-  return {
-    // FIXME: ID function
-    id: `template-${String(Date.now())}`,
-    label: templateName,
-    // FIXME: Include the tasks
-    stacks: [
-      {
-        id: `stack-${String(Date.now())}`,
-        label: 'Default',
-        tasks: [
-          {
-            id: `task-${String(Date.now())}-1`,
-            label: 'Dummy task 1',
-          },
-          {
-            id: `task-${String(Date.now())}-2`,
-            label: 'Dummy task 2',
-          },
-        ],
-      },
-    ],
   }
 }
 
