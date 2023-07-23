@@ -12,14 +12,18 @@ import {
 import { assert, generateId } from '../util/util'
 
 function SelectChecklist() {
-  const { templates, checklists, saveChecklists } = useContext(StorageContext)
+  const { templates, saveTemplates, checklists, saveChecklists } =
+    useContext(StorageContext)
 
   function instantiateTemplate(template: ChecklistTemplate) {
     const defaultStacks = template.stacks.filter(
       stack => stack.label === 'default',
     )
 
-    assert(defaultStacks.length === 1, 'One default stack expected')
+    assert(
+      defaultStacks.length === 1,
+      `One default stack expected in: ${template}`,
+    )
     const defaultStack = defaultStacks[0]
 
     const checkboxes = defaultStack.tasks.map(task => {
@@ -34,8 +38,17 @@ function SelectChecklist() {
       template: template,
       checkboxes,
     }
-    saveChecklists([newChecklist])
+    saveChecklists([...checklists, newChecklist])
     console.log('Instantiating checklist', newChecklist)
+  }
+
+  function removeTemplate(id: string) {
+    const retainedTemplates = templates.filter(template => template.id !== id)
+    assert(
+      retainedTemplates.length === templates.length - 1,
+      `One template less expected after removal`,
+    )
+    saveTemplates(retainedTemplates)
   }
 
   return (
@@ -54,6 +67,12 @@ function SelectChecklist() {
             onPress={() => instantiateTemplate(template)}
             icon={icons.copy}
             label={template.label}></IconButton>
+          <IconButton
+            style={{ paddingHorizontal: 10 }}
+            onPress={() => {
+              removeTemplate(template.id)
+            }}
+            icon={icons.trash}></IconButton>
         </View>
       ))}
     </View>
