@@ -16,30 +16,36 @@ function SelectChecklist() {
     useContext(StorageContext)
 
   function instantiateTemplate(template: ChecklistTemplate) {
-    const defaultStacks = template.stacks.filter(
-      stack => stack.label === 'default',
-    )
+    // const defaultStacks = template.stacks.filter(
+    //   stack => stack.label === 'default',
+    // )
 
-    assert(
-      defaultStacks.length === 1,
-      `One default stack expected in: ${template}`,
-    )
-    const defaultStack = defaultStacks[0]
+    // assert(
+    //   defaultStacks.length === 1,
+    //   `One default stack expected in: ${template}`,
+    // )
+    // const defaultStack = defaultStacks[0]
 
-    const checkboxes = defaultStack.tasks.map(task => {
-      return {
-        id: generateId('checkbox'),
-        label: task.label,
-        checked: CheckboxStatus.unchecked,
-      }
+    const checkboxes = template.stacks.flatMap(stack => {
+      return stack.tasks.map(task => {
+        return {
+          id: generateId('checkbox'),
+          label: task.label,
+          checked: CheckboxStatus.unchecked,
+        }
+      })
     })
+
     const newChecklist: Checklist = {
       id: generateId('checklist'),
       template: template,
       checkboxes,
     }
     saveChecklists([...checklists, newChecklist])
-    console.log('Instantiating checklist', newChecklist)
+    console.log(
+      'Instantiating checklist',
+      JSON.stringify(newChecklist, null, 2),
+    )
   }
 
   function removeTemplate(id: string) {

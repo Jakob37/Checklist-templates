@@ -1,6 +1,9 @@
 import { Text, View } from 'react-native'
 import { StorageContext } from '../storage/context'
 import { useContext } from 'react'
+import { CheckboxStatus } from '../storage/interfaces'
+import { IconButton } from '../views/iconbutton'
+import { icons } from '../ux/icons'
 
 function Checklists() {
   const { checklists } = useContext(StorageContext)
@@ -11,11 +14,19 @@ function Checklists() {
       {checklists.map(checklist => (
         <View>
           <Text style={{ fontWeight: 'bold' }}>{checklist.template.label}</Text>
-          {checklist.checkboxes.map(checkbox => {
+          {checklist.checkboxes.map((checkbox, i) => {
             return (
-              <View>
-                <Text>{checkbox.label}</Text>
-                <Text>Status: {checkbox.checked}</Text>
+              <View key={String(i)} style={{ flexDirection: 'row' }}>
+                <IconButton
+                  onPress={() => {
+                    if (checkbox.checked === 1) {
+                      checkbox.checked = 2
+                    } else {
+                      checkbox.checked = 1
+                    }
+                  }}
+                  icon={checkbox.checked === 1 ? icons.check : icons.uncheck}
+                  label={checkbox.label}></IconButton>
               </View>
             )
           })}
@@ -24,6 +35,16 @@ function Checklists() {
       ))}
     </View>
   )
+}
+
+function Checkbox(checkboxStatus: CheckboxStatus) {
+  if (checkboxStatus === CheckboxStatus.checked) {
+    return <IconButton onPress={() => {}} icon={icons.check} />
+  } else if (checkboxStatus === CheckboxStatus.unchecked) {
+    return 'o'
+  } else {
+    return '-'
+  }
 }
 
 export default Checklists

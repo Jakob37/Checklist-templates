@@ -15,7 +15,7 @@ function IconButton(props: {
     <TouchableOpacity onPress={props.onPress}>
       <View style={{ flexDirection: 'row' }}>
         {props.label !== '' && props.labelPos === 'left' ? (
-          <Text>{props.label}</Text>
+          <Text style={{ paddingHorizontal: 10 }}>{props.label}</Text>
         ) : (
           ''
         )}
@@ -24,7 +24,7 @@ function IconButton(props: {
           size={props.size}
           style={{ color: props.color, ...props.style }}></Icon>
         {props.label !== '' && props.labelPos === 'right' ? (
-          <Text>{props.label}</Text>
+          <Text style={{ paddingHorizontal: 10 }}>{props.label}</Text>
         ) : (
           ''
         )}

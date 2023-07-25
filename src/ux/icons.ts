@@ -6,4 +6,6 @@ export const icons = {
   plus: 'plus',
   floppy: 'floppy-o',
   copy: 'copy',
+  check: 'check-square',
+  uncheck: 'square',
 }
