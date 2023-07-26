@@ -11,12 +11,12 @@ function Checklists() {
   return (
     <View>
       <Text>Ongoing checklists</Text>
-      {checklists.map(checklist => (
-        <View>
+      {checklists.map((checklist, i) => (
+        <View key={checklist.id}>
           <Text style={{ fontWeight: 'bold' }}>{checklist.template.label}</Text>
-          {checklist.checkboxes.map((checkbox, i) => {
+          {checklist.checkboxes.map(checkbox => {
             return (
-              <View key={String(i)} style={{ flexDirection: 'row' }}>
+              <View key={checkbox.id} style={{ flexDirection: 'row' }}>
                 <IconButton
                   onPress={() => {
                     if (checkbox.checked === 1) {

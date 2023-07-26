@@ -17,9 +17,27 @@ const StorageProvider: React.FC<DataProviderProps> = props => {
   // Load data from async storage
   const fetchData = async () => {
     try {
-      const storedData = await AsyncStorage.getItem(props.templates_storage_key)
-      if (storedData) {
-        setTemplates(JSON.parse(storedData))
+      const storedTemplates = await AsyncStorage.getItem(
+        props.templates_storage_key,
+      )
+      if (storedTemplates) {
+        const parsedJSON = JSON.parse(storedTemplates)
+        setTemplates(parsedJSON)
+        console.log(`Loaded templates: ${JSON.stringify(parsedJSON, null, 2)}`)
+      }
+    } catch (error) {
+      console.log('Error retrieving data from async storage:', error)
+    }
+
+    try {
+      const storedChecklists = await AsyncStorage.getItem(
+        props.checklists_storage_key,
+      )
+      if (storedChecklists) {
+        const parsedJSON = JSON.parse(storedChecklists)
+        setChecklists(parsedJSON)
+        // setChecklists(JSON.parse(storedChecklists))
+        console.log(`Loaded checklists: ${JSON.stringify(parsedJSON, null, 2)}`)
       }
     } catch (error) {
       console.log('Error retrieving data from async storage:', error)
