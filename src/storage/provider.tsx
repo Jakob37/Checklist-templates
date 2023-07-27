@@ -72,7 +72,7 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
     saveTemplates(retainedChecklists)
   }
 
-  async function createChecklist(newChecklist: Checklist) {
+  async function saveChecklist(newChecklist: Checklist) {
     saveChecklists([...checklists, newChecklist])
   }
 
@@ -117,7 +117,7 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
     ])
   }
 
-  async function createTemplate(template: ChecklistTemplate) {
+  async function saveTemplate(template: ChecklistTemplate) {
     const updatingTemplates = [...templates]
     updatingTemplates.push(template)
     saveTemplates(updatingTemplates)
@@ -127,14 +127,14 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
     <StorageContext.Provider
       value={{
         templates,
-        saveTemplates,
-        checklists,
-        saveChecklists,
+        saveTemplate,
         removeTemplate,
-        createChecklist,
-        toggleCheck,
+
+        checklists,
+        saveChecklist,
         removeChecklist,
-        createTemplate,
+
+        toggleCheck,
       }}>
       {props.children}
     </StorageContext.Provider>

@@ -9,33 +9,16 @@ import {
 import { generateId } from '../util/util'
 import { icons } from '../ux/icons'
 import { IconButton } from '../views/iconbutton'
+import { instantiateTemplate } from '../storage/util'
+
+const PADDING = 10
 
 function SelectChecklist() {
-  const { templates, removeTemplate, createChecklist } =
-    useContext(StorageContext)
-
-  function instantiateTemplate(template: ChecklistTemplate) {
-    const checkboxes = template.stacks.flatMap((stack) => {
-      return stack.tasks.map((task, i) => {
-        return {
-          id: generateId(`checkbox-${i}`),
-          label: task.label,
-          checked: CheckboxStatus.unchecked,
-        }
-      })
-    })
-
-    const newChecklist: Checklist = {
-      id: generateId('checklist'),
-      template: template,
-      checkboxes,
-    }
-    createChecklist(newChecklist)
-    console.log(
-      'Instantiating checklist',
-      JSON.stringify(newChecklist, null, 2),
-    )
-  }
+  const {
+    templates,
+    removeTemplate,
+    saveChecklist: createChecklist,
+  } = useContext(StorageContext)
 
   return (
     <View>
@@ -45,16 +28,19 @@ function SelectChecklist() {
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            paddingVertical: 10,
-            paddingLeft: 10,
+            paddingVertical: PADDING,
+            paddingLeft: PADDING,
           }}>
           <IconButton
-            style={{ paddingHorizontal: 10 }}
-            onPress={() => instantiateTemplate(template)}
+            style={{ paddingHorizontal: PADDING }}
+            onPress={() => {
+              const checklist = instantiateTemplate(template)
+              createChecklist(checklist)
+            }}
             icon={icons.copy}
             label={template.label}></IconButton>
           <IconButton
-            style={{ paddingHorizontal: 10 }}
+            style={{ paddingHorizontal: PADDING }}
             onPress={() => {
               removeTemplate(template.id)
             }}

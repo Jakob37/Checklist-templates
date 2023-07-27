@@ -1,7 +1,13 @@
 import { generateId } from '../util/util'
-import { ChecklistTemplate, Task, TaskStack } from './interfaces'
+import {
+  CheckboxStatus,
+  Checklist,
+  ChecklistTemplate,
+  Task,
+  TaskStack,
+} from './interfaces'
 
-function makeTemplate(
+function buildTemplateObject(
   templateName: string,
   taskLabels: string[],
 ): ChecklistTemplate {
@@ -29,4 +35,23 @@ function makeTemplate(
   }
 }
 
-export { makeTemplate as buildTemplateObject }
+function instantiateTemplate(template: ChecklistTemplate): Checklist {
+  const checkboxes = template.stacks.flatMap((stack) => {
+    return stack.tasks.map((task, i) => {
+      return {
+        id: generateId(`checkbox-${i}`),
+        label: task.label,
+        checked: CheckboxStatus.unchecked,
+      }
+    })
+  })
+
+  const newChecklist: Checklist = {
+    id: generateId('checklist'),
+    template: template,
+    checkboxes,
+  }
+  return newChecklist
+}
+
+export { buildTemplateObject, instantiateTemplate }

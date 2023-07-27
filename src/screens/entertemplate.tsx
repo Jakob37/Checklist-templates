@@ -14,7 +14,7 @@ const PADDING_TEMP = 10
 function EnterTemplate() {
   const [templateName, setTemplateName] = useState('')
   const [taskLabel, setTaskLabel] = useState('')
-  const { createTemplate } = useContext(StorageContext)
+  const { saveTemplate: createTemplate } = useContext(StorageContext)
 
   const [tasks, setTasks] = useState<Task[]>([])
 
