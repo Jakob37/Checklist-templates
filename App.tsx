@@ -34,6 +34,9 @@ function TemplatesHome(): JSX.Element {
   )
 }
 
+// To be continued
+// https://reactnavigation.org/docs/nesting-navigators/
+
 function App(): JSX.Element {
   return (
     <StorageProvider
