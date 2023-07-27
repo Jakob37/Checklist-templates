@@ -1,6 +1,6 @@
 import { FlatList, Text, TextInput, View } from 'react-native'
 
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { StorageContext } from '../storage/context'
 import { ds } from '../ux/design'
 import { icons } from '../ux/icons'
@@ -17,6 +17,7 @@ function EnterTemplate() {
   const { saveTemplate: createTemplate } = useContext(StorageContext)
 
   const [tasks, setTasks] = useState<Task[]>([])
+
 
   const handleAddCheckbox = () => {
     if (taskLabel !== '') {

@@ -23,7 +23,7 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
       if (storedTemplates) {
         const parsedJSON = JSON.parse(storedTemplates)
         setTemplates(parsedJSON)
-        console.log(`Loaded templates: ${JSON.stringify(parsedJSON, null, 2)}`)
+        // console.log(`Loaded templates: ${JSON.stringify(parsedJSON, null, 2)}`)
       }
     } catch (error) {
       console.log('Error retrieving data from async storage:', error)
@@ -37,7 +37,7 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
         const parsedJSON = JSON.parse(storedChecklists)
         setChecklists(parsedJSON)
         // setChecklists(JSON.parse(storedChecklists))
-        console.log(`Loaded checklists: ${JSON.stringify(parsedJSON, null, 2)}`)
+        // console.log(`Loaded checklists: ${JSON.stringify(parsedJSON, null, 2)}`)
       }
     } catch (error) {
       console.log('Error retrieving data from async storage:', error)

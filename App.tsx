@@ -1,5 +1,6 @@
 import React from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
+import { createStackNavigator } from '@react-navigation/stack'
 
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native'
 import EnterTemplate from './src/screens/entertemplate'
@@ -10,6 +11,7 @@ import {
   CHECKLISTS_STORAGE_KEY,
   TEMPLATES_STORAGE_KEY,
 } from './src/storage/storage'
+import { Text } from 'react-native'
 
 const MyTheme = {
   ...DefaultTheme,
@@ -21,6 +23,16 @@ const MyTheme = {
 }
 
 const Drawer = createDrawerNavigator()
+const Stack = createStackNavigator()
+
+function TemplatesHome(): JSX.Element {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Templates" component={SelectChecklist} />
+      <Stack.Screen name="Make template" component={EnterTemplate} />
+    </Stack.Navigator>
+  )
+}
 
 function App(): JSX.Element {
   return (
@@ -29,12 +41,10 @@ function App(): JSX.Element {
       checklists_storage_key={CHECKLISTS_STORAGE_KEY}>
       <NavigationContainer theme={MyTheme}>
         <Drawer.Navigator>
-          <Drawer.Screen
-            name="Templates"
-            component={SelectChecklist}></Drawer.Screen>
-          <Drawer.Screen
+          <Drawer.Screen name="Home" component={TemplatesHome}></Drawer.Screen>
+          {/* <Drawer.Screen
             name="Make template"
-            component={EnterTemplate}></Drawer.Screen>
+            component={EnterTemplate}></Drawer.Screen> */}
           <Drawer.Screen
             name="Checklists"
             component={Checklists}></Drawer.Screen>

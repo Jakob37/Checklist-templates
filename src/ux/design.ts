@@ -16,6 +16,7 @@ export const ds = {
   colors: {
     primary: 'white',
     secondary: 'lightgray',
+    darkgray: 'darkgray',
   },
   icons: {
     size: 20,
