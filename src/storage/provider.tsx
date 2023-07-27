@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { helloWorld } from '@minimalist_tools/library'
 import { StorageContext } from './context'
-import { Checklist, ChecklistTemplate } from './interfaces'
+import { CheckboxStatus, Checklist, ChecklistTemplate } from './interfaces'
+import { assert } from '../util/util'
 
 interface DataProviderProps {
   templates_storage_key: string
@@ -10,7 +10,7 @@ interface DataProviderProps {
   children: React.ReactNode
 }
 
-const StorageProvider: React.FC<DataProviderProps> = props => {
+const StorageProvider: React.FC<DataProviderProps> = (props) => {
   const [templates, setTemplates] = useState<ChecklistTemplate[]>([])
   const [checklists, setChecklists] = useState<Checklist[]>([])
 
@@ -45,12 +45,10 @@ const StorageProvider: React.FC<DataProviderProps> = props => {
   }
 
   useEffect(() => {
-    console.log('Local storage function')
-    helloWorld()
     fetchData()
   }, [])
 
-  const saveTemplates = async (updatedTemplates: ChecklistTemplate[]) => {
+  async function saveTemplates(updatedTemplates: ChecklistTemplate[]) {
     try {
       await AsyncStorage.setItem(
         props.templates_storage_key,
@@ -62,7 +60,23 @@ const StorageProvider: React.FC<DataProviderProps> = props => {
     }
   }
 
-  const saveChecklists = async (updatedChecklists: Checklist[]) => {
+  async function removeTemplate(id: string) {
+    const retainedTemplates = templates.filter((template) => template.id !== id)
+    saveTemplates(retainedTemplates)
+  }
+
+  async function removeChecklist(id: string) {
+    const retainedChecklists = checklists.filter(
+      (checklist) => checklist.id !== id,
+    )
+    saveTemplates(retainedChecklists)
+  }
+
+  async function createChecklist(newChecklist: Checklist) {
+    saveChecklists([...checklists, newChecklist])
+  }
+
+  async function saveChecklists(updatedChecklists: Checklist[]) {
     try {
       await AsyncStorage.setItem(
         props.checklists_storage_key,
@@ -74,13 +88,46 @@ const StorageProvider: React.FC<DataProviderProps> = props => {
     }
   }
 
+  async function toggleCheck(checklistId: string, checkboxId: string) {
+    const targetChecklist = checklists.filter(
+      (checklist) => checklist.id === checklistId,
+    )
+    assert(targetChecklist.length === 1, 'One checklist expected')
+
+    const updatedChecklist = { ...targetChecklist[0] }
+    updatedChecklist.checkboxes = targetChecklist[0].checkboxes.map(
+      (checkbox) => {
+        if (checkbox.id === checkboxId) {
+          const newChecked =
+            checkbox.checked === CheckboxStatus.checked
+              ? CheckboxStatus.unchecked
+              : CheckboxStatus.checked
+          const newCheckbox = { ...checkbox }
+          newCheckbox.checked = newChecked
+          return newCheckbox
+        } else {
+          return checkbox
+        }
+      },
+    )
+
+    saveChecklists([
+      ...checklists.filter((checklist) => checklist.id !== checklistId),
+      updatedChecklist,
+    ])
+  }
+
   return (
     <StorageContext.Provider
       value={{
-        templates: templates,
-        saveTemplates: saveTemplates,
-        checklists: checklists,
-        saveChecklists: saveChecklists,
+        templates,
+        saveTemplates,
+        checklists,
+        saveChecklists,
+        removeTemplate,
+        createChecklist,
+        toggleCheck,
+        removeChecklist,
       }}>
       {props.children}
     </StorageContext.Provider>

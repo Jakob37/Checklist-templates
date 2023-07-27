@@ -1,22 +1,21 @@
 import { useContext } from 'react'
-import { Text, View } from 'react-native'
+import { View } from 'react-native'
 import { StorageContext } from '../storage/context'
-import { IconButton } from '../views/iconbutton'
-import { icons } from '../ux/icons'
-import { ds } from '../ux/design'
 import {
   CheckboxStatus,
   Checklist,
   ChecklistTemplate,
 } from '../storage/interfaces'
-import { assert, generateId } from '../util/util'
+import { generateId } from '../util/util'
+import { icons } from '../ux/icons'
+import { IconButton } from '../views/iconbutton'
 
 function SelectChecklist() {
-  const { templates, saveTemplates, checklists, saveChecklists } =
+  const { templates, removeTemplate, createChecklist } =
     useContext(StorageContext)
 
   function instantiateTemplate(template: ChecklistTemplate) {
-    const checkboxes = template.stacks.flatMap(stack => {
+    const checkboxes = template.stacks.flatMap((stack) => {
       return stack.tasks.map((task, i) => {
         return {
           id: generateId(`checkbox-${i}`),
@@ -31,20 +30,11 @@ function SelectChecklist() {
       template: template,
       checkboxes,
     }
-    saveChecklists([...checklists, newChecklist])
+    createChecklist(newChecklist)
     console.log(
       'Instantiating checklist',
       JSON.stringify(newChecklist, null, 2),
     )
-  }
-
-  function removeTemplate(id: string) {
-    const retainedTemplates = templates.filter(template => template.id !== id)
-    assert(
-      retainedTemplates.length === templates.length - 1,
-      `One template less expected after removal`,
-    )
-    saveTemplates(retainedTemplates)
   }
 
   return (

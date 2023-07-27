@@ -7,36 +7,8 @@ import { icons } from '../ux/icons'
 import { assert } from '../util/util'
 
 function Checklists() {
-  const { checklists, saveChecklists } = useContext(StorageContext)
-
-  function toggleCheck(checklistId: string, checkboxId: string) {
-    const targetChecklist = checklists.filter(
-      checklist => checklist.id === checklistId,
-    )
-    assert(targetChecklist.length === 1, 'One checklist expected')
-
-    const updatedChecklist = { ...targetChecklist[0] }
-    updatedChecklist.checkboxes = targetChecklist[0].checkboxes.map(
-      checkbox => {
-        if (checkbox.id === checkboxId) {
-          const newChecked =
-            checkbox.checked === CheckboxStatus.checked
-              ? CheckboxStatus.unchecked
-              : CheckboxStatus.checked
-          const newCheckbox = { ...checkbox }
-          newCheckbox.checked = newChecked
-          return newCheckbox
-        } else {
-          return checkbox
-        }
-      },
-    )
-
-    saveChecklists([
-      ...checklists.filter(checklist => checklist.id !== checklistId),
-      updatedChecklist,
-    ])
-  }
+  const { checklists, removeChecklist, toggleCheck } =
+    useContext(StorageContext)
 
   return (
     <View>
@@ -45,19 +17,11 @@ function Checklists() {
         <View key={checklist.id}>
           <IconButton
             onPress={() => {
-              // FIXME: Generalize with the template logic
-              const retainedChecklists = checklists.filter(
-                c => c.id !== checklist.id,
-              )
-              assert(
-                retainedChecklists.length === checklists.length - 1,
-                `One template less expected after removal`,
-              )
-              saveChecklists(retainedChecklists)
+              removeChecklist(checklist.id)
             }}
             icon={icons.trash}
             label={checklist.template.label}></IconButton>
-          {checklist.checkboxes.map(checkbox => {
+          {checklist.checkboxes.map((checkbox) => {
             console.log(checkbox)
             return (
               <View key={`${checkbox.id}`} style={{ flexDirection: 'row' }}>
