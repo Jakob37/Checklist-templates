@@ -117,6 +117,12 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
     ])
   }
 
+  async function createTemplate(template: ChecklistTemplate) {
+    const updatingTemplates = [...templates]
+    updatingTemplates.push(template)
+    saveTemplates(updatingTemplates)
+  }
+
   return (
     <StorageContext.Provider
       value={{
@@ -128,6 +134,7 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
         createChecklist,
         toggleCheck,
         removeChecklist,
+        createTemplate,
       }}>
       {props.children}
     </StorageContext.Provider>

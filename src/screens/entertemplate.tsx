@@ -7,13 +7,14 @@ import { icons } from '../ux/icons'
 import { IconButton } from '../views/iconbutton'
 import { ChecklistTemplate, Task, TaskStack } from '../storage/interfaces'
 import { generateId } from '../util/util'
+import { buildTemplateObject } from '../storage/util'
 
 const PADDING_TEMP = 10
 
 function EnterTemplate() {
   const [templateName, setTemplateName] = useState('')
   const [taskLabel, setTaskLabel] = useState('')
-  const { templates, saveTemplates } = useContext(StorageContext)
+  const { createTemplate } = useContext(StorageContext)
 
   const [tasks, setTasks] = useState<Task[]>([])
 
@@ -29,22 +30,16 @@ function EnterTemplate() {
   }
 
   const handleRemoveTask = (id: string) => {
-    const updatedCheckboxes = tasks.filter(checkbox => checkbox.id !== id)
+    const updatedCheckboxes = tasks.filter((checkbox) => checkbox.id !== id)
     setTasks(updatedCheckboxes)
   }
 
   const handleSubmitList = () => {
-    const updatingTemplates = [...templates]
-
-    const template = makeTemplate(
+    const template = buildTemplateObject(
       templateName,
-      // FIXME: Omit this double work
-      tasks.map(task => task.label),
+      tasks.map((task) => task.label),
     )
-
-    updatingTemplates.push(template)
-    saveTemplates(updatingTemplates)
-
+    createTemplate(template)
     reset()
   }
 
@@ -59,7 +54,7 @@ function EnterTemplate() {
       <TextInput
         placeholder="Name"
         value={templateName}
-        onChangeText={text => setTemplateName(text)}></TextInput>
+        onChangeText={(text) => setTemplateName(text)}></TextInput>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <IconButton
           style={{ paddingHorizontal: PADDING_TEMP }}
@@ -71,7 +66,7 @@ function EnterTemplate() {
         <TextInput
           placeholder="Enter..."
           value={taskLabel}
-          onChangeText={text => setTaskLabel(text)}></TextInput>
+          onChangeText={(text) => setTaskLabel(text)}></TextInput>
       </View>
 
       <FlatList
@@ -100,39 +95,11 @@ function EnterTemplate() {
           onPress={handleSubmitList}
           icon={icons.save}
           size={ds.icons.size}
-          color={ds.colors.primary}></IconButton>
-        <Text>Save template</Text>
+          color={ds.colors.primary}
+          label="Save template"></IconButton>
       </View>
     </View>
   )
-}
-
-function makeTemplate(
-  templateName: string,
-  taskLabels: string[],
-): ChecklistTemplate {
-  const templateId = generateId('template')
-
-  const tasks: Task[] = taskLabels.map(label => {
-    return {
-      id: generateId('task'),
-      label,
-    }
-  })
-
-  const stackId = generateId('stack')
-  const stack: TaskStack = {
-    id: stackId,
-    label: 'default',
-    tasks,
-  }
-  const stacks: TaskStack[] = [stack]
-
-  return {
-    id: templateId,
-    label: templateName,
-    stacks,
-  }
 }
 
 export default EnterTemplate
