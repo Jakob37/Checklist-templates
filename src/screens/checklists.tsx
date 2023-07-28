@@ -29,7 +29,7 @@ function Checklists() {
             style={{
               flexDirection: 'row',
               alignItems: 'center',
-              paddingBottom: 20,
+              paddingBottom: ds.spacing.m,
             }}>
             <Text
               style={{
@@ -38,13 +38,27 @@ function Checklists() {
               }}>
               {checklist.template.label}
             </Text>
+          </View>
+
+          <View style={{ paddingBottom: ds.spacing.m }}>
             <IconButton
               onPress={() => {
                 removeChecklist(checklist.id)
               }}
               icon={icons.trash}
-              label=""></IconButton>
+              label="Remove"
+              containerStyle={{ paddingBottom: ds.spacing.s }}></IconButton>
+            <IconButton
+              onPress={() => {
+                resetChecklist(checklist.id)
+              }}
+              icon={icons.reset}
+              label="Reset all"
+              containerStyle={{
+                paddingBottom: ds.spacing.s,
+              }}></IconButton>
           </View>
+
           {checklist.checkboxes.map((checkbox) => {
             return (
               <Checkbox
@@ -55,16 +69,7 @@ function Checklists() {
                 toggleCheck={toggleCheck}></Checkbox>
             )
           })}
-          <IconButton
-            onPress={() => {
-              resetChecklist(checklist.id)
-            }}
-            icon={icons.reset}
-            label="Reset all"
-            containerStyle={{
-              paddingTop: ds.spacing.l,
-              paddingBottom: ds.spacing.s,
-            }}></IconButton>
+
           {isChecklistDone(checklist.id) ? (
             <IconButton
               onPress={() => {

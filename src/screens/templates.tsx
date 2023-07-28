@@ -11,6 +11,7 @@ import { icons } from '../ux/icons'
 import { IconButton } from '../views/iconbutton'
 import { instantiateTemplate } from '../storage/util'
 import { ds } from '../ux/design'
+import { useNavigation } from '@react-navigation/native'
 
 const PADDING = 10
 
@@ -20,6 +21,8 @@ function Templates() {
     removeTemplate,
     saveChecklist: createChecklist,
   } = useContext(StorageContext)
+
+  const navigate = useNavigation()
 
   return (
     <View>
@@ -37,6 +40,7 @@ function Templates() {
             onPress={() => {
               const checklist = instantiateTemplate(template)
               createChecklist(checklist)
+              navigate.navigate('Checklists')
             }}
             icon={icons.copy}
             label={template.label}></IconButton>
