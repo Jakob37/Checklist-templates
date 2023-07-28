@@ -89,7 +89,7 @@ function Checklists() {
 function Checkbox(props) {
   return (
     <View
-      key={`${props.checklistId}`}
+      key={`${props.checkboxId}`}
       style={{ flexDirection: 'row', paddingBottom: ds.spacing.s }}>
       <IconButton
         onPress={() => {
