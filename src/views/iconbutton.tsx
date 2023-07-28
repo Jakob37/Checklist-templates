@@ -7,24 +7,35 @@ function IconButton(props: {
   icon: string
   size?: number
   color?: string
-  style?: {}
+  iconStyle?: {}
+  containerStyle?: {}
   label?: string
   labelPos?: 'left' | 'right'
 }) {
   return (
-    <TouchableOpacity onPress={props.onPress}>
-      <View style={{ flexDirection: 'row' }}>
+    <TouchableOpacity onPress={props.onPress} style={props.containerStyle}>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}>
         {props.label !== '' && props.labelPos === 'left' ? (
-          <Text style={{ paddingHorizontal: 10 }}>{props.label}</Text>
+          <Text style={{ paddingHorizontal: ds.spacing.s }}>{props.label}</Text>
         ) : (
           ''
         )}
         <Icon
           name={props.icon}
           size={props.size}
-          style={{ color: props.color, ...props.style }}></Icon>
+          style={{ color: props.color, ...props.iconStyle }}></Icon>
         {props.label !== '' && props.labelPos === 'right' ? (
-          <Text style={{ paddingHorizontal: 10 }}>{props.label}</Text>
+          <Text
+            style={{
+              paddingHorizontal: ds.spacing.s,
+              fontSize: ds.font.sizes.major,
+            }}>
+            {props.label}
+          </Text>
         ) : (
           ''
         )}
@@ -35,7 +46,8 @@ function IconButton(props: {
 IconButton.defaultProps = {
   size: ds.icons.size,
   color: ds.colors.primary,
-  style: {},
+  iconStyle: {},
+  containerStyle: {},
   label: '',
   labelPos: 'right',
 }
@@ -47,7 +59,7 @@ function TopBarIconButton(props: { icon: string; onPress: () => void }) {
       icon={props.icon}
       size={ds.font.sizes.topBar}
       color={ds.colors.secondary}
-      style={{ padding: ds.spacing.sideMargins }}></IconButton>
+      iconStyle={{ padding: ds.spacing.s }}></IconButton>
   )
 }
 

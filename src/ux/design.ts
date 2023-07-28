@@ -1,7 +1,10 @@
 export const ds = {
   spacing: {
-    sideMargins: 10,
-    verticalPadding: 10,
+    xs: 5,
+    s: 10,
+    m: 15,
+    l: 20,
+    small: 10,
   },
   entries: {
     height: 40,

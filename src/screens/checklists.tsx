@@ -5,6 +5,7 @@ import { CheckboxStatus } from '../storage/interfaces'
 import { IconButton } from '../views/iconbutton'
 import { icons } from '../ux/icons'
 import { assert } from '../util/util'
+import { ds } from '../ux/design'
 
 function Checklists() {
   const {
@@ -17,25 +18,41 @@ function Checklists() {
 
   return (
     <View>
-      <Text>Ongoing checklists</Text>
+      {checklists.length === 0 ? (
+        <Text>Currently no active checklists</Text>
+      ) : (
+        ''
+      )}
       {checklists.map((checklist, i) => (
         <View key={checklist.id}>
-          <IconButton
-            onPress={() => {
-              removeChecklist(checklist.id)
-            }}
-            icon={icons.trash}
-            label={checklist.template.label}></IconButton>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingBottom: 20,
+            }}>
+            <Text
+              style={{
+                fontWeight: 'bold',
+                paddingRight: ds.spacing.s,
+              }}>
+              {checklist.template.label}
+            </Text>
+            <IconButton
+              onPress={() => {
+                removeChecklist(checklist.id)
+              }}
+              icon={icons.trash}
+              label=""></IconButton>
+          </View>
           {checklist.checkboxes.map((checkbox) => {
             return (
-              <View key={`${checkbox.id}`} style={{ flexDirection: 'row' }}>
-                <IconButton
-                  onPress={() => {
-                    toggleCheck(checklist.id, checkbox.id)
-                  }}
-                  icon={checkbox.checked === 1 ? icons.uncheck : icons.check}
-                  label={`${checkbox.label}`}></IconButton>
-              </View>
+              <Checkbox
+                checklistId={checklist.id}
+                checkboxId={checkbox.id}
+                checked={checkbox.checked}
+                label={checkbox.label}
+                toggleCheck={toggleCheck}></Checkbox>
             )
           })}
           <IconButton
@@ -43,7 +60,11 @@ function Checklists() {
               resetChecklist(checklist.id)
             }}
             icon={icons.reset}
-            label="Reset all"></IconButton>
+            label="Reset all"
+            containerStyle={{
+              paddingTop: ds.spacing.l,
+              paddingBottom: ds.spacing.s,
+            }}></IconButton>
           {isChecklistDone(checklist.id) ? (
             <IconButton
               onPress={() => {
@@ -60,14 +81,19 @@ function Checklists() {
   )
 }
 
-function Checkbox(checkboxStatus: CheckboxStatus) {
-  if (checkboxStatus === CheckboxStatus.checked) {
-    return <IconButton onPress={() => {}} icon={icons.check} />
-  } else if (checkboxStatus === CheckboxStatus.unchecked) {
-    return 'o'
-  } else {
-    return '-'
-  }
+function Checkbox(props) {
+  return (
+    <View
+      key={`${props.checklistId}`}
+      style={{ flexDirection: 'row', paddingBottom: ds.spacing.s }}>
+      <IconButton
+        onPress={() => {
+          props.toggleCheck(props.checklistId, props.checkboxId)
+        }}
+        icon={props.checked === 1 ? icons.uncheck : icons.check}
+        label={`${props.label}`}></IconButton>
+    </View>
+  )
 }
 
 export default Checklists

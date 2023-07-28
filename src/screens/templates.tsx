@@ -33,7 +33,7 @@ function Templates() {
             paddingLeft: PADDING,
           }}>
           <IconButton
-            style={{ paddingHorizontal: PADDING }}
+            iconStyle={{ paddingHorizontal: PADDING }}
             onPress={() => {
               const checklist = instantiateTemplate(template)
               createChecklist(checklist)
@@ -41,7 +41,7 @@ function Templates() {
             icon={icons.copy}
             label={template.label}></IconButton>
           <IconButton
-            style={{ paddingHorizontal: PADDING }}
+            iconStyle={{ paddingHorizontal: PADDING }}
             onPress={() => {
               removeTemplate(template.id)
             }}

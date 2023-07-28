@@ -18,7 +18,6 @@ function EnterTemplate() {
 
   const [tasks, setTasks] = useState<Task[]>([])
 
-
   const handleAddCheckbox = () => {
     if (taskLabel !== '') {
       const newTask: Task = {
@@ -58,7 +57,7 @@ function EnterTemplate() {
         onChangeText={(text) => setTemplateName(text)}></TextInput>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <IconButton
-          style={{ paddingHorizontal: PADDING_TEMP }}
+          iconStyle={{ paddingHorizontal: PADDING_TEMP }}
           onPress={handleAddCheckbox}
           icon={icons.plus}
           size={ds.icons.size}
@@ -81,7 +80,7 @@ function EnterTemplate() {
               icon={icons.trash}
               size={ds.icons.size}
               color="white"
-              style={{ paddingHorizontal: PADDING_TEMP }}></IconButton>
+              iconStyle={{ paddingHorizontal: PADDING_TEMP }}></IconButton>
             <Text style={{ fontSize: ds.font.sizes.major }}>{item.label}</Text>
           </View>
         )}></FlatList>
@@ -92,7 +91,7 @@ function EnterTemplate() {
           paddingTop: PADDING_TEMP,
         }}>
         <IconButton
-          style={{ paddingHorizontal: PADDING_TEMP }}
+          iconStyle={{ paddingHorizontal: PADDING_TEMP }}
           onPress={handleSubmitList}
           icon={icons.save}
           size={ds.icons.size}
