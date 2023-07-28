@@ -61,4 +61,15 @@ function removeOne<T>(
   return removeAtIndex(arr, indicesToRemove[0])
 }
 
-export { generateId, makeDummyTemplate, assert, removeAtIndex, removeOne }
+function printObject(obj: {}): void {
+  console.log(JSON.stringify(obj, null, 2))
+}
+
+export {
+  generateId,
+  makeDummyTemplate,
+  assert,
+  removeAtIndex,
+  removeOne,
+  printObject,
+}

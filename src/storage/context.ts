@@ -9,20 +9,35 @@ import {
 
 const PLACEHOLDER_ERROR = 'This placeholder should not be called'
 
-// FIXME: Better understand this
 const StorageContext = createContext<{
-  templates: ChecklistTemplate[]
   checklists: Checklist[]
-  removeTemplate: (id: TemplateId) => void
+  getChecklistById: (id: ChecklistId) => Checklist
   removeChecklist: (id: ChecklistId) => void
   saveChecklist: (checklist: Checklist) => void
-  toggleCheck: (checklistId: ChecklistId, checkboxId: CheckboxId) => void
-  saveTemplate: (template: ChecklistTemplate) => void
   resetChecklist: (checklistId: ChecklistId) => void
   isChecklistDone: (checklistId: ChecklistId) => boolean
+
+  templates: ChecklistTemplate[]
+  getTemplateById: (id: TemplateId) => ChecklistTemplate
+  removeTemplate: (id: TemplateId) => void
+  saveTemplate: (template: ChecklistTemplate) => void
+
+  toggleCheck: (checklistId: ChecklistId, checkboxId: CheckboxId) => void
 }>({
-  templates: [],
   checklists: [],
+  // @ts-ignore
+  getChecklistById: (_id) => {
+    console.error(PLACEHOLDER_ERROR)
+    return null
+  },
+
+  templates: [],
+  // @ts-ignore
+  getTemplateById: (_id) => {
+    console.error(PLACEHOLDER_ERROR)
+    return null
+  },
+
   removeTemplate: (_id) => {
     console.error(PLACEHOLDER_ERROR)
   },

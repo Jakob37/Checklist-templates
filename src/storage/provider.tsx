@@ -178,10 +178,12 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
   return (
     <StorageContext.Provider
       value={{
+        getTemplateById,
         templates,
         saveTemplate,
         removeTemplate,
 
+        getChecklistById,
         checklists,
         saveChecklist,
         removeChecklist,

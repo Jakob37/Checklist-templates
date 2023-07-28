@@ -45,11 +45,17 @@ function Templates() {
             icon={icons.copy}
             label={template.label}></IconButton>
           <IconButton
-            iconStyle={{ paddingHorizontal: PADDING }}
+            iconStyle={{ paddingHorizontal: ds.padding.s }}
             onPress={() => {
               removeTemplate(template.id)
             }}
             icon={icons.trash}></IconButton>
+          <IconButton
+            iconStyle={{ paddingHorizontal: ds.padding.s }}
+            onPress={() => {
+              navigate.navigate('Make template', { templateId: template.id })
+            }}
+            icon={icons.pen}></IconButton>
         </View>
       ))}
     </View>

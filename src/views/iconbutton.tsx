@@ -20,7 +20,7 @@ function IconButton(props: {
           alignItems: 'center',
         }}>
         {props.label !== '' && props.labelPos === 'left' ? (
-          <Text style={{ paddingHorizontal: ds.spacing.s }}>{props.label}</Text>
+          <Text style={{ paddingHorizontal: ds.padding.s }}>{props.label}</Text>
         ) : (
           ''
         )}
@@ -31,7 +31,7 @@ function IconButton(props: {
         {props.label !== '' && props.labelPos === 'right' ? (
           <Text
             style={{
-              paddingHorizontal: ds.spacing.s,
+              paddingHorizontal: ds.padding.s,
               fontSize: ds.font.sizes.major,
             }}>
             {props.label}
@@ -59,7 +59,7 @@ function TopBarIconButton(props: { icon: string; onPress: () => void }) {
       icon={props.icon}
       size={ds.font.sizes.topBar}
       color={ds.colors.secondary}
-      iconStyle={{ padding: ds.spacing.s }}></IconButton>
+      iconStyle={{ padding: ds.padding.s }}></IconButton>
   )
 }
 

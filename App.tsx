@@ -46,7 +46,7 @@ function Navigation(): JSX.Element {
               onPress={() => navigation.navigate('Make template')}
               icon={icons.plus}
               color={ds.colors.darkgray}
-              iconStyle={{ paddingRight: ds.spacing.s }}></IconButton>
+              iconStyle={{ paddingRight: ds.padding.s }}></IconButton>
           ),
         }}></Drawer.Screen>
       <Drawer.Screen

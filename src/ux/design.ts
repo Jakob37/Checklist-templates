@@ -1,5 +1,5 @@
 export const ds = {
-  spacing: {
+  padding: {
     xs: 5,
     s: 10,
     m: 15,
