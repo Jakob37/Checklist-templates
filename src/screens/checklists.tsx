@@ -7,8 +7,13 @@ import { icons } from '../ux/icons'
 import { assert } from '../util/util'
 
 function Checklists() {
-  const { checklists, removeChecklist, toggleCheck } =
-    useContext(StorageContext)
+  const {
+    checklists,
+    removeChecklist,
+    toggleCheck,
+    resetChecklist,
+    isChecklistDone,
+  } = useContext(StorageContext)
 
   return (
     <View>
@@ -22,19 +27,33 @@ function Checklists() {
             icon={icons.trash}
             label={checklist.template.label}></IconButton>
           {checklist.checkboxes.map((checkbox) => {
-            console.log(checkbox)
             return (
               <View key={`${checkbox.id}`} style={{ flexDirection: 'row' }}>
                 <IconButton
                   onPress={() => {
                     toggleCheck(checklist.id, checkbox.id)
                   }}
-                  icon={checkbox.checked === 1 ? icons.check : icons.uncheck}
-                  label={`${checkbox.label} (checked ${checkbox.checked})`}></IconButton>
+                  icon={checkbox.checked === 1 ? icons.uncheck : icons.check}
+                  label={`${checkbox.label}`}></IconButton>
               </View>
             )
           })}
-          <Text></Text>
+          <IconButton
+            onPress={() => {
+              resetChecklist(checklist.id)
+            }}
+            icon={icons.reset}
+            label="Reset all"></IconButton>
+          {isChecklistDone(checklist.id) ? (
+            <IconButton
+              onPress={() => {
+                removeChecklist(checklist.id)
+              }}
+              icon={icons.done}
+              label="Done"></IconButton>
+          ) : (
+            ''
+          )}
         </View>
       ))}
     </View>

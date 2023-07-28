@@ -14,35 +14,12 @@ import { ds } from '../ux/design'
 
 const PADDING = 10
 
-function SelectChecklist({ navigation }) {
+function Templates() {
   const {
     templates,
     removeTemplate,
     saveChecklist: createChecklist,
   } = useContext(StorageContext)
-
-  useEffect(() => {
-    console.log('Run')
-    navigation.setOptions({
-      headerRight: () => (
-        <View style={{ flexDirection: 'row' }}>
-          {/* <TopBarIconButton
-            icon={icons.bars}
-            onPress={() => {
-              navigation.navigate('Entries')
-            }}></TopBarIconButton> */}
-          {/* <TopBarIconButton
-            icon={icons.floppy}
-            onPress={handleSave}></TopBarIconButton> */}
-          <IconButton
-            onPress={() => navigation.navigate('Make template')}
-            icon={icons.plus}
-            color={ds.colors.darkgray}
-            style={{ paddingRight: PADDING }}></IconButton>
-        </View>
-      ),
-    })
-  }, [])
 
   return (
     <View>
@@ -75,4 +52,4 @@ function SelectChecklist({ navigation }) {
   )
 }
 
-export default SelectChecklist
+export default Templates

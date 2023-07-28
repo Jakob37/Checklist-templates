@@ -30,9 +30,35 @@ function makeDummyTemplate(templateName: string): ChecklistTemplate {
 }
 
 function assert(logic: boolean, message: string): void {
-  if (logic) {
-    console.log(message)
+  if (!logic) {
+    console.error(message)
   }
 }
 
-export { generateId, makeDummyTemplate, assert }
+function removeAtIndex<T>(arr: T[], index: number): T[] {
+  return arr.filter((_element, i) => i !== index)
+}
+
+function removeOne<T>(
+  arr: T[],
+  toRemove: (val: T) => boolean,
+  warnIfMissing: boolean = false,
+): T[] {
+  const indicesToRemove = []
+  for (let i = 0; i < arr.length; i++) {
+    if (toRemove(arr[i])) {
+      indicesToRemove.push(i)
+    }
+  }
+  if (warnIfMissing) {
+    assert(
+      indicesToRemove.length === 1,
+      `Expected to find only one element to remove, found indices ${
+        indicesToRemove.length > 0 ? indicesToRemove : 'none'
+      }`,
+    )
+  }
+  return removeAtIndex(arr, indicesToRemove[0])
+}
+
+export { generateId, makeDummyTemplate, assert, removeAtIndex, removeOne }

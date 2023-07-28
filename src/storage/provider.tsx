@@ -1,8 +1,14 @@
 import { useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { StorageContext } from './context'
-import { CheckboxStatus, Checklist, ChecklistTemplate } from './interfaces'
-import { assert } from '../util/util'
+import {
+  CheckboxStatus,
+  Checklist,
+  ChecklistId,
+  ChecklistTemplate,
+  TemplateId,
+} from './interfaces'
+import { assert, removeAtIndex, removeOne } from '../util/util'
 
 interface DataProviderProps {
   templates_storage_key: string
@@ -14,8 +20,28 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
   const [templates, setTemplates] = useState<ChecklistTemplate[]>([])
   const [checklists, setChecklists] = useState<Checklist[]>([])
 
+  function getChecklistById(checklistId: ChecklistId): Checklist {
+    const checklist = checklists.filter(
+      (checklist) => checklist.id === checklistId,
+    )
+    assert(
+      checklist.length === 1,
+      `Expected one match, found: ${JSON.stringify(checklist, null, 2)}`,
+    )
+    return checklist[0]
+  }
+
+  function getTemplateById(templateId: string): ChecklistTemplate {
+    const template = templates.filter((template) => template.id === templateId)
+    assert(
+      template.length === 1,
+      `Expected one match, found: ${JSON.stringify(template, null, 2)}`,
+    )
+    return template[0]
+  }
+
   // Load data from async storage
-  const fetchData = async () => {
+  async function fetchData() {
     try {
       const storedTemplates = await AsyncStorage.getItem(
         props.templates_storage_key,
@@ -61,18 +87,23 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
   }
 
   async function removeTemplate(id: string) {
-    const retainedTemplates = templates.filter((template) => template.id !== id)
+    const retainedTemplates = removeOne(
+      templates,
+      (template) => template.id === id,
+    )
     saveTemplates(retainedTemplates)
   }
 
   async function removeChecklist(id: string) {
-    const retainedChecklists = checklists.filter(
-      (checklist) => checklist.id !== id,
+    const retainedChecklists = removeOne(
+      checklists,
+      (checklist) => checklist.id === id,
     )
-    saveTemplates(retainedChecklists)
+    saveChecklists(retainedChecklists)
   }
 
   async function saveChecklist(newChecklist: Checklist) {
+    removeChecklist(newChecklist.id)
     saveChecklists([...checklists, newChecklist])
   }
 
@@ -89,27 +120,21 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
   }
 
   async function toggleCheck(checklistId: string, checkboxId: string) {
-    const targetChecklist = checklists.filter(
-      (checklist) => checklist.id === checklistId,
-    )
-    assert(targetChecklist.length === 1, 'One checklist expected')
-
-    const updatedChecklist = { ...targetChecklist[0] }
-    updatedChecklist.checkboxes = targetChecklist[0].checkboxes.map(
-      (checkbox) => {
-        if (checkbox.id === checkboxId) {
-          const newChecked =
-            checkbox.checked === CheckboxStatus.checked
-              ? CheckboxStatus.unchecked
-              : CheckboxStatus.checked
-          const newCheckbox = { ...checkbox }
-          newCheckbox.checked = newChecked
-          return newCheckbox
-        } else {
-          return checkbox
-        }
-      },
-    )
+    const targetChecklist = getChecklistById(checklistId)
+    const updatedChecklist = { ...targetChecklist }
+    updatedChecklist.checkboxes = targetChecklist.checkboxes.map((checkbox) => {
+      if (checkbox.id === checkboxId) {
+        const newChecked =
+          checkbox.checked === CheckboxStatus.checked
+            ? CheckboxStatus.unchecked
+            : CheckboxStatus.checked
+        const newCheckbox = { ...checkbox }
+        newCheckbox.checked = newChecked
+        return newCheckbox
+      } else {
+        return checkbox
+      }
+    })
 
     saveChecklists([
       ...checklists.filter((checklist) => checklist.id !== checklistId),
@@ -118,9 +143,36 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
   }
 
   async function saveTemplate(template: ChecklistTemplate) {
+    removeTemplate(template.id)
     const updatingTemplates = [...templates]
     updatingTemplates.push(template)
     saveTemplates(updatingTemplates)
+  }
+
+  async function resetChecklist(checklistId: ChecklistId) {
+    const checklist = getChecklistById(checklistId)
+    const updatedChecklist = { ...checklist }
+    updatedChecklist.checkboxes = updatedChecklist.checkboxes.map(
+      (checkbox) => {
+        return {
+          id: checkbox.id,
+          label: checkbox.label,
+          checked: CheckboxStatus.unchecked,
+        }
+      },
+    )
+    saveChecklists([
+      ...checklists.filter((checklist) => checklist.id !== checklistId),
+      updatedChecklist,
+    ])
+    // saveChecklist(updatedChecklist)
+  }
+
+  function isChecklistDone(checklistId: ChecklistId): boolean {
+    const checklist = getChecklistById(checklistId)
+    return !checklist.checkboxes.some(
+      (checkbox) => checkbox.checked === CheckboxStatus.unchecked,
+    )
   }
 
   return (
@@ -135,6 +187,8 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
         removeChecklist,
 
         toggleCheck,
+        resetChecklist,
+        isChecklistDone,
       }}>
       {props.children}
     </StorageContext.Provider>

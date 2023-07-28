@@ -6,6 +6,8 @@ export const icons = {
   plus: 'plus',
   floppy: 'floppy-o',
   copy: 'copy',
+  done: 'check',
   check: 'check-square',
   uncheck: 'square',
+  reset: 'rotate-right',
 }

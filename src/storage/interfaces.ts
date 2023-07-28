@@ -32,3 +32,7 @@ export enum CheckboxStatus {
   'unchecked',
   'removed',
 }
+
+export type ChecklistId = string
+export type TemplateId = string
+export type CheckboxId = string

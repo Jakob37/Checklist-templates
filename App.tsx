@@ -2,9 +2,13 @@ import React from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { createStackNavigator } from '@react-navigation/stack'
 
-import { DefaultTheme, NavigationContainer } from '@react-navigation/native'
-import EnterTemplate from './src/screens/entertemplate'
-import SelectChecklist from './src/screens/templates'
+import {
+  DefaultTheme,
+  NavigationContainer,
+  useNavigation,
+} from '@react-navigation/native'
+import MakeTemplate from './src/screens/maketemplate'
+import Templates from './src/screens/templates'
 import { StorageProvider } from './src/storage/provider'
 import Checklists from './src/screens/checklists'
 import {
@@ -12,6 +16,9 @@ import {
   TEMPLATES_STORAGE_KEY,
 } from './src/storage/storage'
 import { Text } from 'react-native'
+import { IconButton } from './src/views/iconbutton'
+import { icons } from './src/ux/icons'
+import { ds } from './src/ux/design'
 
 const MyTheme = {
   ...DefaultTheme,
@@ -25,17 +32,30 @@ const MyTheme = {
 const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator()
 
-function TemplatesHome(): JSX.Element {
+function Navigation(): JSX.Element {
+  const navigation = useNavigation()
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Templates" component={SelectChecklist} />
-      <Stack.Screen name="Make template" component={EnterTemplate} />
-    </Stack.Navigator>
+    <Drawer.Navigator>
+      <Drawer.Screen
+        name="Templates"
+        component={Templates}
+        options={{
+          headerRight: () => (
+            <IconButton
+              // @ts-ignore
+              onPress={() => navigation.navigate('Make template')}
+              icon={icons.plus}
+              color={ds.colors.darkgray}
+              style={{ paddingRight: ds.spacing.sideMargins }}></IconButton>
+          ),
+        }}></Drawer.Screen>
+      <Drawer.Screen
+        name="Make template"
+        component={MakeTemplate}></Drawer.Screen>
+      <Drawer.Screen name="Checklists" component={Checklists}></Drawer.Screen>
+    </Drawer.Navigator>
   )
 }
-
-// To be continued
-// https://reactnavigation.org/docs/nesting-navigators/
 
 function App(): JSX.Element {
   return (
@@ -43,15 +63,7 @@ function App(): JSX.Element {
       templates_storage_key={TEMPLATES_STORAGE_KEY}
       checklists_storage_key={CHECKLISTS_STORAGE_KEY}>
       <NavigationContainer theme={MyTheme}>
-        <Drawer.Navigator>
-          <Drawer.Screen name="Home" component={TemplatesHome}></Drawer.Screen>
-          {/* <Drawer.Screen
-            name="Make template"
-            component={EnterTemplate}></Drawer.Screen> */}
-          <Drawer.Screen
-            name="Checklists"
-            component={Checklists}></Drawer.Screen>
-        </Drawer.Navigator>
+        <Navigation></Navigation>
       </NavigationContainer>
     </StorageProvider>
   )

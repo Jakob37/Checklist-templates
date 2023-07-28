@@ -1,5 +1,11 @@
 import { createContext } from 'react'
-import { Checklist, ChecklistTemplate } from './interfaces'
+import {
+  CheckboxId,
+  Checklist,
+  ChecklistId,
+  ChecklistTemplate,
+  TemplateId,
+} from './interfaces'
 
 const PLACEHOLDER_ERROR = 'This placeholder should not be called'
 
@@ -7,11 +13,13 @@ const PLACEHOLDER_ERROR = 'This placeholder should not be called'
 const StorageContext = createContext<{
   templates: ChecklistTemplate[]
   checklists: Checklist[]
-  removeTemplate: (id: string) => void
-  removeChecklist: (id: string) => void
+  removeTemplate: (id: TemplateId) => void
+  removeChecklist: (id: ChecklistId) => void
   saveChecklist: (checklist: Checklist) => void
-  toggleCheck: (checklistId: string, checkboxId: string) => void
+  toggleCheck: (checklistId: ChecklistId, checkboxId: CheckboxId) => void
   saveTemplate: (template: ChecklistTemplate) => void
+  resetChecklist: (checklistId: ChecklistId) => void
+  isChecklistDone: (checklistId: ChecklistId) => boolean
 }>({
   templates: [],
   checklists: [],
@@ -27,6 +35,13 @@ const StorageContext = createContext<{
   },
   saveTemplate: (_template) => {
     console.error(PLACEHOLDER_ERROR)
+  },
+  resetChecklist: (_checklist) => {
+    console.error(PLACEHOLDER_ERROR)
+  },
+  isChecklistDone: (_checklistId) => {
+    console.error(PLACEHOLDER_ERROR)
+    return false
   },
 })
 
