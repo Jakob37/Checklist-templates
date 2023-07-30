@@ -25,19 +25,21 @@ function EnterTemplate({ route }) {
   const isFocused = useIsFocused()
 
   useEffect(() => {
-    // console.log(`Obtaining route ${JSON.stringify(route, null, 2)}`)
-    if (route.params === undefined || route.params.templateId == null) {
-      if (route.params !== undefined) {
-        console.log('Found template ID', route.params.templateId)
+    const templateId = route.params.templateId
+    const isNew = route.params.isNew
+
+    if (templateId === null) {
+      if (isNew) {
+        route.params.isNew = false
+        reset()
       }
       return
     }
-    console.log(route.params)
-    const templateId = route.params.templateId
-    const template = getTemplateById(templateId)
-    console.log('Obtained template', template)
 
-    if (route.params.isNew) {
+    const template = getTemplateById(templateId)
+    // console.log('Obtained template', template)
+
+    if (isNew) {
       setTemplateId(generateId('template'))
     } else {
       setTemplateId(templateId)

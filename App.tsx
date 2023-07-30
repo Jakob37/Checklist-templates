@@ -43,7 +43,12 @@ function Navigation(): JSX.Element {
           headerRight: () => (
             <IconButton
               // @ts-ignore
-              onPress={() => navigation.navigate('Make template')}
+              onPress={() =>
+                navigation.navigate('Make template', {
+                  templateId: null,
+                  isNew: true,
+                })
+              }
               icon={icons.plus}
               color={ds.colors.darkgray}
               iconStyle={{ paddingRight: ds.padding.s }}></IconButton>
@@ -51,6 +56,7 @@ function Navigation(): JSX.Element {
         }}></Drawer.Screen>
       <Drawer.Screen
         name="Make template"
+        initialParams={{ templateId: null, isNew: false }}
         component={MakeTemplate}></Drawer.Screen>
       <Drawer.Screen name="Checklists" component={Checklists}></Drawer.Screen>
     </Drawer.Navigator>
