@@ -1,17 +1,11 @@
-import { useContext, useEffect } from 'react'
+import { useNavigation } from '@react-navigation/native'
+import { useContext } from 'react'
 import { View } from 'react-native'
 import { StorageContext } from '../storage/context'
-import {
-  CheckboxStatus,
-  Checklist,
-  ChecklistTemplate,
-} from '../storage/interfaces'
-import { generateId, printObject } from '../util/util'
-import { icons } from '../ux/icons'
-import { IconButton } from '../views/iconbutton'
 import { instantiateTemplate } from '../storage/util'
 import { ds } from '../ux/design'
-import { useNavigation } from '@react-navigation/native'
+import { icons } from '../ux/icons'
+import { IconButton } from '../views/iconbutton'
 
 const PADDING = 10
 
