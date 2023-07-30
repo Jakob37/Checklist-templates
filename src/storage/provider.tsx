@@ -62,8 +62,6 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
       if (storedChecklists) {
         const parsedJSON = JSON.parse(storedChecklists)
         setChecklists(parsedJSON)
-        // setChecklists(JSON.parse(storedChecklists))
-        // console.log(`Loaded checklists: ${JSON.stringify(parsedJSON, null, 2)}`)
       }
     } catch (error) {
       console.log('Error retrieving data from async storage:', error)
@@ -76,7 +74,7 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
 
   async function saveTemplates(updatedTemplates: ChecklistTemplate[]) {
     try {
-      await AsyncStorage.setItem(
+      AsyncStorage.setItem(
         props.templates_storage_key,
         JSON.stringify(updatedTemplates),
       )
@@ -113,7 +111,7 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
 
   async function saveChecklists(updatedChecklists: Checklist[]) {
     try {
-      await AsyncStorage.setItem(
+      AsyncStorage.setItem(
         props.checklists_storage_key,
         JSON.stringify(updatedChecklists),
       )
@@ -147,11 +145,16 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
   }
 
   async function saveTemplate(template: ChecklistTemplate) {
-    const templateAfterRemove = await removeTemplate(template.id)
+    // const templateAfterRemove = await removeTemplate(template.id)
     // const updatingTemplates = [...templates]
-    templateAfterRemove.push(template)
-    printObject(templateAfterRemove)
-    await saveTemplates(templateAfterRemove)
+
+    const templatesWithoutCurrent = templates.filter(
+      (t) => t.id !== template.id,
+    )
+
+    templatesWithoutCurrent.push(template)
+    // printObject(templatesWithoutCurrent)
+    await saveTemplates(templatesWithoutCurrent)
   }
 
   async function resetChecklist(checklistId: ChecklistId) {
