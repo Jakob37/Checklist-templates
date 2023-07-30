@@ -41,9 +41,7 @@ function Templates() {
                 navigate.navigate('Checklists')
               }}
               icon={icons.done}
-              label={`${template.label} (${
-                template.id.split('-')[1]
-              })`}></IconButton>
+              label={`${template.label}`}></IconButton>
           </View>
           <View style={{ flexDirection: 'row' }}>
             <IconButton

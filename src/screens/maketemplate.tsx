@@ -1,6 +1,6 @@
 import { FlatList, Text, TextInput, View } from 'react-native'
 
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { StorageContext } from '../storage/context'
 import { ds } from '../ux/design'
 import { icons } from '../ux/icons'
@@ -37,7 +37,6 @@ function EnterTemplate({ route }) {
     }
 
     const template = getTemplateById(templateId)
-    // console.log('Obtained template', template)
 
     if (isNew) {
       setTemplateId(generateId('template'))
@@ -102,6 +101,10 @@ function EnterTemplate({ route }) {
         <TextInput
           placeholder="Enter..."
           value={taskLabel}
+          onSubmitEditing={() => {
+            handleAddCheckbox()
+          }}
+          editable={true}
           onChangeText={(text) => setTaskLabel(text)}></TextInput>
       </View>
 

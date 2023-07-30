@@ -50,7 +50,6 @@ function removeOne<T>(
       indicesToRemove.push(i)
     }
   }
-  console.log('Found indices to remove', indicesToRemove)
   if (warnIfMissing) {
     assert(
       indicesToRemove.length === 1,

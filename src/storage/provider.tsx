@@ -49,10 +49,9 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
       if (storedTemplates) {
         const parsedJSON = JSON.parse(storedTemplates)
         setTemplates(parsedJSON)
-        // console.log(`Loaded templates: ${JSON.stringify(parsedJSON, null, 2)}`)
       }
     } catch (error) {
-      console.log('Error retrieving data from async storage:', error)
+      console.error('Error retrieving data from async storage:', error)
     }
 
     try {
@@ -64,7 +63,7 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
         setChecklists(parsedJSON)
       }
     } catch (error) {
-      console.log('Error retrieving data from async storage:', error)
+      console.error('Error retrieving data from async storage:', error)
     }
   }
 
@@ -80,18 +79,15 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
       )
       setTemplates(updatedTemplates)
     } catch (error) {
-      console.log('Error saving data to async storage', error)
+      console.error('Error saving data to async storage', error)
     }
   }
 
   async function removeTemplate(id: string): Promise<ChecklistTemplate[]> {
-    console.log('Attempting to remove template with ID', id)
-    console.log('Length before', templates.length)
     const retainedTemplates = removeOne(
       templates,
       (template) => template.id === id,
     )
-    console.log('Length after', retainedTemplates.length)
     await saveTemplates(retainedTemplates)
     return retainedTemplates
   }
@@ -117,7 +113,7 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
       )
       setChecklists(updatedChecklists)
     } catch (error) {
-      console.log('Error saving data to async storage', error)
+      console.error('Error saving data to async storage', error)
     }
   }
 
