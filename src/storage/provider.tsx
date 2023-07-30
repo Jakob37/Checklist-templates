@@ -87,15 +87,16 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
   }
 
   async function removeTemplate(id: string) {
-    const retainedTemplates = removeOne(
+    const retainedTemplates = await removeOne(
       templates,
       (template) => template.id === id,
     )
+    console.log('Attempting to remove template with ID', id)
     saveTemplates(retainedTemplates)
   }
 
   async function removeChecklist(id: string) {
-    const retainedChecklists = removeOne(
+    const retainedChecklists = await removeOne(
       checklists,
       (checklist) => checklist.id === id,
     )
@@ -143,7 +144,7 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
   }
 
   async function saveTemplate(template: ChecklistTemplate) {
-    removeTemplate(template.id)
+    await removeTemplate(template.id)
     const updatingTemplates = [...templates]
     updatingTemplates.push(template)
     saveTemplates(updatingTemplates)

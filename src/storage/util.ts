@@ -8,11 +8,10 @@ import {
 } from './interfaces'
 
 function buildTemplateObject(
+  templateId: string,
   templateName: string,
   taskLabels: string[],
 ): ChecklistTemplate {
-  const templateId = generateId('template')
-
   const tasks: Task[] = taskLabels.map((label, i) => {
     return {
       id: generateId(`task-${i}`),

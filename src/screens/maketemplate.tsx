@@ -8,11 +8,13 @@ import { IconButton } from '../views/iconbutton'
 import { ChecklistTemplate, Task, TaskStack } from '../storage/interfaces'
 import { generateId, printObject } from '../util/util'
 import { buildTemplateObject } from '../storage/util'
-import { useIsFocused } from '@react-navigation/native'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
 
 const PADDING_TEMP = 10
 
 function EnterTemplate({ route }) {
+  const navigate = useNavigation()
+
   const [templateName, setTemplateName] = useState('')
   const [taskLabel, setTaskLabel] = useState('')
   const [templateId, setTemplateId] = useState(generateId('template'))
@@ -24,19 +26,24 @@ function EnterTemplate({ route }) {
 
   useEffect(() => {
     // console.log(`Obtaining route ${JSON.stringify(route, null, 2)}`)
-    if (route.params === undefined) {
+    if (route.params === undefined || route.params.templateId == null) {
+      if (route.params !== undefined) {
+        console.log('Found template ID', route.params.templateId)
+      }
       return
     }
     console.log(route.params)
     const templateId = route.params.templateId
     const template = getTemplateById(templateId)
+    console.log('Obtained template', template)
 
     if (route.params.isNew) {
+      setTemplateId(generateId('template'))
+    } else {
       setTemplateId(templateId)
     }
 
     setTemplateName(template.label)
-    console.log(template.stacks.flatMap((stack) => stack.tasks))
     setTasks(template.stacks.flatMap((stack) => stack.tasks))
   }, [isFocused])
 
@@ -58,11 +65,13 @@ function EnterTemplate({ route }) {
 
   const handleSubmitList = () => {
     const template = buildTemplateObject(
+      templateId,
       templateName,
       tasks.map((task) => task.label),
     )
     saveTemplate(template)
     reset()
+    navigate.navigate('Templates')
   }
 
   function reset() {
