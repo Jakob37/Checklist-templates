@@ -6,7 +6,7 @@ import {
   Checklist,
   ChecklistTemplate,
 } from '../storage/interfaces'
-import { generateId } from '../util/util'
+import { generateId, printObject } from '../util/util'
 import { icons } from '../ux/icons'
 import { IconButton } from '../views/iconbutton'
 import { instantiateTemplate } from '../storage/util'
@@ -45,7 +45,9 @@ function Templates() {
                 navigate.navigate('Checklists')
               }}
               icon={icons.done}
-              label={template.label}></IconButton>
+              label={`${template.label} (${
+                template.id.split('-')[1]
+              })`}></IconButton>
           </View>
           <View style={{ flexDirection: 'row' }}>
             <IconButton
@@ -72,6 +74,18 @@ function Templates() {
                 })
               }}
               icon={icons.copy}></IconButton>
+            <IconButton
+              iconStyle={{ paddingHorizontal: ds.padding.s }}
+              onPress={() => {
+                console.log(
+                  `${template.label} ${template.id} ${JSON.stringify(
+                    template.stacks,
+                    null,
+                    2,
+                  )}`,
+                )
+              }}
+              icon={icons.info}></IconButton>
           </View>
         </View>
       ))}

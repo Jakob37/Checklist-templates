@@ -11,4 +11,5 @@ export const icons = {
   uncheck: 'square',
   reset: 'rotate-right',
   pen: 'pencil',
+  info: 'info',
 }
