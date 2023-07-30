@@ -15,6 +15,7 @@ const PADDING_TEMP = 10
 function EnterTemplate({ route }) {
   const [templateName, setTemplateName] = useState('')
   const [taskLabel, setTaskLabel] = useState('')
+  const [templateId, setTemplateId] = useState(generateId('template'))
   const { saveTemplate, getTemplateById } = useContext(StorageContext)
 
   const [tasks, setTasks] = useState<Task[]>([])
@@ -23,12 +24,19 @@ function EnterTemplate({ route }) {
 
   useEffect(() => {
     // console.log(`Obtaining route ${JSON.stringify(route, null, 2)}`)
+    if (route.params === undefined) {
+      return
+    }
+    console.log(route.params)
     const templateId = route.params.templateId
-    console.log('templateId', templateId)
     const template = getTemplateById(templateId)
-    printObject(template)
+
+    if (route.params.isNew) {
+      setTemplateId(templateId)
+    }
 
     setTemplateName(template.label)
+    console.log(template.stacks.flatMap((stack) => stack.tasks))
     setTasks(template.stacks.flatMap((stack) => stack.tasks))
   }, [isFocused])
 

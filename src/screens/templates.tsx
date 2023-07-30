@@ -59,7 +59,7 @@ function Templates() {
               onPress={() => {
                 navigate.navigate('Make template', {
                   templateId: template.id,
-                  new: false,
+                  isNew: false,
                 })
               }}
               icon={icons.pen}></IconButton>
@@ -68,7 +68,7 @@ function Templates() {
               onPress={() => {
                 navigate.navigate('Make template', {
                   templateId: template.id,
-                  new: true,
+                  isNew: true,
                 })
               }}
               icon={icons.copy}></IconButton>

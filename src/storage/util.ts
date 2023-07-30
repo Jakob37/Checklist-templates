@@ -13,14 +13,14 @@ function buildTemplateObject(
 ): ChecklistTemplate {
   const templateId = generateId('template')
 
-  const tasks: Task[] = taskLabels.map((label) => {
+  const tasks: Task[] = taskLabels.map((label, i) => {
     return {
-      id: generateId('task'),
+      id: generateId(`task-${i}`),
       label,
     }
   })
 
-  const stackId = generateId('stack')
+  const stackId = generateId(`stack-1`)
   const stack: TaskStack = {
     id: stackId,
     label: 'default',
