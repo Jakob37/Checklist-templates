@@ -63,13 +63,13 @@ function EnterTemplate({ route }) {
     setTasks(updatedCheckboxes)
   }
 
-  const handleSubmitList = () => {
+  const handleSubmitList = async () => {
     const template = buildTemplateObject(
       templateId,
       templateName,
       tasks.map((task) => task.label),
     )
-    saveTemplate(template)
+    await saveTemplate(template)
     reset()
     navigate.navigate('Templates')
   }

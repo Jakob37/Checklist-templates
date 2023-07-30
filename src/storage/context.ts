@@ -48,7 +48,7 @@ const StorageContext = createContext<{
   toggleCheck: (_checklistId, _checkboxId) => {
     console.error(PLACEHOLDER_ERROR)
   },
-  saveTemplate: (_template) => {
+  saveTemplate: async (_template) => {
     console.error(PLACEHOLDER_ERROR)
   },
   resetChecklist: (_checklist) => {
