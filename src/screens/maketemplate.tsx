@@ -24,6 +24,7 @@ function EnterTemplate({ route }) {
   useEffect(() => {
     // console.log(`Obtaining route ${JSON.stringify(route, null, 2)}`)
     const templateId = route.params.templateId
+    console.log('templateId', templateId)
     const template = getTemplateById(templateId)
     printObject(template)
 

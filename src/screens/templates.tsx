@@ -30,32 +30,49 @@ function Templates() {
         <View
           key={String(i)}
           style={{
-            flexDirection: 'row',
-            alignItems: 'center',
             paddingVertical: PADDING,
             paddingLeft: PADDING,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
           }}>
-          <IconButton
-            iconStyle={{ paddingHorizontal: PADDING }}
-            onPress={() => {
-              const checklist = instantiateTemplate(template)
-              createChecklist(checklist)
-              navigate.navigate('Checklists')
-            }}
-            icon={icons.copy}
-            label={template.label}></IconButton>
-          <IconButton
-            iconStyle={{ paddingHorizontal: ds.padding.s }}
-            onPress={() => {
-              removeTemplate(template.id)
-            }}
-            icon={icons.trash}></IconButton>
-          <IconButton
-            iconStyle={{ paddingHorizontal: ds.padding.s }}
-            onPress={() => {
-              navigate.navigate('Make template', { templateId: template.id })
-            }}
-            icon={icons.pen}></IconButton>
+          <View>
+            <IconButton
+              iconStyle={{ paddingHorizontal: PADDING }}
+              onPress={() => {
+                const checklist = instantiateTemplate(template)
+                createChecklist(checklist)
+                navigate.navigate('Checklists')
+              }}
+              icon={icons.done}
+              label={template.label}></IconButton>
+          </View>
+          <View style={{ flexDirection: 'row' }}>
+            <IconButton
+              iconStyle={{ paddingHorizontal: ds.padding.s }}
+              onPress={() => {
+                removeTemplate(template.id)
+              }}
+              icon={icons.trash}></IconButton>
+            <IconButton
+              iconStyle={{ paddingHorizontal: ds.padding.s }}
+              onPress={() => {
+                navigate.navigate('Make template', {
+                  templateId: template.id,
+                  new: false,
+                })
+              }}
+              icon={icons.pen}></IconButton>
+            <IconButton
+              iconStyle={{ paddingHorizontal: ds.padding.s }}
+              onPress={() => {
+                navigate.navigate('Make template', {
+                  templateId: template.id,
+                  new: true,
+                })
+              }}
+              icon={icons.copy}></IconButton>
+          </View>
         </View>
       ))}
     </View>
