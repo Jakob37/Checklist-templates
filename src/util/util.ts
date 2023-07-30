@@ -65,7 +65,8 @@ function removeOne<T>(
 }
 
 function printObject(obj: {}): void {
-  console.log(JSON.stringify(obj, null, 2))
+  console.log(JSON.stringify(obj))
+  // console.log(JSON.stringify(obj, null, 2))
 }
 
 export {

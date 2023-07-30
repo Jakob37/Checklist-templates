@@ -6,6 +6,7 @@ import { instantiateTemplate } from '../storage/util'
 import { ds } from '../ux/design'
 import { icons } from '../ux/icons'
 import { IconButton } from '../views/iconbutton'
+import { printObject } from '../util/util'
 
 const PADDING = 10
 
@@ -35,6 +36,7 @@ function Templates() {
               iconStyle={{ paddingHorizontal: PADDING }}
               onPress={() => {
                 const checklist = instantiateTemplate(template)
+                printObject(checklist)
                 createChecklist(checklist)
                 navigate.navigate('Checklists')
               }}

@@ -105,8 +105,8 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
   }
 
   async function saveChecklist(newChecklist: Checklist) {
-    removeChecklist(newChecklist.id)
-    saveChecklists([...checklists, newChecklist])
+    const withoutNew = checklists.filter((c) => c.id !== newChecklist.id)
+    saveChecklists([...withoutNew, newChecklist])
   }
 
   async function saveChecklists(updatedChecklists: Checklist[]) {
@@ -145,15 +145,11 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
   }
 
   async function saveTemplate(template: ChecklistTemplate) {
-    // const templateAfterRemove = await removeTemplate(template.id)
-    // const updatingTemplates = [...templates]
-
     const templatesWithoutCurrent = templates.filter(
       (t) => t.id !== template.id,
     )
 
     templatesWithoutCurrent.push(template)
-    // printObject(templatesWithoutCurrent)
     await saveTemplates(templatesWithoutCurrent)
   }
 
