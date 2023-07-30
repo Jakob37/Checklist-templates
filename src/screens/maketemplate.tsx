@@ -43,8 +43,10 @@ function EnterTemplate({ route }) {
       setTemplateId(templateId)
     }
 
-    setTemplateName(template.label)
-    setTasks(template.stacks.flatMap((stack) => stack.tasks))
+    setTemplateName(template != null ? template.label : '')
+    setTasks(
+      template != null ? template.stacks.flatMap((stack) => stack.tasks) : [],
+    )
   }, [isFocused])
 
   const handleAddCheckbox = () => {
@@ -69,7 +71,7 @@ function EnterTemplate({ route }) {
       templateName,
       tasks.map((task) => task.label),
     )
-    await saveTemplate(template)
+    saveTemplate(template)
     reset()
     navigate.navigate('Templates')
   }
@@ -78,6 +80,7 @@ function EnterTemplate({ route }) {
     setTaskLabel('')
     setTemplateName('')
     setTasks([])
+    setTemplateId(generateId('template'))
   }
 
   return (

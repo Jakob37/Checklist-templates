@@ -8,7 +8,7 @@ import {
   ChecklistTemplate,
   TemplateId,
 } from './interfaces'
-import { assert, removeAtIndex, removeOne } from '../util/util'
+import { assert, printObject, removeAtIndex, removeOne } from '../util/util'
 
 interface DataProviderProps {
   templates_storage_key: string
@@ -86,13 +86,16 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
     }
   }
 
-  async function removeTemplate(id: string) {
-    const retainedTemplates = await removeOne(
+  async function removeTemplate(id: string): Promise<ChecklistTemplate[]> {
+    console.log('Attempting to remove template with ID', id)
+    console.log('Length before', templates.length)
+    const retainedTemplates = removeOne(
       templates,
       (template) => template.id === id,
     )
-    console.log('Attempting to remove template with ID', id)
-    saveTemplates(retainedTemplates)
+    console.log('Length after', retainedTemplates.length)
+    await saveTemplates(retainedTemplates)
+    return retainedTemplates
   }
 
   async function removeChecklist(id: string) {
@@ -144,10 +147,11 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
   }
 
   async function saveTemplate(template: ChecklistTemplate) {
-    await removeTemplate(template.id)
-    const updatingTemplates = [...templates]
-    updatingTemplates.push(template)
-    saveTemplates(updatingTemplates)
+    const templateAfterRemove = await removeTemplate(template.id)
+    // const updatingTemplates = [...templates]
+    templateAfterRemove.push(template)
+    printObject(templateAfterRemove)
+    await saveTemplates(templateAfterRemove)
   }
 
   async function resetChecklist(checklistId: ChecklistId) {

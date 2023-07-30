@@ -50,6 +50,7 @@ function removeOne<T>(
       indicesToRemove.push(i)
     }
   }
+  console.log('Found indices to remove', indicesToRemove)
   if (warnIfMissing) {
     assert(
       indicesToRemove.length === 1,
@@ -58,7 +59,9 @@ function removeOne<T>(
       }`,
     )
   }
-  return removeAtIndex(arr, indicesToRemove[0])
+  const arrAfterRemove = removeAtIndex(arr, indicesToRemove[0])
+  printObject(arrAfterRemove)
+  return arrAfterRemove
 }
 
 function printObject(obj: {}): void {
