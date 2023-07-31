@@ -24,8 +24,8 @@ const MyTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    dark: '#1F3B4D',
-    background: '#1F3B4D',
+    dark: ds.colors.color2,
+    background: ds.colors.color2,
   },
 }
 
@@ -51,7 +51,7 @@ function Navigation(): JSX.Element {
               }
               icon={icons.plus}
               color={ds.colors.darkgray}
-              iconStyle={{ paddingRight: ds.padding.s }}></IconButton>
+              iconStyle={{ paddingRight: ds.padding.m }}></IconButton>
           ),
         }}></Drawer.Screen>
       <Drawer.Screen

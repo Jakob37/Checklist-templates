@@ -8,8 +8,6 @@ import { icons } from '../ux/icons'
 import { IconButton } from '../views/iconbutton'
 import { printObject } from '../util/util'
 
-const PADDING = 10
-
 function Templates() {
   const { templates, removeTemplate, saveChecklist } =
     useContext(StorageContext)
@@ -52,33 +50,38 @@ function TemplateCard(props) {
   return (
     <View
       style={{
-        paddingVertical: PADDING,
-        paddingLeft: PADDING,
+        paddingVertical: ds.padding.m,
+        paddingHorizontal: ds.padding.s,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        backgroundColor: ds.colors.color1,
+        marginTop: ds.padding.s,
+        marginHorizontal: ds.padding.s,
+        borderRadius: 5,
       }}>
       <View>
         <IconButton
-          iconStyle={{ paddingHorizontal: PADDING }}
-          onPress={props.onSave}
+          iconStyle={{ paddingHorizontal: ds.padding.s }}
+          onPress={props.onInstantiate}
           icon={icons.done}
           label={`${props.template.label}`}></IconButton>
       </View>
       <View style={{ flexDirection: 'row' }}>
         <IconButton
           iconStyle={{ paddingHorizontal: ds.padding.s }}
-          onPress={props.onRemove}
-          icon={icons.trash}></IconButton>
-        <IconButton
-          iconStyle={{ paddingHorizontal: ds.padding.s }}
           onPress={props.onEdit}
           icon={icons.pen}></IconButton>
+
         <IconButton
           iconStyle={{ paddingHorizontal: ds.padding.s }}
+          onPress={props.onRemove}
+          icon={icons.trash}></IconButton>
+        {/* <IconButton
+          iconStyle={{ paddingHorizontal: ds.padding.s }}
           onPress={props.onCopy}
-          icon={icons.copy}></IconButton>
-        <IconButton
+          icon={icons.copy}></IconButton> */}
+        {/* <IconButton
           iconStyle={{ paddingHorizontal: ds.padding.s }}
           onPress={() => {
             console.log(
@@ -89,7 +92,7 @@ function TemplateCard(props) {
               )}`,
             )
           }}
-          icon={icons.info}></IconButton>
+          icon={icons.info}></IconButton> */}
       </View>
     </View>
   )

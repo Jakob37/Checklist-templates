@@ -20,6 +20,14 @@ export const ds = {
     primary: 'white',
     secondary: 'lightgray',
     darkgray: 'darkgray',
+    background: 'darkgreen',
+    cardBackground: '#1F3B4D',
+
+    color1: '#1D5B79',
+    color2: '#468B97',
+    color3: '#EF6262',
+    color4: '#F3AA60',
+    // cardBackground: 'gray',
   },
   icons: {
     size: 20,
