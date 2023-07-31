@@ -1,6 +1,6 @@
 {
-  "name": "Checklists",
-  "version": "0.0.1",
+  "name": "checklist-templates",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -9,7 +9,6 @@
     "start": "react-native start"
   },
   "dependencies": {
-    "@minimalist_tools/library": "github:Jakob37/App-tools-shared-library#25d5e3f",
     "@react-native-async-storage/async-storage": "^1.19.0",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-navigation/drawer": "^6.6.3",

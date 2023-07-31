@@ -11,78 +11,86 @@ import { printObject } from '../util/util'
 const PADDING = 10
 
 function Templates() {
-  const {
-    templates,
-    removeTemplate,
-    saveChecklist: createChecklist,
-  } = useContext(StorageContext)
+  const { templates, removeTemplate, saveChecklist } =
+    useContext(StorageContext)
 
   const navigate = useNavigation()
 
   return (
     <View>
-      {templates.map((template, i) => (
-        <View
-          key={String(i)}
-          style={{
-            paddingVertical: PADDING,
-            paddingLeft: PADDING,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}>
-          <View>
-            <IconButton
-              iconStyle={{ paddingHorizontal: PADDING }}
-              onPress={() => {
-                const checklist = instantiateTemplate(template)
-                printObject(checklist)
-                createChecklist(checklist)
-                navigate.navigate('Checklists')
-              }}
-              icon={icons.done}
-              label={`${template.label}`}></IconButton>
-          </View>
-          <View style={{ flexDirection: 'row' }}>
-            <IconButton
-              iconStyle={{ paddingHorizontal: ds.padding.s }}
-              onPress={() => {
-                removeTemplate(template.id)
-              }}
-              icon={icons.trash}></IconButton>
-            <IconButton
-              iconStyle={{ paddingHorizontal: ds.padding.s }}
-              onPress={() => {
-                navigate.navigate('Make template', {
-                  templateId: template.id,
-                  isNew: false,
-                })
-              }}
-              icon={icons.pen}></IconButton>
-            <IconButton
-              iconStyle={{ paddingHorizontal: ds.padding.s }}
-              onPress={() => {
-                navigate.navigate('Make template', {
-                  templateId: template.id,
-                  isNew: true,
-                })
-              }}
-              icon={icons.copy}></IconButton>
-            <IconButton
-              iconStyle={{ paddingHorizontal: ds.padding.s }}
-              onPress={() => {
-                console.log(
-                  `${template.label} ${template.id} ${JSON.stringify(
-                    template.stacks,
-                    null,
-                    2,
-                  )}`,
-                )
-              }}
-              icon={icons.info}></IconButton>
-          </View>
-        </View>
+      {templates.map((template) => (
+        <TemplateCard
+          key={template.id}
+          template={template}
+          onInstantiate={() => {
+            const checklist = instantiateTemplate(template)
+            printObject(checklist)
+            saveChecklist(checklist)
+            navigate.navigate('Checklists')
+          }}
+          onRemove={() => {
+            removeTemplate(template.id)
+          }}
+          onCopy={() => {
+            navigate.navigate('Make template', {
+              templateId: template.id,
+              isNew: true,
+            })
+          }}
+          onEdit={() => {
+            navigate.navigate('Make template', {
+              templateId: template.id,
+              isNew: false,
+            })
+          }}></TemplateCard>
       ))}
+    </View>
+  )
+}
+
+function TemplateCard(props) {
+  return (
+    <View
+      style={{
+        paddingVertical: PADDING,
+        paddingLeft: PADDING,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}>
+      <View>
+        <IconButton
+          iconStyle={{ paddingHorizontal: PADDING }}
+          onPress={props.onSave}
+          icon={icons.done}
+          label={`${props.template.label}`}></IconButton>
+      </View>
+      <View style={{ flexDirection: 'row' }}>
+        <IconButton
+          iconStyle={{ paddingHorizontal: ds.padding.s }}
+          onPress={props.onRemove}
+          icon={icons.trash}></IconButton>
+        <IconButton
+          iconStyle={{ paddingHorizontal: ds.padding.s }}
+          onPress={props.onEdit}
+          icon={icons.pen}></IconButton>
+        <IconButton
+          iconStyle={{ paddingHorizontal: ds.padding.s }}
+          onPress={props.onCopy}
+          icon={icons.copy}></IconButton>
+        <IconButton
+          iconStyle={{ paddingHorizontal: ds.padding.s }}
+          onPress={() => {
+            console.log(
+              `${props.template.label} ${props.template.id} ${JSON.stringify(
+                props.template.stacks,
+                null,
+                2,
+              )}`,
+            )
+          }}
+          icon={icons.info}></IconButton>
+      </View>
     </View>
   )
 }
