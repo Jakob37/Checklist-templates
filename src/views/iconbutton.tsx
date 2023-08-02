@@ -9,6 +9,7 @@ function IconButton(props: {
   color?: string
   iconStyle?: {}
   containerStyle?: {}
+  labelStyle?: {}
   label?: string
   labelPos?: 'left' | 'right'
 }) {
@@ -20,7 +21,10 @@ function IconButton(props: {
           alignItems: 'center',
         }}>
         {props.label !== '' && props.labelPos === 'left' ? (
-          <Text style={{ paddingHorizontal: ds.padding.s }}>{props.label}</Text>
+          <Text
+            style={{ ...props.labelStyle, paddingHorizontal: ds.padding.s }}>
+            {props.label}
+          </Text>
         ) : (
           ''
         )}
@@ -32,7 +36,7 @@ function IconButton(props: {
           <Text
             style={{
               paddingHorizontal: ds.padding.s,
-              fontSize: ds.font.sizes.major,
+              ...props.labelStyle,
             }}>
             {props.label}
           </Text>
@@ -48,6 +52,7 @@ IconButton.defaultProps = {
   color: ds.colors.primary,
   iconStyle: {},
   containerStyle: {},
+  labelStyle: {},
   label: '',
   labelPos: 'right',
 }
@@ -57,7 +62,7 @@ function TopBarIconButton(props: { icon: string; onPress: () => void }) {
     <IconButton
       onPress={props.onPress}
       icon={props.icon}
-      size={ds.font.sizes.topBar}
+      size={ds.font.sizes.huge}
       color={ds.colors.secondary}
       iconStyle={{ padding: ds.padding.s }}></IconButton>
   )

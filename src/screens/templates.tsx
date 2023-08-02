@@ -58,7 +58,7 @@ function TemplateCard(props) {
         backgroundColor: ds.colors.color1,
         marginTop: ds.padding.s,
         marginHorizontal: ds.padding.s,
-        borderRadius: 5,
+        borderRadius: ds.border.radius,
       }}>
       <View>
         <IconButton

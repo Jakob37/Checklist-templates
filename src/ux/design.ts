@@ -11,7 +11,7 @@ export const ds = {
   },
   font: {
     sizes: {
-      topBar: 32,
+      huge: 32,
       major: 16,
       minor: 10,
     },
@@ -31,8 +31,12 @@ export const ds = {
   },
   icons: {
     size: 20,
+    large: 40,
   },
   textInput: {
     numberOfLines: 4,
+  },
+  border: {
+    radius: 5,
   },
 }
