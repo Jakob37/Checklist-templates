@@ -1,3 +1,5 @@
+import { StyleSheet } from 'react-native'
+
 export const ds = {
   padding: {
     xs: 5,
@@ -23,9 +25,9 @@ export const ds = {
     background: 'darkgreen',
     cardBackground: '#1F3B4D',
 
-    color1: '#1D5B79',
-    color2: '#468B97',
-    color3: '#EF6262',
+    darkBlue: '#1D5B79',
+    lightBlue: '#468B97',
+    orange: '#EF6262',
     color4: '#F3AA60',
     // cardBackground: 'gray',
   },
@@ -40,3 +42,24 @@ export const ds = {
     radius: 5,
   },
 }
+
+const styles = StyleSheet.create({
+  bluePanel: {
+    backgroundColor: ds.colors.darkBlue,
+    marginHorizontal: ds.padding.s,
+    marginTop: ds.padding.m,
+    paddingVertical: ds.padding.s,
+    paddingHorizontal: ds.padding.s,
+    borderRadius: ds.border.radius,
+  },
+  orangePanel: {
+    backgroundColor: ds.colors.orange,
+    marginHorizontal: ds.padding.s,
+    marginTop: ds.padding.m,
+    paddingVertical: ds.padding.s,
+    paddingHorizontal: ds.padding.s,
+    borderRadius: ds.border.radius,
+  },
+})
+
+export { styles }

@@ -5,7 +5,7 @@ import { CheckboxStatus } from '../storage/interfaces'
 import { IconButton } from '../views/iconbutton'
 import { icons } from '../ux/icons'
 import { assert } from '../util/util'
-import { ds } from '../ux/design'
+import { ds, styles } from '../ux/design'
 
 function Checklists() {
   const {
@@ -19,15 +19,7 @@ function Checklists() {
   return (
     <View>
       {checklists.length === 0 ? (
-        <View
-          style={{
-            backgroundColor: ds.colors.color1,
-            marginHorizontal: ds.padding.s,
-            marginTop: ds.padding.m,
-            paddingVertical: ds.padding.s,
-            paddingHorizontal: ds.padding.s,
-            borderRadius: ds.border.radius,
-          }}>
+        <View style={styles.bluePanel}>
           <Text style={{ fontSize: ds.font.sizes.major }}>
             Currently no active checklists
           </Text>
@@ -57,15 +49,7 @@ function Checklists() {
           })}
 
           {isChecklistDone(checklist.id) ? (
-            <View
-              style={{
-                backgroundColor: ds.colors.color1,
-                marginHorizontal: ds.padding.s,
-                marginTop: ds.padding.m,
-                paddingVertical: ds.padding.s,
-                paddingHorizontal: ds.padding.s,
-                borderRadius: ds.border.radius,
-              }}>
+            <View style={styles.orangePanel}>
               <IconButton
                 onPress={() => {
                   removeChecklist(checklist.id)
@@ -88,15 +72,7 @@ function Checklists() {
 
 function ChecklistHeader(props) {
   return (
-    <View
-      style={{
-        backgroundColor: ds.colors.color1,
-        marginHorizontal: ds.padding.s,
-        marginTop: ds.padding.m,
-        paddingVertical: ds.padding.s,
-        paddingHorizontal: ds.padding.s,
-        borderRadius: ds.border.radius,
-      }}>
+    <View style={styles.bluePanel}>
       <View
         style={{
           flexDirection: 'row',
@@ -134,16 +110,19 @@ function Checkbox(props) {
   return (
     <View
       key={`${props.checkboxId}`}
-      style={{
-        flexDirection: 'row',
-        paddingVertical: ds.padding.s,
-        paddingHorizontal: ds.padding.s,
-        marginHorizontal: ds.padding.s,
-        backgroundColor: ds.colors.color1,
-        marginTop: ds.padding.s,
-        alignItems: 'center',
-        borderRadius: ds.border.radius,
-      }}>
+      style={[
+        styles.bluePanel,
+        {
+          flexDirection: 'row',
+          // paddingVertical: ds.padding.s,
+          // paddingHorizontal: ds.padding.s,
+          // marginHorizontal: ds.padding.s,
+          // backgroundColor: ds.colors.darkBlue,
+          // marginTop: ds.padding.s,
+          alignItems: 'center',
+          // borderRadius: ds.border.radius,
+        },
+      ]}>
       <IconButton
         onPress={() => {
           props.toggleCheck(props.checklistId, props.checkboxId)

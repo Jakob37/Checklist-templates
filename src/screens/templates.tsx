@@ -22,7 +22,6 @@ function Templates() {
           template={template}
           onInstantiate={() => {
             const checklist = instantiateTemplate(template)
-            printObject(checklist)
             saveChecklist(checklist)
             navigate.navigate('Checklists')
           }}
@@ -55,7 +54,7 @@ function TemplateCard(props) {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: ds.colors.color1,
+        backgroundColor: ds.colors.darkBlue,
         marginTop: ds.padding.s,
         marginHorizontal: ds.padding.s,
         borderRadius: ds.border.radius,
