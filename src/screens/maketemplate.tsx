@@ -2,7 +2,7 @@ import { FlatList, Text, TextInput, View } from 'react-native'
 
 import { useContext, useEffect, useRef, useState } from 'react'
 import { StorageContext } from '../storage/context'
-import { ds } from '../ux/design'
+import { ds, styles } from '../ux/design'
 import { icons } from '../ux/icons'
 import { IconButton } from '../views/iconbutton'
 import { ChecklistTemplate, Task, TaskStack } from '../storage/interfaces'
@@ -86,78 +86,102 @@ function EnterTemplate({ route }) {
 
   return (
     <View>
-      <TextInput
-        placeholder="Name"
-        value={templateName}
-        onChangeText={(text) => setTemplateName(text)}></TextInput>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <IconButton
-          iconStyle={{ paddingHorizontal: PADDING_TEMP }}
-          onPress={handleAddCheckbox}
-          icon={icons.plus}
-          size={ds.icons.size}
-          color={ds.colors.primary}></IconButton>
-
+      <View style={styles.bluePanel}>
         <TextInput
-          placeholder="Enter..."
-          value={taskLabel}
-          onSubmitEditing={() => {
-            handleAddCheckbox()
-          }}
-          editable={true}
-          onChangeText={(text) => setTaskLabel(text)}></TextInput>
+          placeholder="Enter template name"
+          value={templateName}
+          onChangeText={(text) => setTemplateName(text)}></TextInput>
       </View>
 
-      <FlatList
-        data={tasks}
-        renderItem={({ item }) => (
-          <View
-            style={{
-              flexDirection: 'row',
-              paddingBottom: ds.padding.s,
-              justifyContent: 'space-between',
-              paddingLeft: ds.padding.s,
-            }}>
-            <View>
-              <Text style={{ fontSize: ds.font.sizes.major }}>
-                {item.label}
-              </Text>
-            </View>
-            <View style={{ flexDirection: 'row' }}>
-              <IconButton
-                onPress={() => {
-                  // handleRemoveTask(item.id)
-                  console.log('FIXME: Implement edit')
-                }}
-                icon={icons.pen}
-                size={ds.icons.size}
-                color="white"
-                iconStyle={{ paddingHorizontal: PADDING_TEMP }}></IconButton>
-              <IconButton
-                onPress={() => {
-                  handleRemoveTask(item.id)
-                }}
-                icon={icons.trash}
-                size={ds.icons.size}
-                color="white"
-                iconStyle={{ paddingHorizontal: PADDING_TEMP }}></IconButton>
-            </View>
+      <View style={styles.bluePanel}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingLeft: ds.padding.s,
+          }}>
+          <View style={{ paddingRight: ds.padding.s }}>
+            <IconButton
+              onPress={handleAddCheckbox}
+              icon={icons.plus}
+              size={ds.icons.medium}
+              color={ds.colors.primary}></IconButton>
           </View>
-        )}></FlatList>
-      <View
-        style={{
+
+          <TextInput
+            placeholder="Enter task..."
+            value={taskLabel}
+            onSubmitEditing={() => {
+              handleAddCheckbox()
+            }}
+            editable={true}
+            onChangeText={(text) => setTaskLabel(text)}></TextInput>
+        </View>
+        <FlatList
+          data={tasks}
+          renderItem={({ item }) => (
+            <View
+              style={{
+                flexDirection: 'row',
+                paddingBottom: ds.padding.s,
+                justifyContent: 'space-between',
+                paddingLeft: ds.padding.s,
+              }}>
+              <View>
+                <Text style={{ fontSize: ds.font.sizes.major }}>
+                  {item.label}
+                </Text>
+              </View>
+              <View style={{ flexDirection: 'row' }}>
+                <IconButton
+                  onPress={() => {
+                    // handleRemoveTask(item.id)
+                    console.log('FIXME: Implement edit')
+                  }}
+                  icon={icons.pen}
+                  size={ds.icons.medium}
+                  color="white"
+                  iconStyle={{ paddingHorizontal: PADDING_TEMP }}></IconButton>
+                <IconButton
+                  onPress={() => {
+                    handleRemoveTask(item.id)
+                  }}
+                  icon={icons.trash}
+                  size={ds.icons.medium}
+                  color="white"
+                  iconStyle={{ paddingHorizontal: PADDING_TEMP }}></IconButton>
+              </View>
+            </View>
+          )}></FlatList>
+      </View>
+      {templateName !== '' && tasks.length > 0 ? (
+        <SaveTemplate onSubmit={handleSubmitList}></SaveTemplate>
+      ) : (
+        ''
+      )}
+    </View>
+  )
+}
+
+function SaveTemplate(props) {
+  return (
+    <View
+      style={[
+        styles.orangePanel,
+        {
           flexDirection: 'row',
           alignItems: 'center',
-          paddingTop: PADDING_TEMP,
-        }}>
-        <IconButton
-          iconStyle={{ paddingHorizontal: PADDING_TEMP }}
-          onPress={handleSubmitList}
-          icon={icons.save}
-          size={ds.icons.size}
-          color={ds.colors.primary}
-          label="Save template"></IconButton>
-      </View>
+          paddingVertical: ds.padding.m,
+        },
+      ]}>
+      <IconButton
+        iconStyle={{ paddingHorizontal: PADDING_TEMP }}
+        onPress={props.onSubmit}
+        icon={icons.save}
+        size={ds.icons.medium}
+        color={ds.colors.primary}
+        labelStyle={{ fontSize: ds.font.sizes.major }}
+        label="Save template"></IconButton>
     </View>
   )
 }

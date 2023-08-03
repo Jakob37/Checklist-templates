@@ -13,7 +13,7 @@ export const ds = {
   },
   font: {
     sizes: {
-      huge: 32,
+      huge: 24,
       major: 16,
       minor: 10,
     },
@@ -28,12 +28,12 @@ export const ds = {
     darkBlue: '#1D5B79',
     lightBlue: '#468B97',
     orange: '#EF6262',
-    color4: '#F3AA60',
+    red: '#F3AA60',
     // cardBackground: 'gray',
   },
   icons: {
-    size: 20,
-    large: 40,
+    medium: 20,
+    large: 32,
   },
   textInput: {
     numberOfLines: 4,

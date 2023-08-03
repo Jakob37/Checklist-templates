@@ -35,8 +35,8 @@ function IconButton(props: {
         {props.label !== '' && props.labelPos === 'right' ? (
           <Text
             style={{
-              paddingHorizontal: ds.padding.s,
               ...props.labelStyle,
+              paddingHorizontal: ds.padding.s,
             }}>
             {props.label}
           </Text>
@@ -48,7 +48,7 @@ function IconButton(props: {
   )
 }
 IconButton.defaultProps = {
-  size: ds.icons.size,
+  size: ds.icons.medium,
   color: ds.colors.primary,
   iconStyle: {},
   containerStyle: {},
