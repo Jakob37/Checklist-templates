@@ -120,38 +120,10 @@ function EnterTemplate({ route }) {
         <FlatList
           data={tasks}
           renderItem={({ item }) => (
-            <View
-              style={{
-                flexDirection: 'row',
-                paddingBottom: ds.padding.s,
-                justifyContent: 'space-between',
-                paddingLeft: ds.padding.s,
-              }}>
-              <View>
-                <Text style={{ fontSize: ds.font.sizes.major }}>
-                  {item.label}
-                </Text>
-              </View>
-              <View style={{ flexDirection: 'row' }}>
-                <IconButton
-                  onPress={() => {
-                    // handleRemoveTask(item.id)
-                    console.log('FIXME: Implement edit')
-                  }}
-                  icon={icons.pen}
-                  size={ds.icons.medium}
-                  color="white"
-                  iconStyle={{ paddingHorizontal: PADDING_TEMP }}></IconButton>
-                <IconButton
-                  onPress={() => {
-                    handleRemoveTask(item.id)
-                  }}
-                  icon={icons.trash}
-                  size={ds.icons.medium}
-                  color="white"
-                  iconStyle={{ paddingHorizontal: PADDING_TEMP }}></IconButton>
-              </View>
-            </View>
+            <ChecklistTask
+              handleRemoveTask={handleRemoveTask}
+              id={item.id}
+              label={item.label}></ChecklistTask>
           )}></FlatList>
       </View>
       {templateName !== '' && tasks.length > 0 ? (
@@ -163,7 +135,50 @@ function EnterTemplate({ route }) {
   )
 }
 
-function SaveTemplate(props) {
+type ChecklistTaskProps = {
+  handleRemoveTask: (id: string) => void
+  label: string
+  id: string
+}
+function ChecklistTask(props: ChecklistTaskProps) {
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        paddingBottom: ds.padding.s,
+        justifyContent: 'space-between',
+        paddingLeft: ds.padding.s,
+      }}>
+      <View>
+        <Text style={{ fontSize: ds.font.sizes.major }}>{props.label}</Text>
+      </View>
+      <View style={{ flexDirection: 'row' }}>
+        <IconButton
+          onPress={() => {
+            // handleRemoveTask(item.id)
+            console.log('FIXME: Implement edit')
+          }}
+          icon={icons.pen}
+          size={ds.icons.medium}
+          color="white"
+          iconStyle={{ paddingHorizontal: PADDING_TEMP }}></IconButton>
+        <IconButton
+          onPress={() => {
+            props.handleRemoveTask(props.id)
+          }}
+          icon={icons.trash}
+          size={ds.icons.medium}
+          color="white"
+          iconStyle={{ paddingHorizontal: PADDING_TEMP }}></IconButton>
+      </View>
+    </View>
+  )
+}
+
+type SaveTemplateProps = {
+  onSubmit: () => void
+}
+function SaveTemplate(props: SaveTemplateProps) {
   return (
     <View
       style={[
