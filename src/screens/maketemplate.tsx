@@ -172,11 +172,6 @@ function ChecklistSection(props: ChecklistSectionProps) {
   return (
     <View>
       {props.sectionLabel !== '' ? <Text>{props.sectionLabel}</Text> : ''}
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}></View>
       <FlatList
         data={props.tasks}
         ListHeaderComponent={
