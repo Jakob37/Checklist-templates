@@ -12,6 +12,11 @@ import { useIsFocused, useNavigation } from '@react-navigation/native'
 
 const PADDING_TEMP = 10
 
+type Section = {
+  label: string
+  tasks: Task[]
+}
+
 function EnterTemplate({ route }) {
   const navigate = useNavigation()
 
@@ -20,7 +25,9 @@ function EnterTemplate({ route }) {
   const [templateId, setTemplateId] = useState(generateId('template'))
   const { saveTemplate, getTemplateById } = useContext(StorageContext)
 
-  const [tasks, setTasks] = useState<Task[]>([])
+  const [defaultTasks, setDefaultTasks] = useState<Task[]>([])
+  const [sections, setSections] = useState<Section[]>([])
+  const [enterSectionLabel, setEnterSectionLabel] = useState('')
 
   const isFocused = useIsFocused()
 
@@ -45,32 +52,34 @@ function EnterTemplate({ route }) {
     }
 
     setTemplateName(template != null ? template.label : '')
-    setTasks(
+    setDefaultTasks(
       template != null ? template.stacks.flatMap((stack) => stack.tasks) : [],
     )
   }, [isFocused])
 
-  const handleAddCheckbox = () => {
+  const handleAddDefaultCheckbox = () => {
     if (taskLabel !== '') {
       const newTask: Task = {
         id: String(Date.now()),
         label: taskLabel,
       }
-      setTasks([...tasks, newTask])
+      setDefaultTasks([...defaultTasks, newTask])
       setTaskLabel('')
     }
   }
 
   const handleRemoveTask = (id: string) => {
-    const updatedCheckboxes = tasks.filter((checkbox) => checkbox.id !== id)
-    setTasks(updatedCheckboxes)
+    const updatedCheckboxes = defaultTasks.filter(
+      (checkbox) => checkbox.id !== id,
+    )
+    setDefaultTasks(updatedCheckboxes)
   }
 
   const handleSubmitList = async () => {
     const template = buildTemplateObject(
       templateId,
       templateName,
-      tasks.map((task) => task.label),
+      defaultTasks.map((task) => task.label),
     )
     saveTemplate(template)
     reset()
@@ -80,9 +89,11 @@ function EnterTemplate({ route }) {
   function reset() {
     setTaskLabel('')
     setTemplateName('')
-    setTasks([])
+    setDefaultTasks([])
     setTemplateId(generateId('template'))
   }
+
+  function addSection() {}
 
   return (
     <ScrollView>
@@ -93,45 +104,71 @@ function EnterTemplate({ route }) {
           onChangeText={(text) => setTemplateName(text)}></TextInput>
       </View>
 
+      <ChecklistSection
+        taskLabel={taskLabel}
+        onChangeText={(text) => setTaskLabel(text)}
+        onAddCheckbox={handleAddDefaultCheckbox}
+        tasks={defaultTasks}
+        onRemoveTask={handleRemoveTask}></ChecklistSection>
       <View style={styles.bluePanel}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            paddingLeft: ds.padding.s,
-          }}>
-          <View style={{ paddingRight: ds.padding.s }}>
-            <IconButton
-              onPress={handleAddCheckbox}
-              icon={icons.plus}
-              size={ds.icons.medium}
-              color={ds.colors.primary}></IconButton>
-          </View>
-
-          <TextInput
-            placeholder="Enter task..."
-            value={taskLabel}
-            onSubmitEditing={() => {
-              handleAddCheckbox()
-            }}
-            editable={true}
-            onChangeText={(text) => setTaskLabel(text)}></TextInput>
-        </View>
-        <FlatList
-          data={tasks}
-          renderItem={({ item }) => (
-            <ChecklistTask
-              handleRemoveTask={handleRemoveTask}
-              id={item.id}
-              label={item.label}></ChecklistTask>
-          )}></FlatList>
+        <TextInput placeholder="Enter section label"></TextInput>
+        <IconButton
+          onPress={addSection}
+          icon={icons.plus}
+          size={ds.icons.medium}
+          label={'Add section'}
+          color={ds.colors.primary}></IconButton>
       </View>
-      {templateName !== '' && tasks.length > 0 ? (
+      {templateName !== '' && defaultTasks.length > 0 ? (
         <SaveTemplate onSubmit={handleSubmitList}></SaveTemplate>
       ) : (
         ''
       )}
     </ScrollView>
+  )
+}
+
+type ChecklistSectionProps = {
+  taskLabel: string
+  onChangeText: (text: string) => void
+  onAddCheckbox: () => void
+  tasks: Task[]
+  onRemoveTask: (id: string) => void
+}
+function ChecklistSection(props: ChecklistSectionProps) {
+  return (
+    <View style={styles.bluePanel}>
+      <Text>Default section</Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          paddingLeft: ds.padding.s,
+        }}>
+        <View style={{ paddingRight: ds.padding.s }}>
+          <IconButton
+            onPress={props.onAddCheckbox}
+            icon={icons.plus}
+            size={ds.icons.medium}
+            color={ds.colors.primary}></IconButton>
+        </View>
+
+        <TextInput
+          placeholder="Enter task..."
+          value={props.taskLabel}
+          onSubmitEditing={props.onAddCheckbox}
+          editable={true}
+          onChangeText={(text) => props.onChangeText(text)}></TextInput>
+      </View>
+      <FlatList
+        data={props.tasks}
+        renderItem={({ item }) => (
+          <ChecklistTask
+            handleRemoveTask={props.onRemoveTask}
+            id={item.id}
+            label={item.label}></ChecklistTask>
+        )}></FlatList>
+    </View>
   )
 }
 
