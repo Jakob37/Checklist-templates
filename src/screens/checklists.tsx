@@ -1,4 +1,4 @@
-import { Text, View } from 'react-native'
+import { ScrollView, Text, View } from 'react-native'
 import { StorageContext } from '../storage/context'
 import { useContext } from 'react'
 import { CheckboxStatus } from '../storage/interfaces'
@@ -17,7 +17,7 @@ function Checklists() {
   } = useContext(StorageContext)
 
   return (
-    <View>
+    <ScrollView>
       {checklists.length === 0 ? (
         <View style={styles.bluePanel}>
           <Text style={{ fontSize: ds.font.sizes.major }}>
@@ -66,7 +66,7 @@ function Checklists() {
           )}
         </View>
       ))}
-    </View>
+    </ScrollView>
   )
 }
 

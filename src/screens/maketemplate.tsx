@@ -1,4 +1,4 @@
-import { FlatList, Text, TextInput, View } from 'react-native'
+import { FlatList, ScrollView, Text, TextInput, View } from 'react-native'
 
 import { useContext, useEffect, useRef, useState } from 'react'
 import { StorageContext } from '../storage/context'
@@ -85,7 +85,7 @@ function EnterTemplate({ route }) {
   }
 
   return (
-    <View>
+    <ScrollView>
       <View style={styles.bluePanel}>
         <TextInput
           placeholder="Enter template name"
@@ -131,7 +131,7 @@ function EnterTemplate({ route }) {
       ) : (
         ''
       )}
-    </View>
+    </ScrollView>
   )
 }
 
