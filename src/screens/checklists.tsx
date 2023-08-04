@@ -70,7 +70,12 @@ function Checklists() {
   )
 }
 
-function ChecklistHeader(props) {
+type ChecklistHeaderProps = {
+  label: string
+  removeChecklist: () => void
+  resetChecklist: () => void
+}
+function ChecklistHeader(props: ChecklistHeaderProps) {
   return (
     <View style={styles.bluePanel}>
       <View
@@ -106,7 +111,14 @@ function ChecklistHeader(props) {
   )
 }
 
-function Checkbox(props) {
+type CheckboxProps = {
+  toggleCheck: (checklistId: string, checkboxId: string) => void
+  checklistId: string
+  checkboxId: string
+  checked: number
+  label: string
+}
+function Checkbox(props: CheckboxProps) {
   return (
     <View
       key={`${props.checkboxId}`}
@@ -114,13 +126,7 @@ function Checkbox(props) {
         styles.bluePanel,
         {
           flexDirection: 'row',
-          // paddingVertical: ds.padding.s,
-          // paddingHorizontal: ds.padding.s,
-          // marginHorizontal: ds.padding.s,
-          // backgroundColor: ds.colors.darkBlue,
-          // marginTop: ds.padding.s,
           alignItems: 'center',
-          // borderRadius: ds.border.radius,
         },
       ]}>
       <IconButton
