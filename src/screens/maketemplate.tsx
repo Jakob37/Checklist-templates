@@ -27,7 +27,7 @@ function EnterTemplate({ route }) {
 
   const [defaultTasks, setDefaultTasks] = useState<Task[]>([])
   const [sections, setSections] = useState<Section[]>([])
-  const [enterSectionLabel, setEnterSectionLabel] = useState('')
+  const [newSectionLabel, setNewSectionLabel] = useState('')
 
   const isFocused = useIsFocused()
 
@@ -93,7 +93,13 @@ function EnterTemplate({ route }) {
     setTemplateId(generateId('template'))
   }
 
-  function addSection() {}
+  function addSection() {
+    const newSection = {
+      label: newSectionLabel,
+      tasks: [],
+    }
+    setSections([...sections, newSection])
+  }
 
   return (
     <ScrollView>
@@ -104,21 +110,47 @@ function EnterTemplate({ route }) {
           onChangeText={(text) => setTemplateName(text)}></TextInput>
       </View>
 
-      <ChecklistSection
-        taskLabel={taskLabel}
-        onChangeText={(text) => setTaskLabel(text)}
-        onAddCheckbox={handleAddDefaultCheckbox}
-        tasks={defaultTasks}
-        onRemoveTask={handleRemoveTask}></ChecklistSection>
       <View style={styles.bluePanel}>
-        <TextInput placeholder="Enter section label"></TextInput>
+        <ChecklistSection
+          sectionLabel=""
+          taskLabel={taskLabel}
+          onChangeText={(text) => setTaskLabel(text)}
+          onAddCheckbox={handleAddDefaultCheckbox}
+          tasks={defaultTasks}
+          onRemoveTask={handleRemoveTask}></ChecklistSection>
+      </View>
+
+      {/* {sections.length > 0 ? (
+        <View>
+          {sections.map((section, i) => {
+            return (
+              <View key={String(i)} style={styles.bluePanel}>
+                <ChecklistSection
+                  sectionLabel={section.label}
+                  taskLabel={section.label}
+                  onChangeText={(text) => {}}
+                  onAddCheckbox={() => {}}
+                  tasks={section.tasks}
+                  onRemoveTask={() => {}}></ChecklistSection>
+              </View>
+            )
+          })}
+        </View>
+      ) : (
+        ''
+      )} */}
+
+      {/* <View style={styles.bluePanel}>
+        <TextInput
+          placeholder="Enter section label"
+          onChangeText={(text) => setNewSectionLabel(text)}></TextInput>
         <IconButton
           onPress={addSection}
           icon={icons.plus}
           size={ds.icons.medium}
           label={'Add section'}
           color={ds.colors.primary}></IconButton>
-      </View>
+      </View> */}
       {templateName !== '' && defaultTasks.length > 0 ? (
         <SaveTemplate onSubmit={handleSubmitList}></SaveTemplate>
       ) : (
@@ -129,6 +161,7 @@ function EnterTemplate({ route }) {
 }
 
 type ChecklistSectionProps = {
+  sectionLabel: string
   taskLabel: string
   onChangeText: (text: string) => void
   onAddCheckbox: () => void
@@ -137,13 +170,12 @@ type ChecklistSectionProps = {
 }
 function ChecklistSection(props: ChecklistSectionProps) {
   return (
-    <View style={styles.bluePanel}>
-      <Text>Default section</Text>
+    <View>
+      {props.sectionLabel !== '' ? <Text>{props.sectionLabel}</Text> : ''}
       <View
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          paddingLeft: ds.padding.s,
         }}>
         <View style={{ paddingRight: ds.padding.s }}>
           <IconButton
@@ -153,12 +185,16 @@ function ChecklistSection(props: ChecklistSectionProps) {
             color={ds.colors.primary}></IconButton>
         </View>
 
-        <TextInput
+        {/* <TextInput
           placeholder="Enter task..."
           value={props.taskLabel}
           onSubmitEditing={props.onAddCheckbox}
           editable={true}
-          onChangeText={(text) => props.onChangeText(text)}></TextInput>
+          onChangeText={(text) => props.onChangeText(text)}></TextInput> */}
+        <EnterTask
+          taskLabel={props.taskLabel}
+          onAddCheckbox={props.onAddCheckbox}
+          onChangeText={props.onChangeText}></EnterTask>
       </View>
       <FlatList
         data={props.tasks}
@@ -169,6 +205,22 @@ function ChecklistSection(props: ChecklistSectionProps) {
             label={item.label}></ChecklistTask>
         )}></FlatList>
     </View>
+  )
+}
+
+type EnterTaskProps = {
+  taskLabel: string
+  onAddCheckbox: () => void
+  onChangeText: (text: string) => void
+}
+function EnterTask(props: EnterTaskProps) {
+  return (
+    <TextInput
+      placeholder="Enter task..."
+      value={props.taskLabel}
+      onSubmitEditing={props.onAddCheckbox}
+      editable={true}
+      onChangeText={(text) => props.onChangeText(text)}></TextInput>
   )
 }
 
