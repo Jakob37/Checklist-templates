@@ -176,28 +176,25 @@ function ChecklistSection(props: ChecklistSectionProps) {
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-        }}>
-        <View style={{ paddingRight: ds.padding.s }}>
-          <IconButton
-            onPress={props.onAddCheckbox}
-            icon={icons.plus}
-            size={ds.icons.medium}
-            color={ds.colors.primary}></IconButton>
-        </View>
-
-        {/* <TextInput
-          placeholder="Enter task..."
-          value={props.taskLabel}
-          onSubmitEditing={props.onAddCheckbox}
-          editable={true}
-          onChangeText={(text) => props.onChangeText(text)}></TextInput> */}
-        <EnterTask
-          taskLabel={props.taskLabel}
-          onAddCheckbox={props.onAddCheckbox}
-          onChangeText={props.onChangeText}></EnterTask>
-      </View>
+        }}></View>
       <FlatList
         data={props.tasks}
+        ListHeaderComponent={
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ paddingRight: ds.padding.s }}>
+              <IconButton
+                onPress={props.onAddCheckbox}
+                icon={icons.plus}
+                size={ds.icons.medium}
+                color={ds.colors.primary}></IconButton>
+            </View>
+
+            <EnterTask
+              taskLabel={props.taskLabel}
+              onAddCheckbox={props.onAddCheckbox}
+              onChangeText={props.onChangeText}></EnterTask>
+          </View>
+        }
         renderItem={({ item }) => (
           <ChecklistTask
             handleRemoveTask={props.onRemoveTask}
