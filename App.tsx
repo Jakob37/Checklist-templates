@@ -19,6 +19,7 @@ import { Text } from 'react-native'
 import { IconButton } from './src/views/iconbutton'
 import { icons } from './src/ux/icons'
 import { ds } from './src/ux/design'
+import Settings from './src/screens/settings'
 
 const MyTheme = {
   ...DefaultTheme,
@@ -59,6 +60,7 @@ function Navigation(): JSX.Element {
         initialParams={{ templateId: null, isNew: false }}
         component={MakeTemplate}></Drawer.Screen>
       <Drawer.Screen name="Checklists" component={Checklists}></Drawer.Screen>
+      <Drawer.Screen name="Settings" component={Settings}></Drawer.Screen>
     </Drawer.Navigator>
   )
 }
