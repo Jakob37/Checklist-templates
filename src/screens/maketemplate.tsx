@@ -172,30 +172,28 @@ function ChecklistSection(props: ChecklistSectionProps) {
   return (
     <View>
       {props.sectionLabel !== '' ? <Text>{props.sectionLabel}</Text> : ''}
-      <FlatList
-        data={props.tasks}
-        ListHeaderComponent={
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <View style={{ paddingRight: ds.padding.s }}>
-              <IconButton
-                onPress={props.onAddCheckbox}
-                icon={icons.plus}
-                size={ds.icons.medium}
-                color={ds.colors.primary}></IconButton>
-            </View>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{ paddingRight: ds.padding.s }}>
+          <IconButton
+            onPress={props.onAddCheckbox}
+            icon={icons.plus}
+            size={ds.icons.medium}
+            color={ds.colors.primary}></IconButton>
+        </View>
 
-            <EnterTask
-              taskLabel={props.taskLabel}
-              onAddCheckbox={props.onAddCheckbox}
-              onChangeText={props.onChangeText}></EnterTask>
-          </View>
-        }
-        renderItem={({ item }) => (
-          <ChecklistTask
-            handleRemoveTask={props.onRemoveTask}
-            id={item.id}
-            label={item.label}></ChecklistTask>
-        )}></FlatList>
+        <EnterTask
+          taskLabel={props.taskLabel}
+          onAddCheckbox={props.onAddCheckbox}
+          onChangeText={props.onChangeText}></EnterTask>
+      </View>
+
+      {props.tasks.map((task) => (
+        <ChecklistTask
+          key={task.id}
+          handleRemoveTask={props.onRemoveTask}
+          id={task.id}
+          label={task.label}></ChecklistTask>
+      ))}
     </View>
   )
 }
