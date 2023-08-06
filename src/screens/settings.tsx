@@ -7,14 +7,15 @@ import RNFS from 'react-native-fs'
 function Settings() {
   const { checklists, templates } = useContext(StorageContext)
 
-  function exportJSON() {
+  function getJSONExportString(): string {
     const exportObj = {
       date: Date.now(),
       checklists,
       templates,
     }
     const exportObjStr = JSON.stringify(exportObj)
-    console.log(exportObjStr)
+    // console.log(exportObjStr)
+    return exportObjStr
   }
 
   return (
@@ -23,8 +24,10 @@ function Settings() {
         style={{ paddingTop: ds.padding.s, paddingHorizontal: ds.padding.s }}>
         <Button
           onPress={() => {
-            console.log('Export')
-            writeJSON('Hello world', 'filename')
+            writeJSON(
+              getJSONExportString(),
+              `Checklist-templates-${Date.now()}`,
+            )
           }}
           title="Export JSON"></Button>
       </View>
@@ -42,14 +45,14 @@ async function writeJSON(dataString: string, name: string) {
       await RNFS.moveFile(filePath, destPath)
       Alert.alert(
         'Success',
-        'JSON file generated and exported to the Downloads folder!',
+        `${name}.json generated and exported to the Downloads folder!`,
       )
     } else if (Platform.OS === 'ios') {
       const destPath = `${RNFS.DocumentDirectoryPath}/${name}.json`
       await RNFS.moveFile(filePath, destPath)
       Alert.alert(
         'Success',
-        'JSON file generated and exported to the Documents directory',
+        '${name}.json generated and exported to the Documents directory',
       )
     } else {
       Alert.alert(
@@ -57,8 +60,6 @@ async function writeJSON(dataString: string, name: string) {
         'Exporting to Downloads folder is not supported on this platform',
       )
     }
-
-    Alert.alert('Success', 'JSON file generated and written')
   } catch (error) {
     console.error('Error downloading JSON file', error)
     Alert.alert('Error', 'An error occured while downloading the JSON file')
