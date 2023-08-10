@@ -120,7 +120,7 @@ function EnterTemplate({ route }) {
           onRemoveTask={handleRemoveTask}></ChecklistSection>
       </View>
 
-      {/* {sections.length > 0 ? (
+      {sections.length > 0 ? (
         <View>
           {sections.map((section, i) => {
             return (
@@ -138,9 +138,9 @@ function EnterTemplate({ route }) {
         </View>
       ) : (
         ''
-      )} */}
+      )}
 
-      {/* <View style={styles.bluePanel}>
+      <View style={styles.bluePanel}>
         <TextInput
           placeholder="Enter section label"
           onChangeText={(text) => setNewSectionLabel(text)}></TextInput>
@@ -150,7 +150,7 @@ function EnterTemplate({ route }) {
           size={ds.icons.medium}
           label={'Add section'}
           color={ds.colors.primary}></IconButton>
-      </View> */}
+      </View>
       {templateName !== '' && defaultTasks.length > 0 ? (
         <SaveTemplate onSubmit={handleSubmitList}></SaveTemplate>
       ) : (
@@ -171,7 +171,14 @@ type ChecklistSectionProps = {
 function ChecklistSection(props: ChecklistSectionProps) {
   return (
     <View>
-      {props.sectionLabel !== '' ? <Text>{props.sectionLabel}</Text> : ''}
+      {props.sectionLabel !== '' ? (
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <Text>{props.sectionLabel}</Text>
+          <IconButton onPress={() => {}} icon={icons.trash}></IconButton>
+        </View>
+      ) : (
+        ''
+      )}
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <View style={{ paddingRight: ds.padding.s }}>
           <IconButton
