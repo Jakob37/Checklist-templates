@@ -1,6 +1,6 @@
 import { Text, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { ds } from '../ux/design'
+import { ds, styles } from '../ux/design'
 
 function IconButton(props: {
   onPress: () => void

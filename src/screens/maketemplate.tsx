@@ -4,11 +4,12 @@ import { useContext, useEffect, useRef, useState } from 'react'
 import { StorageContext } from '../storage/context'
 import { ds, styles } from '../ux/design'
 import { icons } from '../ux/icons'
-import { IconButton } from '../views/iconbutton'
+import { IconButton, Test } from '../views/iconbutton'
 import { ChecklistTemplate, Task, TaskStack } from '../storage/interfaces'
 import { generateId, printObject } from '../util/util'
 import { buildTemplateObject } from '../storage/util'
 import { useIsFocused, useNavigation } from '@react-navigation/native'
+import { BlueWell } from '../views/wells'
 
 const PADDING_TEMP = 10
 
@@ -140,7 +141,7 @@ function EnterTemplate({ route }) {
         ''
       )}
 
-      <View style={styles.bluePanel}>
+      {/* <View style={styles.bluePanel}>
         <TextInput
           placeholder="Enter section label"
           onChangeText={(text) => setNewSectionLabel(text)}></TextInput>
@@ -150,7 +151,12 @@ function EnterTemplate({ route }) {
           size={ds.icons.medium}
           label={'Add section'}
           color={ds.colors.primary}></IconButton>
-      </View>
+      </View> */}
+
+      <BlueWell>
+        <Text>Test</Text>
+      </BlueWell>
+
       {templateName !== '' && defaultTasks.length > 0 ? (
         <SaveTemplate onSubmit={handleSubmitList}></SaveTemplate>
       ) : (
@@ -183,9 +189,7 @@ function ChecklistSection(props: ChecklistSectionProps) {
         <View style={{ paddingRight: ds.padding.s }}>
           <IconButton
             onPress={props.onAddCheckbox}
-            icon={icons.plus}
-            size={ds.icons.medium}
-            color={ds.colors.primary}></IconButton>
+            icon={icons.plus}></IconButton>
         </View>
 
         <EnterTask
