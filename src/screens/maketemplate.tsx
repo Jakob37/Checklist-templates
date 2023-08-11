@@ -1,4 +1,12 @@
-import { FlatList, ScrollView, Text, TextInput, View } from 'react-native'
+import {
+  Button,
+  FlatList,
+  Modal,
+  ScrollView,
+  Text,
+  TextInput,
+  View,
+} from 'react-native'
 
 import { useContext, useEffect, useRef, useState } from 'react'
 import { StorageContext } from '../storage/context'
@@ -29,6 +37,7 @@ function EnterTemplate({ route }) {
   const [defaultTasks, setDefaultTasks] = useState<Task[]>([])
   const [sections, setSections] = useState<Section[]>([])
   const [newSectionLabel, setNewSectionLabel] = useState('')
+  const [modalVisible, setModalVisible] = useState(false)
 
   const isFocused = useIsFocused()
 
@@ -153,9 +162,54 @@ function EnterTemplate({ route }) {
           color={ds.colors.primary}></IconButton>
       </View> */}
 
-      <BlueWell>
-        <Text>Test</Text>
+      {/* FIXME: Fix the styling here */}
+      <BlueWell style={{ width: '33%' }}>
+        <IconButton
+          onPress={() => {
+            setModalVisible(true)
+          }}
+          icon={icons.plus}
+          label={'Add section'}></IconButton>
       </BlueWell>
+
+      <Modal visible={modalVisible} animationType="fade" transparent={true}>
+        <View style={styles.modalContainer}>
+          <View
+            style={{
+              width: '80%',
+              backgroundColor: ds.colors.secondary,
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+            }}>
+            <View style={{ padding: ds.padding.s }}>
+              <TextInput
+                placeholder="Section name"
+                onChangeText={(text) => setNewSectionLabel(text)}></TextInput>
+            </View>
+
+            <View
+              style={{
+                paddingBottom: ds.padding.s,
+                paddingHorizontal: ds.padding.s,
+                flexDirection: 'row',
+              }}>
+              <View style={{ paddingRight: ds.padding.s }}>
+                <Button
+                  title="Submit"
+                  onPress={() => {
+                    console.log('More action coming here!')
+                    addSection()
+                    setModalVisible(false)
+                  }}
+                />
+              </View>
+              <View>
+                <Button title="Cancel" onPress={() => setModalVisible(false)} />
+              </View>
+            </View>
+          </View>
+        </View>
+      </Modal>
 
       {templateName !== '' && defaultTasks.length > 0 ? (
         <SaveTemplate onSubmit={handleSubmitList}></SaveTemplate>

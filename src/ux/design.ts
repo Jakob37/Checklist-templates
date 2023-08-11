@@ -19,16 +19,16 @@ export const ds = {
     },
   },
   colors: {
-    primary: 'white',
-    secondary: 'lightgray',
-    darkgray: 'darkgray',
-    background: 'darkgreen',
-    cardBackground: '#1F3B4D',
+    // primary: 'white',
+    // secondary: 'lightgray',
+    // darkgray: 'darkgray',
+    // background: 'darkgreen',
+    // cardBackground: '#1F3B4D',
 
-    darkBlue: '#1D5B79',
-    lightBlue: '#468B97',
-    orange: '#EF6262',
-    red: '#F3AA60',
+    primary: '#468B97',
+    secondary: '#1D5B79',
+    highlight1: '#EF6262',
+    highlight2: '#F3AA60',
     // cardBackground: 'gray',
   },
   icons: {
@@ -45,7 +45,7 @@ export const ds = {
 
 const styles = StyleSheet.create({
   bluePanel: {
-    backgroundColor: ds.colors.darkBlue,
+    backgroundColor: ds.colors.secondary,
     marginHorizontal: ds.padding.s,
     marginTop: ds.padding.m,
     paddingVertical: ds.padding.s,
@@ -53,12 +53,20 @@ const styles = StyleSheet.create({
     borderRadius: ds.border.radius,
   },
   orangePanel: {
-    backgroundColor: ds.colors.orange,
+    backgroundColor: ds.colors.highlight1,
     marginHorizontal: ds.padding.s,
     marginTop: ds.padding.m,
     paddingVertical: ds.padding.s,
     paddingHorizontal: ds.padding.s,
     borderRadius: ds.border.radius,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    width: '100%',
+    height: '100%',
   },
 })
 

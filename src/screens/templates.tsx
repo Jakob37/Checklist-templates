@@ -54,7 +54,7 @@ function TemplateCard(props) {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: ds.colors.darkBlue,
+        backgroundColor: ds.colors.secondary,
         marginTop: ds.padding.s,
         marginHorizontal: ds.padding.s,
         borderRadius: ds.border.radius,
