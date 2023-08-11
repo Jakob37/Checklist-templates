@@ -13,9 +13,9 @@ export const ds = {
   },
   font: {
     sizes: {
-      huge: 24,
-      major: 16,
-      minor: 10,
+      huge: 32,
+      major: 32,
+      minor: 32,
     },
   },
   colors: {
@@ -32,7 +32,7 @@ export const ds = {
     // cardBackground: 'gray',
   },
   icons: {
-    medium: 20,
+    medium: 32,
     large: 32,
   },
   textInput: {

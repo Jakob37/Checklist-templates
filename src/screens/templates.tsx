@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
 import { useContext } from 'react'
-import { View } from 'react-native'
+import { ScrollView, View } from 'react-native'
 import { StorageContext } from '../storage/context'
 import { instantiateTemplate } from '../storage/util'
 import { ds } from '../ux/design'
@@ -15,7 +15,7 @@ function Templates() {
   const navigate = useNavigation()
 
   return (
-    <View>
+    <ScrollView>
       {templates.map((template) => (
         <TemplateCard
           key={template.id}
@@ -41,7 +41,7 @@ function Templates() {
             })
           }}></TemplateCard>
       ))}
-    </View>
+    </ScrollView>
   )
 }
 
