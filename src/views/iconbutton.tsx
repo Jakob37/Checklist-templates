@@ -1,4 +1,11 @@
-import { Text, TouchableOpacity, View } from 'react-native'
+import {
+  StyleProp,
+  Text,
+  TextStyle,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { ds, styles } from '../ux/design'
 
@@ -7,9 +14,9 @@ function IconButton(props: {
   icon: string
   size?: number
   color?: string
-  iconStyle?: {}
-  containerStyle?: {}
-  labelStyle?: {}
+  iconStyle?: StyleProp<ViewStyle>
+  containerStyle?: StyleProp<ViewStyle>
+  labelStyle?: StyleProp<TextStyle>
   label?: string
   labelPos?: 'left' | 'right'
 }) {

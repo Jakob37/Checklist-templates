@@ -112,45 +112,46 @@ function EnterTemplate({ route }) {
   }
 
   return (
-    <ScrollView>
-      <View style={styles.bluePanel}>
-        <TextInput
-          placeholder="Enter template name"
-          value={templateName}
-          onChangeText={(text) => setTemplateName(text)}></TextInput>
-      </View>
-
-      <View style={styles.bluePanel}>
-        <ChecklistSection
-          sectionLabel=""
-          taskLabel={taskLabel}
-          onChangeText={(text) => setTaskLabel(text)}
-          onAddCheckbox={handleAddDefaultCheckbox}
-          tasks={defaultTasks}
-          onRemoveTask={handleRemoveTask}></ChecklistSection>
-      </View>
-
-      {sections.length > 0 ? (
-        <View>
-          {sections.map((section, i) => {
-            return (
-              <View key={String(i)} style={styles.bluePanel}>
-                <ChecklistSection
-                  sectionLabel={section.label}
-                  taskLabel={section.label}
-                  onChangeText={(text) => {}}
-                  onAddCheckbox={() => {}}
-                  tasks={section.tasks}
-                  onRemoveTask={() => {}}></ChecklistSection>
-              </View>
-            )
-          })}
+    <View style={{ flex: 1 }}>
+      <ScrollView>
+        <View style={styles.bluePanel}>
+          <TextInput
+            placeholder="Enter template name"
+            value={templateName}
+            onChangeText={(text) => setTemplateName(text)}></TextInput>
         </View>
-      ) : (
-        ''
-      )}
 
-      {/* <View style={styles.bluePanel}>
+        <View style={styles.bluePanel}>
+          <ChecklistSection
+            sectionLabel=""
+            taskLabel={taskLabel}
+            onChangeText={(text) => setTaskLabel(text)}
+            onAddCheckbox={handleAddDefaultCheckbox}
+            tasks={defaultTasks}
+            onRemoveTask={handleRemoveTask}></ChecklistSection>
+        </View>
+
+        {sections.length > 0 ? (
+          <View>
+            {sections.map((section, i) => {
+              return (
+                <View key={String(i)} style={styles.bluePanel}>
+                  <ChecklistSection
+                    sectionLabel={section.label}
+                    taskLabel={section.label}
+                    onChangeText={(text) => {}}
+                    onAddCheckbox={() => {}}
+                    tasks={section.tasks}
+                    onRemoveTask={() => {}}></ChecklistSection>
+                </View>
+              )
+            })}
+          </View>
+        ) : (
+          ''
+        )}
+
+        {/* <View style={styles.bluePanel}>
         <TextInput
           placeholder="Enter section label"
           onChangeText={(text) => setNewSectionLabel(text)}></TextInput>
@@ -162,8 +163,64 @@ function EnterTemplate({ route }) {
           color={ds.colors.primary}></IconButton>
       </View> */}
 
-      {/* FIXME: Fix the styling here */}
-      <BlueWell style={{ width: '33%' }}>
+        {/* FIXME: Fix the styling here */}
+
+        <Modal visible={modalVisible} animationType="fade" transparent={true}>
+          <View style={styles.modalContainer}>
+            <View
+              style={{
+                width: '80%',
+                backgroundColor: ds.colors.secondary,
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+              }}>
+              <View style={{ padding: ds.padding.s }}>
+                <TextInput
+                  placeholder="Section name"
+                  onChangeText={(text) => setNewSectionLabel(text)}></TextInput>
+              </View>
+
+              <View
+                style={{
+                  paddingBottom: ds.padding.s,
+                  paddingHorizontal: ds.padding.s,
+                  flexDirection: 'row',
+                }}>
+                <View style={{ paddingRight: ds.padding.s }}>
+                  <Button
+                    title="Submit"
+                    onPress={() => {
+                      console.log('More action coming here!')
+                      addSection()
+                      setModalVisible(false)
+                    }}
+                  />
+                </View>
+                <View>
+                  <Button
+                    title="Cancel"
+                    onPress={() => setModalVisible(false)}
+                  />
+                </View>
+              </View>
+            </View>
+          </View>
+        </Modal>
+
+        {templateName !== '' && defaultTasks.length > 0 ? (
+          <SaveTemplate onSubmit={handleSubmitList}></SaveTemplate>
+        ) : (
+          ''
+        )}
+      </ScrollView>
+
+      <BlueWell
+        style={{
+          width: '33%',
+          position: 'absolute',
+          bottom: ds.padding.s,
+          right: 0,
+        }}>
         <IconButton
           onPress={() => {
             setModalVisible(true)
@@ -171,52 +228,7 @@ function EnterTemplate({ route }) {
           icon={icons.plus}
           label={'Add section'}></IconButton>
       </BlueWell>
-
-      <Modal visible={modalVisible} animationType="fade" transparent={true}>
-        <View style={styles.modalContainer}>
-          <View
-            style={{
-              width: '80%',
-              backgroundColor: ds.colors.secondary,
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-            }}>
-            <View style={{ padding: ds.padding.s }}>
-              <TextInput
-                placeholder="Section name"
-                onChangeText={(text) => setNewSectionLabel(text)}></TextInput>
-            </View>
-
-            <View
-              style={{
-                paddingBottom: ds.padding.s,
-                paddingHorizontal: ds.padding.s,
-                flexDirection: 'row',
-              }}>
-              <View style={{ paddingRight: ds.padding.s }}>
-                <Button
-                  title="Submit"
-                  onPress={() => {
-                    console.log('More action coming here!')
-                    addSection()
-                    setModalVisible(false)
-                  }}
-                />
-              </View>
-              <View>
-                <Button title="Cancel" onPress={() => setModalVisible(false)} />
-              </View>
-            </View>
-          </View>
-        </View>
-      </Modal>
-
-      {templateName !== '' && defaultTasks.length > 0 ? (
-        <SaveTemplate onSubmit={handleSubmitList}></SaveTemplate>
-      ) : (
-        ''
-      )}
-    </ScrollView>
+    </View>
   )
 }
 
