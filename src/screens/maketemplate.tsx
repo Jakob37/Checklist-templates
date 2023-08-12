@@ -147,10 +147,17 @@ function EnterTemplate({ route }) {
                         label: sectionsCopy[i].enterTaskLabel,
                       }
                       sectionsCopy[i].tasks.push(newTask)
+                      sectionsCopy[i].enterTaskLabel = ''
                       setSections(sectionsCopy)
                     }}
                     tasks={section.tasks}
-                    onRemoveTask={() => {}}
+                    onRemoveTask={(taskId) => {
+                      const sectionsCopy = [...sections]
+                      sectionsCopy[i].tasks = sectionsCopy[i].tasks.filter(
+                        (task) => task.id !== taskId,
+                      )
+                      setSections(sectionsCopy)
+                    }}
                     onRemoveSection={() => {
                       const sectionsCopy = [...sections]
                       sectionsCopy.splice(i, 1)
