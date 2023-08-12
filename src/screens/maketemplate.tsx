@@ -12,7 +12,7 @@ import { useContext, useEffect, useRef, useState } from 'react'
 import { StorageContext } from '../storage/context'
 import { ds, styles } from '../ux/design'
 import { icons } from '../ux/icons'
-import { IconButton, Test } from '../views/iconbutton'
+import { IconButton } from '../views/iconbutton'
 import { ChecklistTemplate, Task, TaskStack } from '../storage/interfaces'
 import { generateId, printObject } from '../util/util'
 import { buildTemplateObject } from '../storage/util'
@@ -21,8 +21,9 @@ import { BlueWell } from '../views/wells'
 
 const PADDING_TEMP = 10
 
-type Section = {
-  label: string
+type SectionState = {
+  sectionLabel: string
+  taskLabel: string
   tasks: Task[]
 }
 
@@ -35,7 +36,7 @@ function EnterTemplate({ route }) {
   const { saveTemplate, getTemplateById } = useContext(StorageContext)
 
   const [defaultTasks, setDefaultTasks] = useState<Task[]>([])
-  const [sections, setSections] = useState<Section[]>([])
+  const [sections, setSections] = useState<SectionState[]>([])
   const [newSectionLabel, setNewSectionLabel] = useState('')
   const [modalVisible, setModalVisible] = useState(false)
 
@@ -76,6 +77,7 @@ function EnterTemplate({ route }) {
       setDefaultTasks([...defaultTasks, newTask])
       setTaskLabel('')
     }
+    label
   }
 
   const handleRemoveTask = (id: string) => {
@@ -105,7 +107,8 @@ function EnterTemplate({ route }) {
 
   function addSection() {
     const newSection = {
-      label: newSectionLabel,
+      sectionLabel: newSectionLabel,
+      taskLabel: '',
       tasks: [],
     }
     setSections([...sections, newSection])
@@ -128,7 +131,8 @@ function EnterTemplate({ route }) {
             onChangeText={(text) => setTaskLabel(text)}
             onAddCheckbox={handleAddDefaultCheckbox}
             tasks={defaultTasks}
-            onRemoveTask={handleRemoveTask}></ChecklistSection>
+            onRemoveTask={handleRemoveTask}
+            onRemoveSection={() => {}}></ChecklistSection>
         </View>
 
         {sections.length > 0 ? (
@@ -137,12 +141,21 @@ function EnterTemplate({ route }) {
               return (
                 <View key={String(i)} style={styles.bluePanel}>
                   <ChecklistSection
-                    sectionLabel={section.label}
-                    taskLabel={section.label}
-                    onChangeText={(text) => {}}
+                    sectionLabel={section.sectionLabel}
+                    taskLabel={section.taskLabel}
+                    onChangeText={(text) => {
+                      const sectionsCopy = [...sections]
+                      sectionsCopy[i].sectionLabel = text
+                      setSections(sectionsCopy)
+                    }}
                     onAddCheckbox={() => {}}
                     tasks={section.tasks}
-                    onRemoveTask={() => {}}></ChecklistSection>
+                    onRemoveTask={() => {}}
+                    onRemoveSection={() => {
+                      const sectionsCopy = [...sections]
+                      sectionsCopy.splice(i, 1)
+                      setSections(sectionsCopy)
+                    }}></ChecklistSection>
                 </View>
               )
             })}
@@ -239,6 +252,7 @@ type ChecklistSectionProps = {
   onAddCheckbox: () => void
   tasks: Task[]
   onRemoveTask: (id: string) => void
+  onRemoveSection: () => void
 }
 function ChecklistSection(props: ChecklistSectionProps) {
   return (
@@ -246,7 +260,9 @@ function ChecklistSection(props: ChecklistSectionProps) {
       {props.sectionLabel !== '' ? (
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <Text>{props.sectionLabel}</Text>
-          <IconButton onPress={() => {}} icon={icons.trash}></IconButton>
+          <IconButton
+            onPress={props.onRemoveSection}
+            icon={icons.trash}></IconButton>
         </View>
       ) : (
         ''
