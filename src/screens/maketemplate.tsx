@@ -10,6 +10,7 @@ import { ds, styles } from '../ux/design'
 import { icons } from '../ux/icons'
 import { IconButton } from '../views/iconbutton'
 import { BlueWell } from '../views/wells'
+import { mutateStateAtIndex } from '../util/state'
 
 const PADDING_TEMP = 10
 
@@ -135,9 +136,12 @@ function EnterTemplate({ route }) {
                     sectionLabel={section.sectionLabel}
                     enterTaskLabel={section.enterTaskLabel}
                     onChangeTaskLabel={(text) => {
-                      const sectionsCopy = [...sections]
-                      sectionsCopy[i].enterTaskLabel = text
-                      setSections(sectionsCopy)
+                      mutateStateAtIndex(
+                        sections,
+                        setSections,
+                        i,
+                        (section) => (section.enterTaskLabel = text),
+                      )
                     }}
                     onAddCheckbox={() => {
                       // FIXME: Can this state not be handled by the section?
