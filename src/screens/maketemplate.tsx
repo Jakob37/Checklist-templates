@@ -1,29 +1,21 @@
-import {
-  Button,
-  FlatList,
-  Modal,
-  ScrollView,
-  Text,
-  TextInput,
-  View,
-} from 'react-native'
+import { Button, Modal, ScrollView, Text, TextInput, View } from 'react-native'
 
-import { useContext, useEffect, useRef, useState } from 'react'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
+import { useContext, useEffect, useState } from 'react'
 import { StorageContext } from '../storage/context'
+import { Task } from '../storage/interfaces'
+import { buildTemplateObject } from '../storage/util'
+import { generateId } from '../util/util'
 import { ds, styles } from '../ux/design'
 import { icons } from '../ux/icons'
 import { IconButton } from '../views/iconbutton'
-import { ChecklistTemplate, Task, TaskStack } from '../storage/interfaces'
-import { generateId, printObject } from '../util/util'
-import { buildTemplateObject } from '../storage/util'
-import { useIsFocused, useNavigation } from '@react-navigation/native'
 import { BlueWell } from '../views/wells'
 
 const PADDING_TEMP = 10
 
 type SectionState = {
   sectionLabel: string
-  taskLabel: string
+  enterTaskLabel: string
   tasks: Task[]
 }
 
@@ -77,7 +69,6 @@ function EnterTemplate({ route }) {
       setDefaultTasks([...defaultTasks, newTask])
       setTaskLabel('')
     }
-    label
   }
 
   const handleRemoveTask = (id: string) => {
@@ -127,8 +118,8 @@ function EnterTemplate({ route }) {
         <View style={styles.bluePanel}>
           <ChecklistSection
             sectionLabel=""
-            taskLabel={taskLabel}
-            onChangeText={(text) => setTaskLabel(text)}
+            enterTaskLabel={taskLabel}
+            onChangeTaskLabel={(text) => setTaskLabel(text)}
             onAddCheckbox={handleAddDefaultCheckbox}
             tasks={defaultTasks}
             onRemoveTask={handleRemoveTask}
@@ -142,13 +133,22 @@ function EnterTemplate({ route }) {
                 <View key={String(i)} style={styles.bluePanel}>
                   <ChecklistSection
                     sectionLabel={section.sectionLabel}
-                    taskLabel={section.taskLabel}
-                    onChangeText={(text) => {
+                    enterTaskLabel={section.enterTaskLabel}
+                    onChangeTaskLabel={(text) => {
                       const sectionsCopy = [...sections]
-                      sectionsCopy[i].sectionLabel = text
+                      sectionsCopy[i].enterTaskLabel = text
                       setSections(sectionsCopy)
                     }}
-                    onAddCheckbox={() => {}}
+                    onAddCheckbox={() => {
+                      // FIXME: Can this state not be handled by the section?
+                      const sectionsCopy = [...sections]
+                      const newTask: Task = {
+                        id: generateId('task'),
+                        label: sectionsCopy[i].enterTaskLabel,
+                      }
+                      sectionsCopy[i].tasks.push(newTask)
+                      setSections(sectionsCopy)
+                    }}
                     tasks={section.tasks}
                     onRemoveTask={() => {}}
                     onRemoveSection={() => {
@@ -247,8 +247,8 @@ function EnterTemplate({ route }) {
 
 type ChecklistSectionProps = {
   sectionLabel: string
-  taskLabel: string
-  onChangeText: (text: string) => void
+  enterTaskLabel: string
+  onChangeTaskLabel: (text: string) => void
   onAddCheckbox: () => void
   tasks: Task[]
   onRemoveTask: (id: string) => void
@@ -275,9 +275,9 @@ function ChecklistSection(props: ChecklistSectionProps) {
         </View>
 
         <EnterTask
-          taskLabel={props.taskLabel}
+          taskLabel={props.enterTaskLabel}
           onAddCheckbox={props.onAddCheckbox}
-          onChangeText={props.onChangeText}></EnterTask>
+          onChangeText={props.onChangeTaskLabel}></EnterTask>
       </View>
 
       {props.tasks.map((task) => (
