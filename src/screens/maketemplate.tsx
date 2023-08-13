@@ -11,8 +11,7 @@ import { icons } from '../ux/icons'
 import { IconButton } from '../views/iconbutton'
 import { BlueWell } from '../views/wells'
 import { mutateStateAtIndex, removeStateAtIndex } from '../util/state'
-
-const PADDING_TEMP = 10
+import { SimpleInputModal } from '../views/modal'
 
 type SectionState = {
   sectionLabel: string
@@ -20,6 +19,7 @@ type SectionState = {
   tasks: Task[]
 }
 
+// @ts-ignore
 function EnterTemplate({ route }) {
   const navigate = useNavigation()
 
@@ -87,6 +87,7 @@ function EnterTemplate({ route }) {
     )
     saveTemplate(template)
     reset()
+    // @ts-ignore
     navigate.navigate('Templates')
   }
 
@@ -100,7 +101,7 @@ function EnterTemplate({ route }) {
   function addSection() {
     const newSection = {
       sectionLabel: newSectionLabel,
-      taskLabel: '',
+      enterTaskLabel: '',
       tasks: [],
     }
     setSections([...sections, newSection])
@@ -186,47 +187,15 @@ function EnterTemplate({ route }) {
 
         {/* FIXME: Fix the styling here */}
 
-        <Modal visible={modalVisible} animationType="fade" transparent={true}>
-          <View style={styles.modalContainer}>
-            <View
-              style={{
-                width: '80%',
-                backgroundColor: ds.colors.secondary,
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-              }}>
-              <View style={{ padding: ds.padding.s }}>
-                <TextInput
-                  placeholder="Section name"
-                  onChangeText={(text) => setNewSectionLabel(text)}></TextInput>
-              </View>
-
-              <View
-                style={{
-                  paddingBottom: ds.padding.s,
-                  paddingHorizontal: ds.padding.s,
-                  flexDirection: 'row',
-                }}>
-                <View style={{ paddingRight: ds.padding.s }}>
-                  <Button
-                    title="Submit"
-                    onPress={() => {
-                      console.log('More action coming here!')
-                      addSection()
-                      setModalVisible(false)
-                    }}
-                  />
-                </View>
-                <View>
-                  <Button
-                    title="Cancel"
-                    onPress={() => setModalVisible(false)}
-                  />
-                </View>
-              </View>
-            </View>
-          </View>
-        </Modal>
+        <SimpleInputModal
+          modalVisible={modalVisible}
+          onSubmit={() => {
+            addSection()
+            setModalVisible(false)
+          }}
+          onCancel={() => {
+            setModalVisible(false)
+          }}></SimpleInputModal>
 
         {templateName !== '' && defaultTasks.length > 0 ? (
           <SaveTemplate onSubmit={handleSubmitList}></SaveTemplate>
@@ -341,7 +310,7 @@ function ChecklistTask(props: ChecklistTaskProps) {
           icon={icons.pen}
           size={ds.icons.medium}
           color="white"
-          iconStyle={{ paddingHorizontal: PADDING_TEMP }}></IconButton>
+          iconStyle={{ paddingHorizontal: ds.padding.s }}></IconButton>
         <IconButton
           onPress={() => {
             props.handleRemoveTask(props.id)
@@ -349,7 +318,7 @@ function ChecklistTask(props: ChecklistTaskProps) {
           icon={icons.trash}
           size={ds.icons.medium}
           color="white"
-          iconStyle={{ paddingHorizontal: PADDING_TEMP }}></IconButton>
+          iconStyle={{ paddingHorizontal: ds.padding.s }}></IconButton>
       </View>
     </View>
   )
@@ -370,7 +339,7 @@ function SaveTemplate(props: SaveTemplateProps) {
         },
       ]}>
       <IconButton
-        iconStyle={{ paddingHorizontal: PADDING_TEMP }}
+        iconStyle={{ paddingHorizontal: ds.padding.s }}
         onPress={props.onSubmit}
         icon={icons.save}
         size={ds.icons.medium}
