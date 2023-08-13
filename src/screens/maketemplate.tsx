@@ -12,6 +12,8 @@ import { IconButton } from '../views/iconbutton'
 import { BlueWell } from '../views/wells'
 import { mutateStateAtIndex, removeStateAtIndex } from '../util/state'
 import { SimpleInputModal } from '../views/modal'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { FloatingButton } from '../views/floatingbutton'
 
 type SectionState = {
   sectionLabel: string
@@ -32,6 +34,9 @@ function EnterTemplate({ route }) {
   const [sections, setSections] = useState<SectionState[]>([])
   const [newSectionLabel, setNewSectionLabel] = useState('')
   const [modalVisible, setModalVisible] = useState(false)
+
+  const [addingNewSectionNew, setAddingNewSectionNew] = useState(false)
+  const [newEnterSectionLabel, setNewEnterSectionLabel] = useState('')
 
   const isFocused = useIsFocused()
 
@@ -98,9 +103,9 @@ function EnterTemplate({ route }) {
     setTemplateId(generateId('template'))
   }
 
-  function addSection() {
+  function addSection(sectionLabel: string) {
     const newSection = {
-      sectionLabel: newSectionLabel,
+      sectionLabel,
       enterTaskLabel: '',
       tasks: [],
     }
@@ -190,7 +195,7 @@ function EnterTemplate({ route }) {
         <SimpleInputModal
           modalVisible={modalVisible}
           onSubmit={() => {
-            addSection()
+            addSection(newSectionLabel)
             setModalVisible(false)
           }}
           onCancel={() => {
@@ -202,22 +207,50 @@ function EnterTemplate({ route }) {
         ) : (
           ''
         )}
+        <BlueWell style={{ paddingTop: ds.padding.s }}>
+          {addingNewSectionNew ? (
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}>
+              <TextInput
+                placeholder="Enter label"
+                onChangeText={(text) =>
+                  setNewEnterSectionLabel(text)
+                }></TextInput>
+              <View style={{ flexDirection: 'row' }}>
+                <IconButton
+                  icon={icons.done}
+                  containerStyle={{ paddingRight: ds.padding.s }}
+                  onPress={() => {
+                    if (newEnterSectionLabel === '') {
+                      console.log('You need to enter a value')
+                      return
+                    }
+                    setAddingNewSectionNew(false)
+                    addSection(newEnterSectionLabel)
+                  }}></IconButton>
+                {/* FIXME: Cross icon */}
+                <IconButton
+                  icon={icons.trash}
+                  onPress={() => {
+                    setAddingNewSectionNew(false)
+                  }}></IconButton>
+              </View>
+            </View>
+          ) : (
+            <TouchableOpacity
+              onPress={() => {
+                // addSection()
+                setAddingNewSectionNew(true)
+              }}>
+              <Text>Click to add new section</Text>
+            </TouchableOpacity>
+          )}
+        </BlueWell>
       </ScrollView>
-
-      <BlueWell
-        style={{
-          width: '33%',
-          position: 'absolute',
-          bottom: ds.padding.s,
-          right: 0,
-        }}>
-        <IconButton
-          onPress={() => {
-            setModalVisible(true)
-          }}
-          icon={icons.plus}
-          label={'Add section'}></IconButton>
-      </BlueWell>
     </View>
   )
 }

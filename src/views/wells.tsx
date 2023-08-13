@@ -3,7 +3,7 @@ import { styles } from '../ux/design'
 import { PropsWithChildren } from 'react'
 
 type BlueWellProps = {
-  style: StyleProp<ViewStyle>
+  style?: StyleProp<ViewStyle>
 }
 function BlueWell(props: PropsWithChildren<BlueWellProps>) {
   return <View style={[styles.bluePanel, props.style]}>{props.children}</View>
