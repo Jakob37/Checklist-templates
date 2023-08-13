@@ -10,7 +10,7 @@ import { ds, styles } from '../ux/design'
 import { icons } from '../ux/icons'
 import { IconButton } from '../views/iconbutton'
 import { BlueWell } from '../views/wells'
-import { mutateStateAtIndex } from '../util/state'
+import { mutateStateAtIndex, removeStateAtIndex } from '../util/state'
 
 const PADDING_TEMP = 10
 
@@ -144,28 +144,37 @@ function EnterTemplate({ route }) {
                       )
                     }}
                     onAddCheckbox={() => {
-                      // FIXME: Can this state not be handled by the section?
-                      const sectionsCopy = [...sections]
-                      const newTask: Task = {
-                        id: generateId('task'),
-                        label: sectionsCopy[i].enterTaskLabel,
-                      }
-                      sectionsCopy[i].tasks.push(newTask)
-                      sectionsCopy[i].enterTaskLabel = ''
-                      setSections(sectionsCopy)
+                      mutateStateAtIndex(
+                        sections,
+                        setSections,
+                        i,
+                        (section) => {
+                          const newTask: Task = {
+                            id: generateId('task'),
+                            label: section.enterTaskLabel,
+                          }
+                          section.tasks.push(newTask)
+                          section.enterTaskLabel = ''
+                        },
+                      )
                     }}
                     tasks={section.tasks}
                     onRemoveTask={(taskId) => {
-                      const sectionsCopy = [...sections]
-                      sectionsCopy[i].tasks = sectionsCopy[i].tasks.filter(
-                        (task) => task.id !== taskId,
+                      mutateStateAtIndex(
+                        sections,
+                        setSections,
+                        i,
+                        (section) => {
+                          const updatedTasks = section.tasks.filter(
+                            (task) => task.id !== taskId,
+                          )
+                          section.tasks = updatedTasks
+                          section.enterTaskLabel = ''
+                        },
                       )
-                      setSections(sectionsCopy)
                     }}
                     onRemoveSection={() => {
-                      const sectionsCopy = [...sections]
-                      sectionsCopy.splice(i, 1)
-                      setSections(sectionsCopy)
+                      removeStateAtIndex(sections, setSections, i)
                     }}></ChecklistSection>
                 </View>
               )
@@ -174,18 +183,6 @@ function EnterTemplate({ route }) {
         ) : (
           ''
         )}
-
-        {/* <View style={styles.bluePanel}>
-        <TextInput
-          placeholder="Enter section label"
-          onChangeText={(text) => setNewSectionLabel(text)}></TextInput>
-        <IconButton
-          onPress={addSection}
-          icon={icons.plus}
-          size={ds.icons.medium}
-          label={'Add section'}
-          color={ds.colors.primary}></IconButton>
-      </View> */}
 
         {/* FIXME: Fix the styling here */}
 

@@ -10,4 +10,14 @@ function mutateStateAtIndex<T>(
   setState(stateCopy)
 }
 
-export { mutateStateAtIndex }
+function removeStateAtIndex<T>(
+  origState: T[],
+  setState: (newState: T[]) => void,
+  index: number,
+) {
+  const stateCopy = [...origState]
+  stateCopy.splice(index, 1)
+  setState(stateCopy)
+}
+
+export { mutateStateAtIndex, removeStateAtIndex }
