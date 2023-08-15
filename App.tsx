@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 import {
   DefaultTheme,
+  DrawerActions,
   NavigationContainer,
   useNavigation,
 } from '@react-navigation/native'
@@ -15,7 +16,7 @@ import {
   CHECKLISTS_STORAGE_KEY,
   TEMPLATES_STORAGE_KEY,
 } from './src/storage/storage'
-import { Text } from 'react-native'
+import { Button, Text, TouchableOpacity, View } from 'react-native'
 import { IconButton } from './src/views/iconbutton'
 import { icons } from './src/ux/icons'
 import { ds } from './src/ux/design'
@@ -33,10 +34,79 @@ const MyTheme = {
 const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator()
 
+function Screen1({ navigation }) {
+  return (
+    <View>
+      <Text>Screen 1 Content</Text>
+      <Button
+        title="Go to Screen 2"
+        onPress={() => navigation.navigate('Screen2')}></Button>
+    </View>
+  )
+}
+
+function Screen2() {
+  return <Text>Screen 2</Text>
+}
+
+const CustomDrawerHeader = ({ navigation }) => {
+  const openDrawer = () => {
+    navigation.dispatch(DrawerActions.openDrawer())
+  }
+
+  return (
+    <View style={{ flexDirection: 'row', alignItems: 'center', padding: 10 }}>
+      <TouchableOpacity onPress={openDrawer}>
+        {/* <Ionicons name="menu" size={24} /> */}
+        <IconButton icon={icons.bars} onPress={openDrawer}></IconButton>
+      </TouchableOpacity>
+      <Text style={{ marginLeft: 10 }}>Drawer Header</Text>
+    </View>
+  )
+}
+
+const CustomStackNavigatorHeader = ({ navigation }) => {
+  const goBack = () => {
+    navigation.goBack()
+  }
+
+  return (
+    <View style={{ flexDirection: 'row', alignItems: 'center', padding: 10 }}>
+      <TouchableOpacity onPress={goBack}>
+        {/* <Ionicons name="arrow-back" size={24} /> */}
+        <IconButton icon={icons.bars} onPress={goBack}></IconButton>
+      </TouchableOpacity>
+      <Text style={{ marginLeft: 10 }}>Stack Header</Text>
+    </View>
+  )
+}
+
+const MainStackNavigator = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        header: (props) => <CustomStackNavigatorHeader {...props} />, // Use custom stack header
+      }}>
+      <Stack.Screen
+        name="Screen1"
+        component={Screen1}
+        options={{
+          header: (props) => <CustomDrawerHeader {...props} />, // Use custom drawer header
+        }}
+      />
+      <Stack.Screen name="Screen2" component={Screen2} />
+    </Stack.Navigator>
+  )
+}
+
 function Navigation(): JSX.Element {
   const navigation = useNavigation()
   return (
     <Drawer.Navigator>
+      <Drawer.Screen
+        options={{ headerShown: false }}
+        name="MainStack"
+        component={MainStackNavigator}></Drawer.Screen>
       <Drawer.Screen
         name="Templates"
         component={Templates}
