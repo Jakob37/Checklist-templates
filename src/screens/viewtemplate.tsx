@@ -4,10 +4,11 @@ import { StorageContext } from '../storage/context'
 import { ChecklistTemplate } from '../storage/interfaces'
 import { IconButton } from '../views/iconbutton'
 import { icons } from '../ux/icons'
+import { BlueWell } from '../views/wells'
 
 type ViewTemplateProps = {
   template: ChecklistTemplate
-//   FIXME: This is not the way, stack view is probably the way
+  //   FIXME: This is not the way, stack view is probably the way
   navigateBack: () => void
 }
 function ViewTemplate(props: ViewTemplateProps) {
@@ -15,8 +16,26 @@ function ViewTemplate(props: ViewTemplateProps) {
 
   return (
     <>
-      <Text>View template here! ID: {props.template.id}</Text>
-      <IconButton icon={icons.reset} onPress={props.navigateBack} />
+      <BlueWell>
+        <Text>{props.template.label}</Text>
+      </BlueWell>
+      {props.template.stacks.map((stack) => {
+        return (
+          <BlueWell>
+            <Text style={{ fontWeight: 'bold' }}>{stack.label}</Text>
+            {stack.tasks.map((task) => (
+              <Text>{task.label}</Text>
+            ))}
+          </BlueWell>
+        )
+      })}
+      <BlueWell>
+        <IconButton
+          icon={icons.reset}
+          onPress={props.navigateBack}
+          label={'Navigate back'}
+        />
+      </BlueWell>
     </>
   )
 }
