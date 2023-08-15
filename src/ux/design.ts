@@ -32,7 +32,7 @@ export const ds = {
     // cardBackground: 'gray',
   },
   icons: {
-    medium: 32,
+    medium: 24,
     large: 32,
   },
   textInput: {
