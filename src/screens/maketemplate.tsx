@@ -114,7 +114,7 @@ function EnterTemplate({ route }) {
 
   return (
     <View style={{ flex: 1 }}>
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps="handled">
         <View style={styles.bluePanel}>
           <TextInput
             placeholder="Enter template name"
@@ -332,7 +332,7 @@ function ChecklistTask(props: ChecklistTaskProps) {
         paddingLeft: ds.padding.s,
       }}>
       <View>
-        <Text style={{ fontSize: ds.font.sizes.major }}>{props.label}</Text>
+        <Text style={{ fontSize: ds.font.sizes.minor }}>{props.label}</Text>
       </View>
       <View style={{ flexDirection: 'row' }}>
         <IconButton
