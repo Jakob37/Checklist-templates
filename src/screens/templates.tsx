@@ -1,50 +1,67 @@
 import { useNavigation } from '@react-navigation/native'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { ScrollView, View } from 'react-native'
 import { StorageContext } from '../storage/context'
 import { instantiateTemplate } from '../storage/util'
 import { ds } from '../ux/design'
 import { icons } from '../ux/icons'
 import { IconButton } from '../views/iconbutton'
-import { printObject } from '../util/util'
+import { ViewTemplate } from './viewtemplate'
+import { ChecklistTemplate } from '../storage/interfaces'
 
 function Templates() {
   const { templates, removeTemplate, saveChecklist } =
     useContext(StorageContext)
 
   const navigate = useNavigation()
+  const [viewSingleTemplate, setViewSingleTemplate] =
+    useState<ChecklistTemplate | null>(null)
 
   return (
-    <ScrollView>
-      {templates.map((template) => (
-        <TemplateCard
-          key={template.id}
-          template={template}
-          onInstantiate={() => {
-            const checklist = instantiateTemplate(template)
-            saveChecklist(checklist)
-            // @ts-ignore
-            navigate.navigate('Checklists')
+    <View>
+      {viewSingleTemplate !== null ? (
+        <ViewTemplate
+          template={viewSingleTemplate}
+          navigateBack={() => {
+            setViewSingleTemplate(null)
           }}
-          onRemove={() => {
-            removeTemplate(template.id)
-          }}
-          onCopy={() => {
-            // @ts-ignore
-            navigate.navigate('Make template', {
-              templateId: template.id,
-              isNew: true,
-            })
-          }}
-          onEdit={() => {
-            // @ts-ignore
-            navigate.navigate('Make template', {
-              templateId: template.id,
-              isNew: false,
-            })
-          }}></TemplateCard>
-      ))}
-    </ScrollView>
+        />
+      ) : (
+        <ScrollView>
+          {templates.map((template) => (
+            <TemplateCard
+              key={template.id}
+              template={template}
+              onInstantiate={() => {
+                const checklist = instantiateTemplate(template)
+                saveChecklist(checklist)
+                // @ts-ignore
+                navigate.navigate('Checklists')
+              }}
+              onView={() => {
+                setViewSingleTemplate(template)
+              }}
+              onRemove={() => {
+                removeTemplate(template.id)
+              }}
+              onCopy={() => {
+                // @ts-ignore
+                navigate.navigate('Make template', {
+                  templateId: template.id,
+                  isNew: true,
+                })
+              }}
+              onEdit={() => {
+                // @ts-ignore
+                navigate.navigate('Make template', {
+                  templateId: template.id,
+                  isNew: false,
+                })
+              }}></TemplateCard>
+          ))}
+        </ScrollView>
+      )}
+    </View>
   )
 }
 
@@ -54,6 +71,7 @@ type TemplateCardProps = {
   onEdit: () => void
   onRemove: () => void
   onCopy: () => void
+  onView: () => void
 }
 function TemplateCard(props: TemplateCardProps) {
   return (
@@ -77,6 +95,12 @@ function TemplateCard(props: TemplateCardProps) {
           label={`${props.template.label}`}></IconButton>
       </View>
       <View style={{ flexDirection: 'row' }}>
+        <IconButton
+          iconStyle={{ paddingHorizontal: ds.padding.s }}
+          onPress={props.onView}
+          icon={icons.eye}></IconButton>
+
+        {/* FIXME: Remove, bake into the template display */}
         <IconButton
           iconStyle={{ paddingHorizontal: ds.padding.s }}
           onPress={props.onEdit}

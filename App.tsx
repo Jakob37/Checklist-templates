@@ -43,15 +43,15 @@ function Navigation(): JSX.Element {
         options={{
           headerRight: () => (
             <IconButton
-              // @ts-ignore
               onPress={() =>
+                // @ts-ignore
                 navigation.navigate('Make template', {
                   templateId: null,
                   isNew: true,
                 })
               }
               icon={icons.plus}
-              color={ds.colors.darkgray}
+              color={ds.colors.highlight1}
               iconStyle={{ paddingRight: ds.padding.m }}></IconButton>
           ),
         }}></Drawer.Screen>

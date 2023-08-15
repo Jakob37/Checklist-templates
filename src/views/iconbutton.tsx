@@ -13,7 +13,6 @@ function IconButton(props: {
   onPress: () => void
   icon: string
   size?: number
-  color?: string
   iconStyle?: StyleProp<ViewStyle>
   containerStyle?: StyleProp<ViewStyle>
   labelStyle?: StyleProp<TextStyle>
@@ -38,7 +37,7 @@ function IconButton(props: {
         <Icon
           name={props.icon}
           size={props.size}
-          style={{ color: props.color, ...props.iconStyle }}></Icon>
+          style={{ ...props.iconStyle }}></Icon>
         {props.label !== '' && props.labelPos === 'right' ? (
           <Text
             style={{

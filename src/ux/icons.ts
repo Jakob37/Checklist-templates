@@ -12,4 +12,5 @@ export const icons = {
   reset: 'rotate-right',
   pen: 'pencil',
   info: 'info',
+  eye: 'eye'
 }

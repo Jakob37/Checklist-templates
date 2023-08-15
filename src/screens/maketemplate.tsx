@@ -202,11 +202,6 @@ function EnterTemplate({ route }) {
             setModalVisible(false)
           }}></SimpleInputModal>
 
-        {templateName !== '' && defaultTasks.length > 0 ? (
-          <SaveTemplate onSubmit={handleSubmitList}></SaveTemplate>
-        ) : (
-          ''
-        )}
         <BlueWell style={{ paddingTop: ds.padding.s }}>
           {addingNewSectionNew ? (
             <View
@@ -250,6 +245,12 @@ function EnterTemplate({ route }) {
             </TouchableOpacity>
           )}
         </BlueWell>
+
+        {templateName !== '' && defaultTasks.length > 0 ? (
+          <SaveTemplate onSubmit={handleSubmitList}></SaveTemplate>
+        ) : (
+          ''
+        )}
       </ScrollView>
     </View>
   )
@@ -376,7 +377,6 @@ function SaveTemplate(props: SaveTemplateProps) {
         onPress={props.onSubmit}
         icon={icons.save}
         size={ds.icons.medium}
-        color={ds.colors.primary}
         labelStyle={{ fontSize: ds.font.sizes.major }}
         label="Save template"></IconButton>
     </View>
