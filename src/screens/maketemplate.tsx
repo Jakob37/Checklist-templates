@@ -89,6 +89,12 @@ function EnterTemplate({ route }) {
       templateId,
       templateName,
       defaultTasks.map((task) => task.label),
+      sections.map((section) => {
+        return {
+          label: section.sectionLabel,
+          tasks: section.tasks.map((task) => task.label),
+        }
+      }),
     )
     saveTemplate(template)
     reset()

@@ -7,10 +7,16 @@ import {
   TaskStack,
 } from './interfaces'
 
+type TaskData = {
+  label: string
+  tasks: string[]
+}
+
 function buildTemplateObject(
   templateId: string,
   templateName: string,
   taskLabels: string[],
+  additionalStacksData: TaskData[],
 ): ChecklistTemplate {
   const tasks: Task[] = taskLabels.map((label, i) => {
     return {
@@ -25,7 +31,23 @@ function buildTemplateObject(
     label: 'default',
     tasks,
   }
-  const stacks: TaskStack[] = [stack]
+
+  const additionalStacks: TaskStack[] = additionalStacksData.map(
+    (stackData, i) => {
+      return {
+        id: generateId(`Stack-${i}`),
+        label: stackData.label,
+        tasks: stackData.tasks.map((task, i) => {
+          return {
+            id: generateId(`task-${i}`),
+            label: task,
+          }
+        }),
+      }
+    },
+  )
+
+  const stacks: TaskStack[] = [stack, ...additionalStacks]
 
   return {
     id: templateId,
