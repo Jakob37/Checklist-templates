@@ -59,6 +59,7 @@ function Templates() {
                 })
               }}></TemplateCard>
           ))}
+          <View style={{ paddingTop: ds.padding.s }}></View>
         </ScrollView>
       )}
     </View>

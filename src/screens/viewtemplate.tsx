@@ -21,7 +21,7 @@ function ViewTemplate(props: ViewTemplateProps) {
       </BlueWell>
       {props.template.stacks.map((stack) => {
         return (
-          <BlueWell>
+          <BlueWell key={stack.id}>
             <Text style={{ fontWeight: 'bold' }}>{stack.label}</Text>
             {stack.tasks.map((task) => (
               <Text>{task.label}</Text>
