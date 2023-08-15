@@ -59,7 +59,7 @@ IconButton.defaultProps = {
   color: ds.colors.primary,
   iconStyle: {},
   containerStyle: {},
-  labelStyle: {},
+  labelStyle: { fontSize: ds.font.sizes.minor },
   label: '',
   labelPos: 'right',
 }

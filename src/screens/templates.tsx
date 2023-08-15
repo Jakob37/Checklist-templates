@@ -23,18 +23,21 @@ function Templates() {
           onInstantiate={() => {
             const checklist = instantiateTemplate(template)
             saveChecklist(checklist)
+            // @ts-ignore
             navigate.navigate('Checklists')
           }}
           onRemove={() => {
             removeTemplate(template.id)
           }}
           onCopy={() => {
+            // @ts-ignore
             navigate.navigate('Make template', {
               templateId: template.id,
               isNew: true,
             })
           }}
           onEdit={() => {
+            // @ts-ignore
             navigate.navigate('Make template', {
               templateId: template.id,
               isNew: false,
@@ -45,7 +48,14 @@ function Templates() {
   )
 }
 
-function TemplateCard(props) {
+type TemplateCardProps = {
+  onInstantiate: () => void
+  template: any
+  onEdit: () => void
+  onRemove: () => void
+  onCopy: () => void
+}
+function TemplateCard(props: TemplateCardProps) {
   return (
     <View
       style={{

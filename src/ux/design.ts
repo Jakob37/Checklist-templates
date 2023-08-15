@@ -14,8 +14,8 @@ export const ds = {
   font: {
     sizes: {
       huge: 32,
-      major: 32,
-      minor: 32,
+      major: 24,
+      minor: 18,
     },
   },
   colors: {
