@@ -15,4 +15,5 @@ export const icons = {
   eye: 'eye',
   gear: 'gear',
   paste: 'paste',
+  close: 'close',
 }

@@ -72,6 +72,7 @@ function Navigation(): JSX.Element {
         name="Templates"
         component={Templates}
         options={{
+          headerShown: false,
           // tabBarBadge: 3,
           headerRight: () => (
             <IconButton
@@ -90,9 +91,20 @@ function Navigation(): JSX.Element {
       <Tab.Screen
         name="Make template"
         initialParams={{ templateId: null, isNew: false }}
-        component={MakeTemplate}></Tab.Screen>
-      <Tab.Screen name="Checklists" component={Checklists}></Tab.Screen>
-      <Tab.Screen name="Settings" component={Settings}></Tab.Screen>
+        component={MakeTemplate}
+        options={{
+          headerShown: false,
+        }}></Tab.Screen>
+      <Tab.Screen
+        name="Checklists"
+        component={Checklists}
+        options={{
+          headerShown: false,
+        }}></Tab.Screen>
+      <Tab.Screen
+        name="Settings"
+        component={Settings}
+        options={{ headerShown: false }}></Tab.Screen>
     </Tab.Navigator>
   )
 }
