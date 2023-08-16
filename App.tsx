@@ -21,6 +21,7 @@ import { IconButton } from './src/views/iconbutton'
 import { icons } from './src/ux/icons'
 import { ds } from './src/ux/design'
 import Settings from './src/screens/settings'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
 const MyTheme = {
   ...DefaultTheme,
@@ -33,6 +34,7 @@ const MyTheme = {
 
 const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator()
+const Tab = createBottomTabNavigator()
 
 function Screen1({ navigation }) {
   return (
@@ -102,12 +104,8 @@ const MainStackNavigator = () => {
 function Navigation(): JSX.Element {
   const navigation = useNavigation()
   return (
-    <Drawer.Navigator>
-      <Drawer.Screen
-        options={{ headerShown: false }}
-        name="MainStack"
-        component={MainStackNavigator}></Drawer.Screen>
-      <Drawer.Screen
+    <Tab.Navigator>
+      <Tab.Screen
         name="Templates"
         component={Templates}
         options={{
@@ -124,14 +122,14 @@ function Navigation(): JSX.Element {
               color={ds.colors.highlight1}
               iconStyle={{ paddingRight: ds.padding.m }}></IconButton>
           ),
-        }}></Drawer.Screen>
-      <Drawer.Screen
+        }}></Tab.Screen>
+      {/* <Tab.Screen
         name="Make template"
         initialParams={{ templateId: null, isNew: false }}
-        component={MakeTemplate}></Drawer.Screen>
-      <Drawer.Screen name="Checklists" component={Checklists}></Drawer.Screen>
-      <Drawer.Screen name="Settings" component={Settings}></Drawer.Screen>
-    </Drawer.Navigator>
+        component={MakeTemplate}></Tab.Screen> */}
+      <Tab.Screen name="Checklists" component={Checklists}></Tab.Screen>
+      <Tab.Screen name="Settings" component={Settings}></Tab.Screen>
+    </Tab.Navigator>
   )
 }
 
