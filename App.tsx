@@ -22,6 +22,7 @@ import { icons } from './src/ux/icons'
 import { ds } from './src/ux/design'
 import Settings from './src/screens/settings'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 const MyTheme = {
   ...DefaultTheme,
@@ -32,83 +33,46 @@ const MyTheme = {
   },
 }
 
-const Drawer = createDrawerNavigator()
+// const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
-
-function Screen1({ navigation }) {
-  return (
-    <View>
-      <Text>Screen 1 Content</Text>
-      <Button
-        title="Go to Screen 2"
-        onPress={() => navigation.navigate('Screen2')}></Button>
-    </View>
-  )
-}
-
-function Screen2() {
-  return <Text>Screen 2</Text>
-}
-
-const CustomDrawerHeader = ({ navigation }) => {
-  const openDrawer = () => {
-    navigation.dispatch(DrawerActions.openDrawer())
-  }
-
-  return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', padding: 10 }}>
-      <TouchableOpacity onPress={openDrawer}>
-        {/* <Ionicons name="menu" size={24} /> */}
-        <IconButton icon={icons.bars} onPress={openDrawer}></IconButton>
-      </TouchableOpacity>
-      <Text style={{ marginLeft: 10 }}>Drawer Header</Text>
-    </View>
-  )
-}
-
-const CustomStackNavigatorHeader = ({ navigation }) => {
-  const goBack = () => {
-    navigation.goBack()
-  }
-
-  return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', padding: 10 }}>
-      <TouchableOpacity onPress={goBack}>
-        {/* <Ionicons name="arrow-back" size={24} /> */}
-        <IconButton icon={icons.bars} onPress={goBack}></IconButton>
-      </TouchableOpacity>
-      <Text style={{ marginLeft: 10 }}>Stack Header</Text>
-    </View>
-  )
-}
-
-const MainStackNavigator = () => {
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        header: (props) => <CustomStackNavigatorHeader {...props} />, // Use custom stack header
-      }}>
-      <Stack.Screen
-        name="Screen1"
-        component={Screen1}
-        options={{
-          header: (props) => <CustomDrawerHeader {...props} />, // Use custom drawer header
-        }}
-      />
-      <Stack.Screen name="Screen2" component={Screen2} />
-    </Stack.Navigator>
-  )
-}
 
 function Navigation(): JSX.Element {
   const navigation = useNavigation()
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName = icons.eye
+          if (route.name === 'Templates') {
+            iconName = icons.paste
+            // iconName = focused ? icons.bars : icons.check
+          } else if (route.name === 'Checklists') {
+            iconName = icons.check
+          } else if (route.name === 'Settings') {
+            iconName = icons.gear
+            // iconName = focused ? icons.tag : icons.done
+            // iconName = focused ? icons.copy : icons.reset
+          } else if (route.name === 'Make template') {
+            iconName = icons.plus
+          }
+
+          // return <Text>test</Text>>
+          return (
+            <Icon
+              name={iconName}
+              color={focused ? 'black' : 'gray'}
+              size={ds.icons.medium}></Icon>
+          )
+        },
+        tabBarActiveTintColor: 'black',
+        tabBarInactiveTintColor: 'gray',
+      })}>
       <Tab.Screen
         name="Templates"
         component={Templates}
         options={{
+          // tabBarBadge: 3,
           headerRight: () => (
             <IconButton
               onPress={() =>
@@ -123,10 +87,10 @@ function Navigation(): JSX.Element {
               iconStyle={{ paddingRight: ds.padding.m }}></IconButton>
           ),
         }}></Tab.Screen>
-      {/* <Tab.Screen
+      <Tab.Screen
         name="Make template"
         initialParams={{ templateId: null, isNew: false }}
-        component={MakeTemplate}></Tab.Screen> */}
+        component={MakeTemplate}></Tab.Screen>
       <Tab.Screen name="Checklists" component={Checklists}></Tab.Screen>
       <Tab.Screen name="Settings" component={Settings}></Tab.Screen>
     </Tab.Navigator>
