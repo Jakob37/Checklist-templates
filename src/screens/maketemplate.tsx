@@ -221,7 +221,7 @@ function EnterTemplate({ route }) {
             setModalVisible(false)
           }}></SimpleInputModal>
 
-        <BlueWell style={{ paddingTop: ds.padding.s }}>
+        <BlueWell style={{ paddingTop: ds.sizes.s }}>
           {addingNewSectionNew ? (
             <View
               style={{
@@ -237,7 +237,7 @@ function EnterTemplate({ route }) {
               <View style={{ flexDirection: 'row' }}>
                 <IconButton
                   icon={icons.done}
-                  containerStyle={{ paddingRight: ds.padding.s }}
+                  containerStyle={{ paddingRight: ds.sizes.s }}
                   onPress={() => {
                     if (newEnterSectionLabel === '') {
                       console.log('You need to enter a value')
@@ -299,7 +299,7 @@ function ChecklistSection(props: ChecklistSectionProps) {
         ''
       )}
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <View style={{ paddingRight: ds.padding.s }}>
+        <View style={{ paddingRight: ds.sizes.s }}>
           <IconButton
             onPress={props.onAddCheckbox}
             icon={icons.plus}></IconButton>
@@ -366,7 +366,7 @@ function ChecklistTask(props: ChecklistTaskProps) {
           <View style={{ flexDirection: 'row' }}>
             {/* FIXME: Use same styling as the non edit mode */}
             <IconButton
-              iconStyle={{ paddingRight: ds.padding.s }}
+              iconStyle={{ paddingRight: ds.sizes.s }}
               icon={icons.close}
               onPress={() => {
                 setIsEditMode(false)
@@ -383,9 +383,9 @@ function ChecklistTask(props: ChecklistTaskProps) {
         <View
           style={{
             flexDirection: 'row',
-            paddingBottom: ds.padding.s,
+            paddingBottom: ds.sizes.s,
             justifyContent: 'space-between',
-            paddingLeft: ds.padding.s,
+            paddingLeft: ds.sizes.s,
           }}>
           <View>
             <Text style={{ fontSize: ds.font.sizes.minor }}>{props.label}</Text>
@@ -398,7 +398,7 @@ function ChecklistTask(props: ChecklistTaskProps) {
               icon={icons.pen}
               size={ds.icons.medium}
               color="white"
-              iconStyle={{ paddingHorizontal: ds.padding.s }}></IconButton>
+              iconStyle={{ paddingHorizontal: ds.sizes.s }}></IconButton>
             <IconButton
               onPress={() => {
                 props.handleRemoveTask(props.id)
@@ -406,7 +406,7 @@ function ChecklistTask(props: ChecklistTaskProps) {
               icon={icons.trash}
               size={ds.icons.medium}
               color="white"
-              iconStyle={{ paddingHorizontal: ds.padding.s }}></IconButton>
+              iconStyle={{ paddingHorizontal: ds.sizes.s }}></IconButton>
           </View>
         </View>
       )}
@@ -425,11 +425,11 @@ function SaveTemplate(props: SaveTemplateProps) {
         {
           flexDirection: 'row',
           alignItems: 'center',
-          paddingVertical: ds.padding.m,
+          paddingVertical: ds.sizes.m,
         },
       ]}>
       <IconButton
-        iconStyle={{ paddingHorizontal: ds.padding.s }}
+        iconStyle={{ paddingHorizontal: ds.sizes.s }}
         onPress={props.onSubmit}
         icon={icons.save}
         size={ds.icons.medium}

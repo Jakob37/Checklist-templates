@@ -20,7 +20,7 @@ function SimpleInputModal(props: MyModalProps) {
             flexDirection: 'column',
             justifyContent: 'space-between',
           }}>
-          <View style={{ padding: ds.padding.s }}>
+          <View style={{ padding: ds.sizes.s }}>
             <TextInput
               placeholder="Section name"
               onChangeText={(text) => setInputValue(text)}></TextInput>
@@ -28,11 +28,11 @@ function SimpleInputModal(props: MyModalProps) {
 
           <View
             style={{
-              paddingBottom: ds.padding.s,
-              paddingHorizontal: ds.padding.s,
+              paddingBottom: ds.sizes.s,
+              paddingHorizontal: ds.sizes.s,
               flexDirection: 'row',
             }}>
-            <View style={{ paddingRight: ds.padding.s }}>
+            <View style={{ paddingRight: ds.sizes.s }}>
               <Button
                 title="Submit"
                 onPress={() => {

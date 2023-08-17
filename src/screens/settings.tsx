@@ -20,13 +20,12 @@ function Settings() {
 
   return (
     <View>
-      <View
-        style={{ paddingTop: ds.padding.s, paddingHorizontal: ds.padding.s }}>
+      <View style={{ paddingTop: ds.sizes.s, paddingHorizontal: ds.sizes.s }}>
         <Text>
           You can export the full data containing your templates and ongoing
           checklists in JSON format.
         </Text>
-        <View style={{ paddingTop: ds.padding.s }}>
+        <View style={{ paddingTop: ds.sizes.s }}>
           <Button
             onPress={() => {
               writeJSON(

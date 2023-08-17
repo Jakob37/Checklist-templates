@@ -2,13 +2,11 @@ import { StyleSheet } from 'react-native'
 
 export const ds = {
   elevation: 3,
-  padding: {
+  sizes: {
     xs: 5,
     s: 10,
     m: 15,
     l: 20,
-  },
-  sizes: {
     hoverButton: 60,
   },
   entries: {
@@ -22,17 +20,10 @@ export const ds = {
     },
   },
   colors: {
-    // primary: 'white',
-    // secondary: 'lightgray',
-    // darkgray: 'darkgray',
-    // background: 'darkgreen',
-    // cardBackground: '#1F3B4D',
-
     primary: '#468B97',
     secondary: '#1D5B79',
     highlight1: '#EF6262',
     highlight2: '#F3AA60',
-    // cardBackground: 'gray',
   },
   icons: {
     medium: 24,
@@ -49,18 +40,17 @@ export const ds = {
 const styles = StyleSheet.create({
   bluePanel: {
     backgroundColor: ds.colors.secondary,
-    marginHorizontal: ds.padding.s,
-    // marginTop: ds.padding.m,
-    paddingVertical: ds.padding.s,
-    paddingHorizontal: ds.padding.s,
+    marginHorizontal: ds.sizes.s,
+    paddingVertical: ds.sizes.s,
+    paddingHorizontal: ds.sizes.s,
     borderRadius: ds.border.radius,
   },
   orangePanel: {
     backgroundColor: ds.colors.highlight1,
-    marginHorizontal: ds.padding.s,
-    marginTop: ds.padding.m,
-    paddingVertical: ds.padding.s,
-    paddingHorizontal: ds.padding.s,
+    marginHorizontal: ds.sizes.s,
+    marginTop: ds.sizes.m,
+    paddingVertical: ds.sizes.s,
+    paddingHorizontal: ds.sizes.s,
     borderRadius: ds.border.radius,
   },
   modalContainer: {

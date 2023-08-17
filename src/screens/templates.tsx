@@ -69,14 +69,14 @@ function Templates() {
               }}></TemplateCard>
           ))}
           <View
-            style={{ paddingTop: ds.sizes.hoverButton + ds.padding.m }}></View>
+            style={{ paddingTop: ds.sizes.hoverButton + ds.sizes.m }}></View>
         </ScrollView>
       )}
       <View
         style={{
           position: 'absolute',
-          bottom: ds.padding.l,
-          right: ds.padding.l,
+          bottom: ds.sizes.l,
+          right: ds.sizes.l,
           backgroundColor: ds.colors.highlight1,
           borderRadius: ds.sizes.hoverButton,
           width: ds.sizes.hoverButton,
@@ -112,14 +112,14 @@ function TemplateCard(props: TemplateCardProps) {
   return (
     <View
       style={{
-        paddingVertical: ds.padding.m,
-        paddingHorizontal: ds.padding.s,
+        paddingVertical: ds.sizes.m,
+        paddingHorizontal: ds.sizes.s,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: ds.colors.secondary,
-        marginTop: ds.padding.s,
-        marginHorizontal: ds.padding.s,
+        marginTop: ds.sizes.s,
+        marginHorizontal: ds.sizes.s,
         borderRadius: ds.border.radius,
       }}>
       <View>
@@ -135,12 +135,12 @@ function TemplateCard(props: TemplateCardProps) {
 
         {/* FIXME: Remove, bake into the template display */}
         <IconButton
-          iconStyle={{ paddingHorizontal: ds.padding.s }}
+          iconStyle={{ paddingHorizontal: ds.sizes.s }}
           onPress={props.onEdit}
           icon={icons.pen}></IconButton>
 
         <IconButton
-          iconStyle={{ paddingHorizontal: ds.padding.s }}
+          iconStyle={{ paddingHorizontal: ds.sizes.s }}
           onPress={props.onRemove}
           icon={icons.trash}></IconButton>
         {/* <IconButton

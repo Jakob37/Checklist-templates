@@ -21,17 +21,17 @@ function Checklists() {
   return (
     <ScrollView>
       {checklists.length === 0 ? (
-        <View style={styles.bluePanel}>
+        <BlueWell style={{ marginTop: ds.sizes.s }}>
           <Text style={{ fontSize: ds.font.sizes.major }}>
             Currently no active checklists
           </Text>
-        </View>
+        </BlueWell>
       ) : (
         ''
       )}
       {checklists.map((checklist, i) => (
         <View key={checklist.id}>
-          <BlueWell style={{ marginTop: ds.padding.s }}>
+          <BlueWell style={{ marginTop: ds.sizes.s }}>
             <ChecklistHeader
               label={checklist.template.label}
               removeChecklist={() => {
@@ -46,10 +46,10 @@ function Checklists() {
               }></ChecklistHeader>
           </BlueWell>
 
-          <BlueWell style={{ marginTop: ds.padding.xs }}>
+          <BlueWell style={{ marginTop: ds.sizes.xs }}>
             {checklist.checkboxes.map((checkbox, i) => {
               return (
-                <View style={{ paddingTop: i !== 0 ? ds.padding.s : 0 }}>
+                <View style={{ paddingTop: i !== 0 ? ds.sizes.s : 0 }}>
                   <Checkbox
                     key={checkbox.id}
                     checklistId={checklist.id}
@@ -80,7 +80,7 @@ function Checklists() {
           )}
         </View>
       ))}
-      <View style={{ height: ds.padding.s }}></View>
+      <View style={{ height: ds.sizes.s }}></View>
     </ScrollView>
   )
 }
@@ -101,20 +101,20 @@ function ChecklistHeader(props: ChecklistHeaderProps) {
       <Text
         style={{
           fontWeight: 'bold',
-          paddingRight: ds.padding.s,
+          paddingRight: ds.sizes.s,
           fontSize: ds.font.sizes.major,
         }}>
         {props.label}
       </Text>
       <View style={{ flexDirection: 'row' }}>
         <IconButton
-          containerStyle={{ paddingRight: ds.padding.l }}
+          containerStyle={{ paddingRight: ds.sizes.l }}
           onPress={() => {
             props.resetChecklist()
           }}
           icon={icons.reset}></IconButton>
         <IconButton
-          containerStyle={{ paddingRight: ds.padding.s }}
+          containerStyle={{ paddingRight: ds.sizes.s }}
           onPress={() => {
             props.removeChecklist()
           }}

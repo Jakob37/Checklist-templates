@@ -9,7 +9,7 @@ function FloatingButton(props: PropsWithChildren<FloatingButtonProps>) {
       style={{
         width: '33%',
         position: 'absolute',
-        bottom: ds.padding.s,
+        bottom: ds.sizes.s,
         right: 0,
       }}>
       {props.children}
