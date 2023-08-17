@@ -1,12 +1,15 @@
 import { StyleSheet } from 'react-native'
 
 export const ds = {
+  elevation: 3,
   padding: {
     xs: 5,
     s: 10,
     m: 15,
     l: 20,
-    small: 10,
+  },
+  sizes: {
+    hoverButton: 60,
   },
   entries: {
     height: 40,

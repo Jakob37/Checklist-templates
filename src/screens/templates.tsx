@@ -68,21 +68,22 @@ function Templates() {
                 })
               }}></TemplateCard>
           ))}
-          <View style={{ paddingTop: 80 }}></View>
+          <View
+            style={{ paddingTop: ds.sizes.hoverButton + ds.padding.m }}></View>
         </ScrollView>
       )}
       <View
         style={{
           position: 'absolute',
-          bottom: 20,
-          right: 20,
+          bottom: ds.padding.l,
+          right: ds.padding.l,
           backgroundColor: ds.colors.highlight1,
-          borderRadius: 40,
-          width: 60,
-          height: 60,
+          borderRadius: ds.sizes.hoverButton,
+          width: ds.sizes.hoverButton,
+          height: ds.sizes.hoverButton,
           justifyContent: 'center',
           alignItems: 'center',
-          elevation: 3,
+          elevation: ds.elevation,
         }}>
         <IconButton
           onPress={() => {
