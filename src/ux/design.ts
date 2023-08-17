@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   bluePanel: {
     backgroundColor: ds.colors.secondary,
     marginHorizontal: ds.padding.s,
-    marginTop: ds.padding.m,
+    // marginTop: ds.padding.m,
     paddingVertical: ds.padding.s,
     paddingHorizontal: ds.padding.s,
     borderRadius: ds.border.radius,

@@ -6,6 +6,7 @@ import { IconButton } from '../views/iconbutton'
 import { icons } from '../ux/icons'
 import { assert } from '../util/util'
 import { ds, styles } from '../ux/design'
+import { BlueWell } from '../views/wells'
 
 function Checklists() {
   const {
@@ -29,24 +30,30 @@ function Checklists() {
       )}
       {checklists.map((checklist, i) => (
         <View key={checklist.id}>
-          <ChecklistHeader
-            label={checklist.template.label}
-            removeChecklist={() => removeChecklist(checklist.id)}
-            resetChecklist={() =>
-              resetChecklist(checklist.id)
-            }></ChecklistHeader>
+          <BlueWell style={{ marginTop: ds.padding.s }}>
+            <ChecklistHeader
+              label={checklist.template.label}
+              removeChecklist={() => removeChecklist(checklist.id)}
+              resetChecklist={() =>
+                resetChecklist(checklist.id)
+              }></ChecklistHeader>
+          </BlueWell>
 
-          {checklist.checkboxes.map((checkbox) => {
-            return (
-              <Checkbox
-                key={checkbox.id}
-                checklistId={checklist.id}
-                checkboxId={checkbox.id}
-                checked={checkbox.checked}
-                label={checkbox.label}
-                toggleCheck={toggleCheck}></Checkbox>
-            )
-          })}
+          <BlueWell style={{ marginTop: ds.padding.xs }}>
+            {checklist.checkboxes.map((checkbox, i) => {
+              return (
+                <View style={{ paddingTop: i !== 0 ? ds.padding.s : 0 }}>
+                  <Checkbox
+                    key={checkbox.id}
+                    checklistId={checklist.id}
+                    checkboxId={checkbox.id}
+                    checked={checkbox.checked}
+                    label={checkbox.label}
+                    toggleCheck={toggleCheck}></Checkbox>
+                </View>
+              )
+            })}
+          </BlueWell>
 
           {isChecklistDone(checklist.id) ? (
             <View style={styles.orangePanel}>
@@ -66,6 +73,7 @@ function Checklists() {
           )}
         </View>
       ))}
+      <View style={{ height: ds.padding.s }}></View>
     </ScrollView>
   )
 }
@@ -77,35 +85,33 @@ type ChecklistHeaderProps = {
 }
 function ChecklistHeader(props: ChecklistHeaderProps) {
   return (
-    <View style={styles.bluePanel}>
-      <View
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      }}>
+      <Text
         style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
+          fontWeight: 'bold',
+          paddingRight: ds.padding.s,
+          fontSize: ds.font.sizes.major,
         }}>
-        <Text
-          style={{
-            fontWeight: 'bold',
-            paddingRight: ds.padding.s,
-            fontSize: ds.font.sizes.major,
-          }}>
-          {props.label}
-        </Text>
-        <View style={{ flexDirection: 'row' }}>
-          <IconButton
-            containerStyle={{ paddingRight: ds.padding.m }}
-            onPress={() => {
-              props.resetChecklist()
-            }}
-            icon={icons.reset}></IconButton>
-          <IconButton
-            containerStyle={{ paddingRight: ds.padding.s }}
-            onPress={() => {
-              props.removeChecklist()
-            }}
-            icon={icons.trash}></IconButton>
-        </View>
+        {props.label}
+      </Text>
+      <View style={{ flexDirection: 'row' }}>
+        <IconButton
+          containerStyle={{ paddingRight: ds.padding.m }}
+          onPress={() => {
+            props.resetChecklist()
+          }}
+          icon={icons.reset}></IconButton>
+        <IconButton
+          containerStyle={{ paddingRight: ds.padding.s }}
+          onPress={() => {
+            props.removeChecklist()
+          }}
+          icon={icons.trash}></IconButton>
       </View>
     </View>
   )
@@ -123,7 +129,6 @@ function Checkbox(props: CheckboxProps) {
     <View
       key={`${props.checkboxId}`}
       style={[
-        styles.bluePanel,
         {
           flexDirection: 'row',
           alignItems: 'center',
