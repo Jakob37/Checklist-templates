@@ -94,17 +94,17 @@ function ChecklistHeader(props: ChecklistHeaderProps) {
         </Text>
         <View style={{ flexDirection: 'row' }}>
           <IconButton
-            onPress={() => {
-              props.removeChecklist()
-            }}
-            icon={icons.trash}
-            label="Remove"></IconButton>
-          <IconButton
+            containerStyle={{ paddingRight: ds.padding.m }}
             onPress={() => {
               props.resetChecklist()
             }}
-            icon={icons.reset}
-            label="Reset all"></IconButton>
+            icon={icons.reset}></IconButton>
+          <IconButton
+            containerStyle={{ paddingRight: ds.padding.s }}
+            onPress={() => {
+              props.removeChecklist()
+            }}
+            icon={icons.trash}></IconButton>
         </View>
       </View>
     </View>
