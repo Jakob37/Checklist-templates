@@ -48,7 +48,7 @@ function Templates() {
               }}
               onRemove={() => {
                 makeConfirmDialog(
-                  `Confirm removal`,
+                  `Remove template`,
                   `Are you sure you want to remove ${template.label}?`,
                   () => removeTemplate(template.id),
                 )

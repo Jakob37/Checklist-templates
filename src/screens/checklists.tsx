@@ -7,6 +7,7 @@ import { icons } from '../ux/icons'
 import { assert } from '../util/util'
 import { ds, styles } from '../ux/design'
 import { BlueWell } from '../views/wells'
+import { makeConfirmDialog } from '../views/dialogs'
 
 function Checklists() {
   const {
@@ -33,7 +34,13 @@ function Checklists() {
           <BlueWell style={{ marginTop: ds.padding.s }}>
             <ChecklistHeader
               label={checklist.template.label}
-              removeChecklist={() => removeChecklist(checklist.id)}
+              removeChecklist={() => {
+                makeConfirmDialog(
+                  `Remove checklist`,
+                  `Do you want to remove the ongoing checklist ${checklist.template.label}?`,
+                  () => removeChecklist(checklist.id),
+                )
+              }}
               resetChecklist={() =>
                 resetChecklist(checklist.id)
               }></ChecklistHeader>
@@ -101,7 +108,7 @@ function ChecklistHeader(props: ChecklistHeaderProps) {
       </Text>
       <View style={{ flexDirection: 'row' }}>
         <IconButton
-          containerStyle={{ paddingRight: ds.padding.m }}
+          containerStyle={{ paddingRight: ds.padding.l }}
           onPress={() => {
             props.resetChecklist()
           }}
