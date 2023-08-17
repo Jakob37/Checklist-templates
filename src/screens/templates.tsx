@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
 import { useContext, useState } from 'react'
-import { ScrollView, View } from 'react-native'
+import { ScrollView, Text, View } from 'react-native'
 import { StorageContext } from '../storage/context'
 import { instantiateTemplate } from '../storage/util'
 import { ds } from '../ux/design'
@@ -8,6 +8,8 @@ import { icons } from '../ux/icons'
 import { IconButton } from '../views/iconbutton'
 import { ViewTemplate } from './viewtemplate'
 import { ChecklistTemplate } from '../storage/interfaces'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { MinorText } from '../views/text'
 
 function Templates() {
   const { templates, removeTemplate, saveChecklist } =
@@ -89,11 +91,9 @@ function TemplateCard(props: TemplateCardProps) {
         borderRadius: ds.border.radius,
       }}>
       <View>
-        <IconButton
-          iconStyle={{ paddingHorizontal: ds.padding.s }}
-          onPress={props.onInstantiate}
-          icon={icons.done}
-          label={`${props.template.label}`}></IconButton>
+        <TouchableOpacity onPress={props.onInstantiate}>
+          <MinorText>{props.template.label}</MinorText>
+        </TouchableOpacity>
       </View>
       <View style={{ flexDirection: 'row' }}>
         <IconButton

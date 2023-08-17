@@ -361,7 +361,7 @@ function ChecklistTask(props: ChecklistTaskProps) {
             justifyContent: 'space-between',
           }}>
           <TextInput
-            placeholder="Task label..."
+            placeholder={props.label}
             onChangeText={(text) => setEditText(text)}></TextInput>
           <View style={{ flexDirection: 'row' }}>
             {/* FIXME: Use same styling as the non edit mode */}
