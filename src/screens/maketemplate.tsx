@@ -11,7 +11,7 @@ import { icons } from '../ux/icons'
 import { IconButton } from '../views/iconbutton'
 import { BlueWell } from '../views/wells'
 import { mutateStateAtIndex, removeStateAtIndex } from '../util/state'
-import { SimpleInputModal } from '../views/modal'
+import { SimpleInputModal } from '../views/dialogs'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { FloatingButton } from '../views/floatingbutton'
 

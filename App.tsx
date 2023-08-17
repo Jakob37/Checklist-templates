@@ -42,7 +42,7 @@ function Navigation(): JSX.Element {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
+        tabBarIcon: ({ focused }) => {
           let iconName = icons.eye
           if (route.name === 'Templates') {
             iconName = icons.paste
@@ -74,19 +74,19 @@ function Navigation(): JSX.Element {
         options={{
           headerShown: false,
           // tabBarBadge: 3,
-          headerRight: () => (
-            <IconButton
-              onPress={() =>
-                // @ts-ignore
-                navigation.navigate('Make template', {
-                  templateId: null,
-                  isNew: true,
-                })
-              }
-              icon={icons.plus}
-              color={ds.colors.highlight1}
-              iconStyle={{ paddingRight: ds.padding.m }}></IconButton>
-          ),
+          // headerRight: () => (
+          //   <IconButton
+          //     onPress={() =>
+          //       // @ts-ignore
+          //       navigation.navigate('Make template', {
+          //         templateId: null,
+          //         isNew: true,
+          //       })
+          //     }
+          //     icon={icons.plus}
+          //     color={ds.colors.highlight1}
+          //     iconStyle={{ paddingRight: ds.padding.m }}></IconButton>
+          // ),
         }}></Tab.Screen>
       <Tab.Screen
         name="Make template"

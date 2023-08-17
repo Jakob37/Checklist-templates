@@ -10,6 +10,7 @@ import { ViewTemplate } from './viewtemplate'
 import { ChecklistTemplate } from '../storage/interfaces'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { MinorText } from '../views/text'
+import { makeConfirmDialog } from '../views/dialogs'
 
 function Templates() {
   const { templates, removeTemplate, saveChecklist } =
@@ -18,6 +19,8 @@ function Templates() {
   const navigate = useNavigation()
   const [viewSingleTemplate, setViewSingleTemplate] =
     useState<ChecklistTemplate | null>(null)
+  const [showConfirmRemoveTemplate, setShowConfirmRemoveTemplate] =
+    useState(false)
 
   return (
     <View>
@@ -44,7 +47,11 @@ function Templates() {
                 setViewSingleTemplate(template)
               }}
               onRemove={() => {
-                removeTemplate(template.id)
+                makeConfirmDialog(
+                  `Confirm removal`,
+                  `Are you sure you want to remove ${template.label}?`,
+                  () => removeTemplate(template.id),
+                )
               }}
               onCopy={() => {
                 // @ts-ignore
@@ -96,10 +103,10 @@ function TemplateCard(props: TemplateCardProps) {
         </TouchableOpacity>
       </View>
       <View style={{ flexDirection: 'row' }}>
-        <IconButton
+        {/* <IconButton
           iconStyle={{ paddingHorizontal: ds.padding.s }}
           onPress={props.onView}
-          icon={icons.eye}></IconButton>
+          icon={icons.eye}></IconButton> */}
 
         {/* FIXME: Remove, bake into the template display */}
         <IconButton

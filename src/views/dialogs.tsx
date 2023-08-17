@@ -1,6 +1,6 @@
-import { Button, Modal, TextInput, View } from 'react-native'
+import { Alert, Button, Modal, TextInput, View } from 'react-native'
 import { ds, styles } from '../ux/design'
-import { useState } from 'react'
+import { PropsWithChildren, useState } from 'react'
 
 type MyModalProps = {
   modalVisible: boolean
@@ -50,4 +50,17 @@ function SimpleInputModal(props: MyModalProps) {
   )
 }
 
-export { SimpleInputModal }
+function makeConfirmDialog(label: string, message: string, onYes: () => void) {
+  return Alert.alert(label, message, [
+    {
+      text: 'Yes',
+      onPress: () => {
+        onYes()
+        console.log('Yes')
+      },
+    },
+    { text: 'No' },
+  ])
+}
+
+export { SimpleInputModal, makeConfirmDialog }
