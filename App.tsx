@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { createStackNavigator } from '@react-navigation/stack'
 
@@ -23,6 +23,7 @@ import { ds } from './src/ux/design'
 import Settings from './src/screens/settings'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { StorageContext } from './src/storage/context'
 
 const MyTheme = {
   ...DefaultTheme,
@@ -70,6 +71,8 @@ function TemplateNavigation() {
 
 function Navigation() {
   const navigation = useNavigation()
+
+  const { checklists } = useContext(StorageContext)
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -138,6 +141,10 @@ function Navigation() {
         component={Checklists}
         options={{
           headerShown: false,
+          tabBarBadge: checklists.length > 0 ? checklists.length : undefined,
+          tabBarBadgeStyle: {
+            backgroundColor: ds.colors.highlight1,
+          },
         }}></Tab.Screen>
       <Tab.Screen
         name="Settings"

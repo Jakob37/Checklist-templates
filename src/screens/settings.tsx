@@ -1,4 +1,4 @@
-import { Alert, Button, Platform, View } from 'react-native'
+import { Alert, Button, Platform, Text, View } from 'react-native'
 import { ds } from '../ux/design'
 import { useContext } from 'react'
 import { StorageContext } from '../storage/context'
@@ -22,14 +22,20 @@ function Settings() {
     <View>
       <View
         style={{ paddingTop: ds.padding.s, paddingHorizontal: ds.padding.s }}>
-        <Button
-          onPress={() => {
-            writeJSON(
-              getJSONExportString(),
-              `Checklist-templates-${Date.now()}`,
-            )
-          }}
-          title="Export JSON"></Button>
+        <Text>
+          You can export the full data containing your templates and ongoing
+          checklists in JSON format.
+        </Text>
+        <View style={{ paddingTop: ds.padding.s }}>
+          <Button
+            onPress={() => {
+              writeJSON(
+                getJSONExportString(),
+                `Checklist-templates-${Date.now()}`,
+              )
+            }}
+            title="Export data as JSON"></Button>
+        </View>
       </View>
     </View>
   )
