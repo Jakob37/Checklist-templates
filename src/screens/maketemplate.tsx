@@ -121,14 +121,14 @@ function EnterTemplate({ route }) {
   return (
     <View style={{ flex: 1 }}>
       <ScrollView keyboardShouldPersistTaps="handled">
-        <View style={styles.bluePanel}>
+        <BlueWell style={{ marginTop: ds.sizes.s }}>
           <TextInput
             placeholder="Enter template name"
             value={templateName}
             onChangeText={(text) => setTemplateName(text)}></TextInput>
-        </View>
+        </BlueWell>
 
-        <View style={styles.bluePanel}>
+        <BlueWell style={{ marginTop: ds.sizes.s }}>
           <ChecklistSection
             sectionLabel=""
             enterTaskLabel={taskLabel}
@@ -140,13 +140,13 @@ function EnterTemplate({ route }) {
             tasks={defaultTasks}
             onRemoveTask={handleRemoveTask}
             onRemoveSection={() => {}}></ChecklistSection>
-        </View>
+        </BlueWell>
 
         {sections.length > 0 ? (
           <View>
             {sections.map((section, sectionIndex) => {
               return (
-                <View key={String(sectionIndex)} style={styles.bluePanel}>
+                <BlueWell key={String(sectionIndex)}>
                   <ChecklistSection
                     sectionLabel={section.sectionLabel}
                     enterTaskLabel={section.enterTaskLabel}
@@ -201,7 +201,7 @@ function EnterTemplate({ route }) {
                     onRemoveSection={() => {
                       removeStateAtIndex(sections, setSections, sectionIndex)
                     }}></ChecklistSection>
-                </View>
+                </BlueWell>
               )
             })}
           </View>
@@ -211,7 +211,7 @@ function EnterTemplate({ route }) {
 
         {/* FIXME: Fix the styling here */}
 
-        <SimpleInputModal
+        {/* <SimpleInputModal
           modalVisible={modalVisible}
           onSubmit={() => {
             addSection(newSectionLabel)
@@ -219,9 +219,10 @@ function EnterTemplate({ route }) {
           }}
           onCancel={() => {
             setModalVisible(false)
-          }}></SimpleInputModal>
+          }}></SimpleInputModal> */}
 
-        <BlueWell style={{ paddingTop: ds.sizes.s }}>
+        {/* FIXME: This should be reactivated for the sections */}
+        {/* <BlueWell style={{ paddingTop: ds.sizes.s }}>
           {addingNewSectionNew ? (
             <View
               style={{
@@ -246,7 +247,6 @@ function EnterTemplate({ route }) {
                     setAddingNewSectionNew(false)
                     addSection(newEnterSectionLabel)
                   }}></IconButton>
-                {/* FIXME: Cross icon */}
                 <IconButton
                   icon={icons.trash}
                   onPress={() => {
@@ -263,7 +263,7 @@ function EnterTemplate({ route }) {
               <Text>Click to add new section</Text>
             </TouchableOpacity>
           )}
-        </BlueWell>
+        </BlueWell> */}
 
         {templateName !== '' && defaultTasks.length > 0 ? (
           <SaveTemplate onSubmit={handleSubmitList}></SaveTemplate>
