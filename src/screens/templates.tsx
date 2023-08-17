@@ -19,11 +19,9 @@ function Templates() {
   const navigate = useNavigation()
   const [viewSingleTemplate, setViewSingleTemplate] =
     useState<ChecklistTemplate | null>(null)
-  const [showConfirmRemoveTemplate, setShowConfirmRemoveTemplate] =
-    useState(false)
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       {viewSingleTemplate !== null ? (
         <ViewTemplate
           template={viewSingleTemplate}
@@ -32,7 +30,9 @@ function Templates() {
           }}
         />
       ) : (
-        <ScrollView>
+        <ScrollView
+          style={{ flex: 1, paddingBottom: 260 }}
+          contentContainerStyle={{ flexGrow: 1 }}>
           {templates.map((template) => (
             <TemplateCard
               key={template.id}
@@ -68,9 +68,33 @@ function Templates() {
                 })
               }}></TemplateCard>
           ))}
-          <View style={{ paddingTop: ds.padding.s }}></View>
+          <View style={{ paddingTop: 80 }}></View>
         </ScrollView>
       )}
+      <View
+        style={{
+          position: 'absolute',
+          bottom: 20,
+          right: 20,
+          backgroundColor: ds.colors.highlight1,
+          borderRadius: 40,
+          width: 60,
+          height: 60,
+          justifyContent: 'center',
+          alignItems: 'center',
+          elevation: 3,
+        }}>
+        <IconButton
+          onPress={() => {
+            console.log('Pressed!')
+            // @ts-ignore
+            navigate.navigate('Make template', {
+              templateId: null,
+              isNew: true,
+            })
+          }}
+          icon={icons.plus}></IconButton>
+      </View>
     </View>
   )
 }
