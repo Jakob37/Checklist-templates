@@ -37,7 +37,38 @@ const MyTheme = {
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
 
-function Navigation(): JSX.Element {
+function TemplateNavigation() {
+  return (
+    <Stack.Navigator>
+      <Tab.Screen
+        name="List templates"
+        component={Templates}
+        options={{
+          headerShown: false,
+          // tabBarBadge: 3,
+          // headerRight: () => (
+          //   <IconButton
+          //     onPress={() =>
+          //       // @ts-ignore
+          //       navigation.navigate('Make template', {
+          //         templateId: null,
+          //         isNew: true,
+          //       })
+          //     }
+          //     icon={icons.plus}
+          //     color={ds.colors.highlight1}
+          //     iconStyle={{ paddingRight: ds.padding.m }}></IconButton>
+          // ),
+        }}></Tab.Screen>
+      <Tab.Screen
+        name="Make template"
+        initialParams={{ templateId: null, isNew: false }}
+        component={MakeTemplate}></Tab.Screen>
+    </Stack.Navigator>
+  )
+}
+
+function Navigation() {
   const navigation = useNavigation()
   return (
     <Tab.Navigator
@@ -70,6 +101,10 @@ function Navigation(): JSX.Element {
       })}>
       <Tab.Screen
         name="Templates"
+        component={TemplateNavigation}
+        options={{ headerShown: false }}></Tab.Screen>
+      {/* <Tab.Screen
+        name="Templates"
         component={Templates}
         options={{
           headerShown: false,
@@ -94,7 +129,7 @@ function Navigation(): JSX.Element {
         component={MakeTemplate}
         options={{
           headerShown: false,
-        }}></Tab.Screen>
+        }}></Tab.Screen> */}
       <Tab.Screen
         name="Checklists"
         component={Checklists}
