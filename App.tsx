@@ -98,6 +98,9 @@ function Navigation() {
         },
         tabBarActiveTintColor: 'black',
         tabBarInactiveTintColor: 'gray',
+        tabBarLabelStyle: {
+          paddingBottom: ds.padding.xs,
+        },
       })}>
       <Tab.Screen
         name="Templates"
