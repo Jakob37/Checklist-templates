@@ -1,5 +1,6 @@
 import {
   StyleProp,
+  StyleSheet,
   Text,
   TextStyle,
   TouchableOpacity,
@@ -8,6 +9,7 @@ import {
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { ds, styles } from '../ux/design'
+import { icons } from '../ux/icons'
 
 function IconButton(props: {
   onPress: () => void
@@ -73,4 +75,23 @@ function TopBarIconButton(props: { icon: string; onPress: () => void }) {
   )
 }
 
-export { IconButton, TopBarIconButton }
+type HoverButtonProps = {
+  onPress: () => void
+}
+function HoverButton(props: HoverButtonProps) {
+  return (
+    <TouchableOpacity
+      onPress={props.onPress}
+      style={styles.hoverButtonContainer}>
+      <View
+        style={[
+          styles.hoverButton,
+          { alignItems: 'center', justifyContent: 'center' },
+        ]}>
+        <Icon name={icons.plus} size={ds.icons.large}></Icon>
+      </View>
+    </TouchableOpacity>
+  )
+}
+
+export { IconButton, TopBarIconButton, HoverButton }

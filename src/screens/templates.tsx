@@ -1,14 +1,19 @@
 import { useNavigation } from '@react-navigation/native'
 import { useContext, useState } from 'react'
-import { ScrollView, Text, View } from 'react-native'
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import { StorageContext } from '../storage/context'
 import { instantiateTemplate } from '../storage/util'
 import { ds, styles } from '../ux/design'
 import { icons } from '../ux/icons'
-import { IconButton } from '../views/iconbutton'
+import { HoverButton, IconButton } from '../views/iconbutton'
 import { ViewTemplate } from './viewtemplate'
 import { ChecklistTemplate } from '../storage/interfaces'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import { MinorText } from '../views/text'
 import { makeConfirmDialog } from '../views/dialogs'
 
@@ -72,18 +77,11 @@ function Templates() {
             style={{ paddingTop: ds.sizes.hoverButton + ds.sizes.m }}></View>
         </ScrollView>
       )}
-      <View style={styles.hoverButton}>
-        <IconButton
-          onPress={() => {
-            console.log('Pressed!')
-            // @ts-ignore
-            navigate.navigate('Make template', {
-              templateId: null,
-              isNew: true,
-            })
-          }}
-          icon={icons.plus}></IconButton>
-      </View>
+      <HoverButton
+        onPress={() =>
+          // @ts-ignore
+          navigate.navigate('Make template', { templateId: null, isNew: true })
+        }></HoverButton>
     </View>
   )
 }

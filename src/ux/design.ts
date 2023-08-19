@@ -7,8 +7,8 @@ export const ds = {
     s: 10,
     m: 15,
     l: 20,
-    hoverButton: 50,
-    scrollBottom: 260
+    hoverButton: 60,
+    scrollBottom: 260,
   },
   entries: {
     height: 40,
@@ -62,16 +62,18 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  hoverButton: {
+  hoverButtonContainer: {
     position: 'absolute',
     bottom: ds.sizes.m,
     right: ds.sizes.m,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  hoverButton: {
     backgroundColor: ds.colors.highlight1,
     borderRadius: ds.sizes.hoverButton,
     width: ds.sizes.hoverButton,
     height: ds.sizes.hoverButton,
-    justifyContent: 'center',
-    alignItems: 'center',
     elevation: ds.elevation,
   },
 })
