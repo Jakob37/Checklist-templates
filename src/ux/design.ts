@@ -7,7 +7,7 @@ export const ds = {
     s: 10,
     m: 15,
     l: 20,
-    hoverButton: 60,
+    hoverButton: 50,
   },
   entries: {
     height: 40,
@@ -60,6 +60,18 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     width: '100%',
     height: '100%',
+  },
+  hoverButton: {
+    position: 'absolute',
+    bottom: ds.sizes.m,
+    right: ds.sizes.m,
+    backgroundColor: ds.colors.highlight1,
+    borderRadius: ds.sizes.hoverButton,
+    width: ds.sizes.hoverButton,
+    height: ds.sizes.hoverButton,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: ds.elevation,
   },
 })
 

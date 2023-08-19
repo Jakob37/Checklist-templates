@@ -3,7 +3,7 @@ import { useContext, useState } from 'react'
 import { ScrollView, Text, View } from 'react-native'
 import { StorageContext } from '../storage/context'
 import { instantiateTemplate } from '../storage/util'
-import { ds } from '../ux/design'
+import { ds, styles } from '../ux/design'
 import { icons } from '../ux/icons'
 import { IconButton } from '../views/iconbutton'
 import { ViewTemplate } from './viewtemplate'
@@ -73,18 +73,19 @@ function Templates() {
         </ScrollView>
       )}
       <View
-        style={{
-          position: 'absolute',
-          bottom: ds.sizes.l,
-          right: ds.sizes.l,
-          backgroundColor: ds.colors.highlight1,
-          borderRadius: ds.sizes.hoverButton,
-          width: ds.sizes.hoverButton,
-          height: ds.sizes.hoverButton,
-          justifyContent: 'center',
-          alignItems: 'center',
-          elevation: ds.elevation,
-        }}>
+        style={
+          styles.hoverButton
+          // position: 'absolute',
+          // bottom: ds.sizes.l,
+          // right: ds.sizes.l,
+          // backgroundColor: ds.colors.highlight1,
+          // borderRadius: ds.sizes.hoverButton,
+          // width: ds.sizes.hoverButton,
+          // height: ds.sizes.hoverButton,
+          // justifyContent: 'center',
+          // alignItems: 'center',
+          // elevation: ds.elevation,
+        }>
         <IconButton
           onPress={() => {
             console.log('Pressed!')

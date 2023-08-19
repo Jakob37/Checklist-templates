@@ -49,9 +49,10 @@ function Checklists() {
           <BlueWell style={{ marginTop: ds.sizes.xs }}>
             {checklist.checkboxes.map((checkbox, i) => {
               return (
-                <View style={{ paddingTop: i !== 0 ? ds.sizes.s : 0 }}>
+                <View
+                  key={checkbox.id}
+                  style={{ paddingTop: i !== 0 ? ds.sizes.s : 0 }}>
                   <Checkbox
-                    key={checkbox.id}
                     checklistId={checklist.id}
                     checkboxId={checkbox.id}
                     checked={checkbox.checked}
