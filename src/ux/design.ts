@@ -8,6 +8,7 @@ export const ds = {
     m: 15,
     l: 20,
     hoverButton: 50,
+    scrollBottom: 260
   },
   entries: {
     height: 40,

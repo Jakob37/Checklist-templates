@@ -31,7 +31,7 @@ function Templates() {
         />
       ) : (
         <ScrollView
-          style={{ flex: 1, paddingBottom: 260 }}
+          style={{ flex: 1, paddingBottom: ds.sizes.scrollBottom }}
           contentContainerStyle={{ flexGrow: 1 }}>
           {templates.map((template) => (
             <TemplateCard
@@ -72,20 +72,7 @@ function Templates() {
             style={{ paddingTop: ds.sizes.hoverButton + ds.sizes.m }}></View>
         </ScrollView>
       )}
-      <View
-        style={
-          styles.hoverButton
-          // position: 'absolute',
-          // bottom: ds.sizes.l,
-          // right: ds.sizes.l,
-          // backgroundColor: ds.colors.highlight1,
-          // borderRadius: ds.sizes.hoverButton,
-          // width: ds.sizes.hoverButton,
-          // height: ds.sizes.hoverButton,
-          // justifyContent: 'center',
-          // alignItems: 'center',
-          // elevation: ds.elevation,
-        }>
+      <View style={styles.hoverButton}>
         <IconButton
           onPress={() => {
             console.log('Pressed!')
@@ -123,43 +110,21 @@ function TemplateCard(props: TemplateCardProps) {
         marginHorizontal: ds.sizes.s,
         borderRadius: ds.border.radius,
       }}>
-      <View>
+      <View style={{ flex: 1 }}>
         <TouchableOpacity onPress={props.onInstantiate}>
           <MinorText>{props.template.label}</MinorText>
         </TouchableOpacity>
       </View>
       <View style={{ flexDirection: 'row' }}>
-        {/* <IconButton
-          iconStyle={{ paddingHorizontal: ds.padding.s }}
-          onPress={props.onView}
-          icon={icons.eye}></IconButton> */}
-
         {/* FIXME: Remove, bake into the template display */}
         <IconButton
           iconStyle={{ paddingHorizontal: ds.sizes.s }}
           onPress={props.onEdit}
           icon={icons.pen}></IconButton>
-
         <IconButton
           iconStyle={{ paddingHorizontal: ds.sizes.s }}
           onPress={props.onRemove}
           icon={icons.trash}></IconButton>
-        {/* <IconButton
-          iconStyle={{ paddingHorizontal: ds.padding.s }}
-          onPress={props.onCopy}
-          icon={icons.copy}></IconButton> */}
-        {/* <IconButton
-          iconStyle={{ paddingHorizontal: ds.padding.s }}
-          onPress={() => {
-            console.log(
-              `${props.template.label} ${props.template.id} ${JSON.stringify(
-                props.template.stacks,
-                null,
-                2,
-              )}`,
-            )
-          }}
-          icon={icons.info}></IconButton> */}
       </View>
     </View>
   )
