@@ -1,4 +1,4 @@
-import { ScrollView, Text, View } from 'react-native'
+import { Button, ScrollView, Text, View } from 'react-native'
 import { StorageContext } from '../storage/context'
 import { useContext } from 'react'
 import { CheckboxStatus } from '../storage/interfaces'
@@ -8,6 +8,7 @@ import { assert } from '../util/util'
 import { ds, styles } from '../ux/design'
 import { BlueWell } from '../views/wells'
 import { makeConfirmDialog } from '../views/dialogs'
+import { useNavigation } from '@react-navigation/native'
 
 function Checklists() {
   const {
@@ -18,6 +19,8 @@ function Checklists() {
     isChecklistDone,
   } = useContext(StorageContext)
 
+  const navigate = useNavigation()
+
   return (
     <ScrollView>
       {checklists.length === 0 ? (
@@ -25,6 +28,14 @@ function Checklists() {
           <Text style={{ fontSize: ds.font.sizes.major }}>
             Currently no active checklists
           </Text>
+          <View style={{ paddingTop: ds.sizes.s }}>
+            <Button
+              onPress={() => {
+                // @ts-ignore
+                navigate.navigate('Templates')
+              }}
+              title="Go to templates"></Button>
+          </View>
         </BlueWell>
       ) : (
         ''
