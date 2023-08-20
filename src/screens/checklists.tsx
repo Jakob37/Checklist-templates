@@ -32,7 +32,8 @@ function Checklists() {
                 // @ts-ignore
                 navigate.navigate('Templates')
               }}
-              title="Go to templates"></Button>
+              title="Go to templates"
+              color={ds.colors.highlight1}></Button>
           </View>
         </BlueWell>
       ) : (

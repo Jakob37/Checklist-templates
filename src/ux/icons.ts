@@ -16,4 +16,5 @@ export const icons = {
   gear: 'gear',
   paste: 'paste',
   close: 'close',
+  star: 'star',
 }

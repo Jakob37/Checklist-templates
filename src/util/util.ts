@@ -26,6 +26,7 @@ function makeDummyTemplate(templateName: string): ChecklistTemplate {
         ],
       },
     ],
+    favorite: false,
   }
 }
 

@@ -1,19 +1,16 @@
-import { Button, Modal, ScrollView, Text, TextInput, View } from 'react-native'
+import { ScrollView, Text, TextInput, View } from 'react-native'
 
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 import { useContext, useEffect, useState } from 'react'
 import { StorageContext } from '../storage/context'
 import { Task } from '../storage/interfaces'
 import { buildTemplateObject } from '../storage/util'
+import { mutateStateAtIndex, removeStateAtIndex } from '../util/state'
 import { generateId } from '../util/util'
 import { ds, styles } from '../ux/design'
 import { icons } from '../ux/icons'
 import { IconButton } from '../views/iconbutton'
 import { BlueWell } from '../views/wells'
-import { mutateStateAtIndex, removeStateAtIndex } from '../util/state'
-import { SimpleInputModal } from '../views/dialogs'
-import { TouchableOpacity } from 'react-native-gesture-handler'
-import { FloatingButton } from '../views/floatingbutton'
 
 type SectionState = {
   sectionLabel: string

@@ -1,15 +1,9 @@
 import { useNavigation } from '@react-navigation/native'
 import { useContext, useState } from 'react'
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native'
+import { ScrollView, TouchableOpacity, View } from 'react-native'
 import { StorageContext } from '../storage/context'
 import { instantiateTemplate } from '../storage/util'
-import { ds, styles } from '../ux/design'
+import { ds } from '../ux/design'
 import { icons } from '../ux/icons'
 import { HoverButton, IconButton } from '../views/iconbutton'
 import { ViewTemplate } from './viewtemplate'
@@ -18,7 +12,7 @@ import { MinorText } from '../views/text'
 import { makeConfirmDialog } from '../views/dialogs'
 
 function Templates() {
-  const { templates, removeTemplate, saveChecklist } =
+  const { templates, removeTemplate, saveChecklist, saveTemplate } =
     useContext(StorageContext)
 
   const navigate = useNavigation()
@@ -38,41 +32,50 @@ function Templates() {
         <ScrollView
           style={{ flex: 1, paddingBottom: ds.sizes.scrollBottom }}
           contentContainerStyle={{ flexGrow: 1 }}>
-          {templates.map((template) => (
-            <TemplateCard
-              key={template.id}
-              template={template}
-              onInstantiate={() => {
-                const checklist = instantiateTemplate(template)
-                saveChecklist(checklist)
-                // @ts-ignore
-                navigate.navigate('Checklists')
-              }}
-              onView={() => {
-                setViewSingleTemplate(template)
-              }}
-              onRemove={() => {
-                makeConfirmDialog(
-                  `Remove template`,
-                  `Are you sure you want to remove ${template.label}?`,
-                  () => removeTemplate(template.id),
-                )
-              }}
-              onCopy={() => {
-                // @ts-ignore
-                navigate.navigate('Make template', {
-                  templateId: template.id,
-                  isNew: true,
-                })
-              }}
-              onEdit={() => {
-                // @ts-ignore
-                navigate.navigate('Make template', {
-                  templateId: template.id,
-                  isNew: false,
-                })
-              }}></TemplateCard>
-          ))}
+          {templates
+            .sort((t1, t2) => (t1.label < t2.label ? -1 : 1))
+            .map((template) => (
+              <TemplateCard
+                key={template.id}
+                template={template}
+                onInstantiate={() => {
+                  const checklist = instantiateTemplate(template)
+                  saveChecklist(checklist)
+                  // @ts-ignore
+                  navigate.navigate('Checklists')
+                }}
+                onView={() => {
+                  setViewSingleTemplate(template)
+                }}
+                onRemove={() => {
+                  makeConfirmDialog(
+                    `Remove template`,
+                    `Are you sure you want to remove ${template.label}?`,
+                    () => removeTemplate(template.id),
+                  )
+                }}
+                onCopy={() => {
+                  // @ts-ignore
+                  navigate.navigate('Make template', {
+                    templateId: template.id,
+                    isNew: true,
+                  })
+                }}
+                onEdit={() => {
+                  // @ts-ignore
+                  navigate.navigate('Make template', {
+                    templateId: template.id,
+                    isNew: false,
+                  })
+                }}
+                onToggleStar={() => {
+                  console.log('Toggling star')
+                  // FIXME: For migration purposes, remove when not needed
+                  template.favorite =
+                    template.favorite != undefined ? !template.favorite : true
+                  saveTemplate(template)
+                }}></TemplateCard>
+            ))}
           <View
             style={{ paddingTop: ds.sizes.hoverButton + ds.sizes.m }}></View>
         </ScrollView>
@@ -88,11 +91,12 @@ function Templates() {
 
 type TemplateCardProps = {
   onInstantiate: () => void
-  template: any
+  template: ChecklistTemplate
   onEdit: () => void
   onRemove: () => void
   onCopy: () => void
   onView: () => void
+  onToggleStar: () => void
 }
 function TemplateCard(props: TemplateCardProps) {
   return (
@@ -108,6 +112,13 @@ function TemplateCard(props: TemplateCardProps) {
         marginHorizontal: ds.sizes.s,
         borderRadius: ds.border.radius,
       }}>
+      <IconButton
+        iconStyle={{ paddingRight: ds.sizes.s }}
+        onPress={props.onToggleStar}
+        icon={icons.star}
+        color={
+          props.template.favorite ? ds.colors.highlight2 : 'white'
+        }></IconButton>
       <View style={{ flex: 1 }}>
         <TouchableOpacity onPress={props.onInstantiate}>
           <MinorText>{props.template.label}</MinorText>

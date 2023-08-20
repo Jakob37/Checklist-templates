@@ -2,6 +2,7 @@ export interface ChecklistTemplate {
   id: string
   label: string
   stacks: TaskStack[]
+  favorite: boolean
 }
 
 export interface TaskStack {

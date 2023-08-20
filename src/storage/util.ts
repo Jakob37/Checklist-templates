@@ -53,6 +53,7 @@ function buildTemplateObject(
     id: templateId,
     label: templateName,
     stacks,
+    favorite: false,
   }
 }
 

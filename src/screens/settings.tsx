@@ -33,7 +33,8 @@ function Settings() {
                 `Checklist-templates-${Date.now()}`,
               )
             }}
-            title="Export data as JSON"></Button>
+            title="Export data as JSON"
+            color={ds.colors.highlight1}></Button>
         </View>
       </View>
     </View>
