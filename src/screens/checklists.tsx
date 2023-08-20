@@ -38,58 +38,58 @@ function Checklists() {
       ) : (
         ''
       )}
-      {checklists.map((checklist, i) => (
-        <View key={checklist.id}>
-          <BlueWell style={{ marginTop: ds.sizes.s }}>
-            <ChecklistHeader
-              label={checklist.template.label}
-              removeChecklist={() => {
-                makeConfirmDialog(
-                  `Remove checklist`,
-                  `Do you want to remove the ongoing checklist ${checklist.template.label}?`,
-                  () => removeChecklist(checklist.id),
-                )
-              }}
-              resetChecklist={() =>
-                resetChecklist(checklist.id)
-              }></ChecklistHeader>
-          </BlueWell>
-
-          <BlueWell style={{ marginTop: ds.sizes.xs }}>
-            {checklist.checkboxes.map((checkbox, i) => {
-              return (
-                <View
-                  key={checkbox.id}
-                  style={{ paddingTop: i !== 0 ? ds.sizes.s : 0 }}>
-                  <Checkbox
-                    checklistId={checklist.id}
-                    checkboxId={checkbox.id}
-                    checked={checkbox.checked}
-                    label={checkbox.label}
-                    toggleCheck={toggleCheck}></Checkbox>
-                </View>
-              )
-            })}
-          </BlueWell>
-
-          {isChecklistDone(checklist.id) ? (
-            <View style={styles.orangePanel}>
-              <IconButton
-                onPress={() => {
+      {checklists
+        .sort((c1, c2) => {
+          return c1.timecreated > c2.timecreated ? 1 : -1
+        })
+        .map((checklist, i) => (
+          <View key={checklist.id}>
+            <BlueWell style={{ marginTop: ds.sizes.s }}>
+              <ChecklistHeader
+                label={checklist.template.label}
+                removeChecklist={() => {
                   removeChecklist(checklist.id)
                 }}
-                icon={icons.done}
-                size={ds.icons.large}
-                labelStyle={{
-                  fontSize: ds.font.sizes.huge,
-                }}
-                label="Done"></IconButton>
-            </View>
-          ) : (
-            ''
-          )}
-        </View>
-      ))}
+                resetChecklist={() =>
+                  resetChecklist(checklist.id)
+                }></ChecklistHeader>
+            </BlueWell>
+
+            <BlueWell style={{ marginTop: ds.sizes.xs }}>
+              {checklist.checkboxes.map((checkbox, i) => {
+                return (
+                  <View
+                    key={checkbox.id}
+                    style={{ paddingTop: i !== 0 ? ds.sizes.s : 0 }}>
+                    <Checkbox
+                      checklistId={checklist.id}
+                      checkboxId={checkbox.id}
+                      checked={checkbox.checked}
+                      label={checkbox.label}
+                      toggleCheck={toggleCheck}></Checkbox>
+                  </View>
+                )
+              })}
+            </BlueWell>
+
+            {isChecklistDone(checklist.id) ? (
+              <View style={styles.orangePanel}>
+                <IconButton
+                  onPress={() => {
+                    removeChecklist(checklist.id)
+                  }}
+                  icon={icons.done}
+                  size={ds.icons.large}
+                  labelStyle={{
+                    fontSize: ds.font.sizes.huge,
+                  }}
+                  label="Done"></IconButton>
+              </View>
+            ) : (
+              ''
+            )}
+          </View>
+        ))}
       <View style={{ height: ds.sizes.s }}></View>
     </ScrollView>
   )
