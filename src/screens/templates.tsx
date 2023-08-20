@@ -113,12 +113,16 @@ function TemplateCard(props: TemplateCardProps) {
         borderRadius: ds.border.radius,
       }}>
       <IconButton
-        iconStyle={{ paddingRight: ds.sizes.s }}
+        iconStyle={{
+          paddingRight: ds.sizes.s,
+          color: props.template.favorite ? ds.colors.highlight2 : undefined,
+        }}
         onPress={props.onToggleStar}
         icon={icons.star}
-        color={
-          props.template.favorite ? ds.colors.highlight2 : 'white'
-        }></IconButton>
+        // color={
+        //   props.template.favorite ? ds.colors.highlight2 : 'white'
+        // }
+      ></IconButton>
       <View style={{ flex: 1 }}>
         <TouchableOpacity onPress={props.onInstantiate}>
           <MinorText>{props.template.label}</MinorText>
