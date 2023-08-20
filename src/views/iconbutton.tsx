@@ -29,7 +29,7 @@ function IconButton(props: {
           alignItems: 'center',
         }}>
         {props.label !== '' && props.labelPos === 'left' ? (
-          <Text style={{ ...props.labelStyle, paddingHorizontal: ds.sizes.s }}>
+          <Text style={[props.labelStyle, { paddingHorizontal: ds.sizes.s }]}>
             {props.label}
           </Text>
         ) : (
@@ -38,13 +38,9 @@ function IconButton(props: {
         <Icon
           name={props.icon}
           size={props.size}
-          style={{ ...props.iconStyle }}></Icon>
+          style={props.iconStyle}></Icon>
         {props.label !== '' && props.labelPos === 'right' ? (
-          <Text
-            style={{
-              ...props.labelStyle,
-              paddingHorizontal: ds.sizes.s,
-            }}>
+          <Text style={[props.labelStyle, { paddingHorizontal: ds.sizes.s }]}>
             {props.label}
           </Text>
         ) : (

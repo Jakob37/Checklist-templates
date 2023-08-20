@@ -6,7 +6,8 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "lint": "eslint .",
-    "start": "react-native start"
+    "start": "react-native start",
+    "check": "tsc --skipLibCheck --noEmit src/***/*.ts; tsc --skipLibCheck --noEmit --jsx react-native /**/*.tsx"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.19.0",

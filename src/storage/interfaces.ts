@@ -19,6 +19,7 @@ export interface Checklist {
   id: string
   template: ChecklistTemplate
   checkboxes: Checkbox[]
+  timecreated: number
 }
 
 export interface Checkbox {

@@ -71,6 +71,7 @@ function instantiateTemplate(template: ChecklistTemplate): Checklist {
     id: generateId('checklist'),
     template: template,
     checkboxes,
+    timecreated: Date.now(),
   }
   return newChecklist
 }
