@@ -1,11 +1,10 @@
+import { useContext, useEffect, useState } from 'react'
 import { Button, ScrollView, Text, TextInput, View } from 'react-native'
 
 import { useIsFocused, useNavigation } from '@react-navigation/native'
-import { useContext, useEffect, useState } from 'react'
 import { StorageContext } from '../storage/context'
 import { Task } from '../storage/interfaces'
 import { buildTemplateObject } from '../storage/util'
-import { mutateStateAtIndex, removeStateAtIndex } from '../util/state'
 import { generateId } from '../util/util'
 import { ds, styles } from '../ux/design'
 import { icons } from '../ux/icons'
@@ -18,6 +17,10 @@ type SectionState = {
   tasks: Task[]
 }
 
+function getDefaultTask(): Task {
+  return { id: generateId('task'), label: '' }
+}
+
 // @ts-ignore
 function EnterTemplate({ route }) {
   const navigate = useNavigation()
@@ -27,14 +30,8 @@ function EnterTemplate({ route }) {
   const [templateId, setTemplateId] = useState(generateId('template'))
   const { saveTemplate, getTemplateById } = useContext(StorageContext)
 
-  const [defaultTasks, setDefaultTasks] = useState<Task[]>([])
+  const [tasks, setTasks] = useState<Task[]>([getDefaultTask()])
   const [sections, setSections] = useState<SectionState[]>([])
-  const [newSectionLabel, setNewSectionLabel] = useState('')
-  const [modalVisible, setModalVisible] = useState(false)
-
-  const [addingNewSectionNew, setAddingNewSectionNew] = useState(false)
-  const [newEnterSectionLabel, setNewEnterSectionLabel] = useState('')
-
   const isFocused = useIsFocused()
 
   useEffect(() => {
@@ -58,32 +55,31 @@ function EnterTemplate({ route }) {
     }
 
     setTemplateName(template != null ? template.label : '')
-    setDefaultTasks(
-      template != null ? template.stacks.flatMap((stack) => stack.tasks) : [],
+    setTasks(
+      template != null
+        ? template.stacks.flatMap((stack) => stack.tasks)
+        : [getDefaultTask()],
     )
   }, [isFocused])
 
-  const handleAddDefaultTask = () => {
+  const onAddTask = () => {
     const newTask: Task = {
-      id: String(Date.now()),
+      id: generateId('task'),
       label: '',
     }
-    setDefaultTasks([...defaultTasks, newTask])
-    // setTaskLabel('')
+    setTasks([...tasks, newTask])
   }
 
   const handleRemoveTask = (id: string) => {
-    const updatedCheckboxes = defaultTasks.filter(
-      (checkbox) => checkbox.id !== id,
-    )
-    setDefaultTasks(updatedCheckboxes)
+    const updatedTasks = tasks.filter((checkbox) => checkbox.id !== id)
+    setTasks(updatedTasks)
   }
 
   const handleSubmitList = async () => {
     const template = buildTemplateObject(
       templateId,
       templateName,
-      defaultTasks.map((task) => task.label),
+      tasks.map((task) => task.label),
       sections.map((section) => {
         return {
           label: section.sectionLabel,
@@ -99,7 +95,7 @@ function EnterTemplate({ route }) {
   function reset() {
     setTaskLabel('')
     setTemplateName('')
-    setDefaultTasks([])
+    setTasks([getDefaultTask()])
     setTemplateId(generateId('template'))
   }
 
@@ -118,92 +114,22 @@ function EnterTemplate({ route }) {
             sectionLabel=""
             enterTaskLabel={taskLabel}
             onChangeTaskLabel={(text) => setTaskLabel(text)}
-            onAddTask={handleAddDefaultTask}
+            onAddTask={onAddTask}
             onRenameTask={(id, text) => {
-              console.log(`Renaming ${id} ${text}`)
-              const taskIndex = defaultTasks.findIndex((task) => task.id === id)
-              // defaultTasks[taskIndex].label = text
-              const tasks = [...defaultTasks]
-              tasks[taskIndex].label = text
-              setDefaultTasks(tasks)
+              const taskIndex = tasks.findIndex((task) => task.id === id)
+              const tasksCopy = [...tasks]
+              tasksCopy[taskIndex].label = text
+              setTasks(tasksCopy)
             }}
-            tasks={defaultTasks}
+            tasks={tasks}
             onRemoveTask={handleRemoveTask}
             onRemoveSection={() => {
               console.error('Cannot remove default section')
             }}></ChecklistSection>
         </BlueWell>
 
-        {/* {sections.length > 0 ? (
-          <View>
-            {sections.map((section, sectionIndex) => {
-              return (
-                <BlueWell key={String(sectionIndex)}>
-                  <ChecklistSection
-                    sectionLabel={section.sectionLabel}
-                    enterTaskLabel={section.enterTaskLabel}
-                    onChangeTaskLabel={(text) => {
-                      mutateStateAtIndex(
-                        sections,
-                        setSections,
-                        sectionIndex,
-                        (section) => (section.enterTaskLabel = text),
-                      )
-                    }}
-                    onRenameCheckbox={(newLabel, taskIndex) => {
-                      console.log('FIXME: Rename action')
-                      mutateStateAtIndex(
-                        sections,
-                        setSections,
-                        sectionIndex,
-                        (section) =>
-                          (section.tasks[taskIndex].label = newLabel),
-                      )
-                    }}
-                    onAddTask={() => {
-                      console.log('Adding task')
-                      mutateStateAtIndex(
-                        sections,
-                        setSections,
-                        sectionIndex,
-                        (section) => {
-                          const newTask: Task = {
-                            id: generateId('task'),
-                            label: section.enterTaskLabel,
-                          }
-                          section.tasks.push(newTask)
-                          section.enterTaskLabel = ''
-                        },
-                      )
-                    }}
-                    tasks={section.tasks}
-                    onRemoveTask={(taskId) => {
-                      mutateStateAtIndex(
-                        sections,
-                        setSections,
-                        sectionIndex,
-                        (section) => {
-                          const updatedTasks = section.tasks.filter(
-                            (task) => task.id !== taskId,
-                          )
-                          section.tasks = updatedTasks
-                          section.enterTaskLabel = ''
-                        },
-                      )
-                    }}
-                    onRemoveSection={() => {
-                      removeStateAtIndex(sections, setSections, sectionIndex)
-                    }}></ChecklistSection>
-                </BlueWell>
-              )
-            })}
-          </View>
-        ) : (
-          ''
-        )} */}
-
         {templateName !== '' &&
-        defaultTasks.filter((task) => task.label !== '').length > 0 ? (
+        tasks.filter((task) => task.label !== '').length > 0 ? (
           <SaveTemplate onSubmit={handleSubmitList}></SaveTemplate>
         ) : (
           ''
@@ -240,18 +166,6 @@ function ChecklistSection(props: ChecklistSectionProps) {
         onPress={props.onAddTask}
         color={ds.colors.highlight1}
         title="Add task"></Button>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        {/* <View style={{ paddingRight: ds.sizes.s }}>
-          <IconButton
-            onPress={props.onAddCheckbox}
-            icon={icons.plus}></IconButton>
-        </View> */}
-
-        {/* <EnterTask
-          taskLabel={props.enterTaskLabel}
-          onAddCheckbox={props.onAddCheckbox}
-          onChangeText={props.onChangeTaskLabel}></EnterTask> */}
-      </View>
 
       {props.tasks.map((task) => (
         <ChecklistTask
@@ -264,22 +178,6 @@ function ChecklistSection(props: ChecklistSectionProps) {
     </View>
   )
 }
-
-// type EnterTaskProps = {
-//   taskLabel: string
-//   onAddCheckbox: () => void
-//   onChangeText: (text: string) => void
-// }
-// function EnterTask(props: EnterTaskProps) {
-//   return (
-//     <TextInput
-//       placeholder="Enter task..."
-//       value={props.taskLabel}
-//       onSubmitEditing={props.onAddCheckbox}
-//       editable={true}
-//       onChangeText={(text) => props.onChangeText(text)}></TextInput>
-//   )
-// }
 
 type ChecklistTaskProps = {
   id: string
@@ -296,6 +194,7 @@ function ChecklistTask(props: ChecklistTaskProps) {
         justifyContent: 'space-between',
       }}>
       <TextInput
+        autoFocus={true}
         placeholder="Enter your task..."
         onChangeText={(text) => {
           props.onRenameTask(props.id, text)
