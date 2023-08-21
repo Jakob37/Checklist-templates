@@ -5,7 +5,6 @@ import { IconButton } from '../views/iconbutton'
 import { icons } from '../ux/icons'
 import { ds, styles } from '../ux/design'
 import { BlueWell } from '../views/wells'
-import { makeConfirmDialog } from '../views/dialogs'
 import { useNavigation } from '@react-navigation/native'
 
 function Checklists() {

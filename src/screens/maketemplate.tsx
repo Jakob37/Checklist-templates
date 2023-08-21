@@ -104,6 +104,7 @@ function EnterTemplate({ route }) {
       <ScrollView keyboardShouldPersistTaps="handled">
         <BlueWell style={{ marginTop: ds.sizes.s }}>
           <TextInput
+            autoFocus={true}
             placeholder="Enter template name"
             value={templateName}
             onChangeText={(text) => setTemplateName(text)}></TextInput>
@@ -162,13 +163,14 @@ function ChecklistSection(props: ChecklistSectionProps) {
         ''
       )}
 
-      {props.tasks.map((task) => (
+      {props.tasks.map((task, i) => (
         <ChecklistTask
           key={task.id}
           onRemoveTask={props.onRemoveTask}
           onRenameTask={props.onRenameTask}
           id={task.id}
-          label={task.label}></ChecklistTask>
+          label={task.label}
+          autoFocus={i !== 0}></ChecklistTask>
       ))}
     </View>
   )
@@ -179,6 +181,7 @@ type ChecklistTaskProps = {
   label: string
   onRemoveTask: (id: string) => void
   onRenameTask: (id: string, text: string) => void
+  autoFocus: boolean
 }
 function ChecklistTask(props: ChecklistTaskProps) {
   return (
@@ -189,7 +192,7 @@ function ChecklistTask(props: ChecklistTaskProps) {
         justifyContent: 'space-between',
       }}>
       <TextInput
-        autoFocus={true}
+        autoFocus={props.autoFocus}
         placeholder="Enter your task..."
         onChangeText={(text) => {
           props.onRenameTask(props.id, text)
@@ -198,6 +201,7 @@ function ChecklistTask(props: ChecklistTaskProps) {
       </TextInput>
       <IconButton
         icon={icons.trash}
+        containerStyle={{ paddingRight: ds.sizes.s }}
         onPress={() => props.onRemoveTask(props.id)}></IconButton>
     </View>
   )

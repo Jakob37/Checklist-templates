@@ -13,4 +13,15 @@ function MinorText(props: PropsWithChildren<MinorTextProps>) {
   )
 }
 
-export { MinorText }
+type SubTextProps = {
+  style?: TextStyle
+}
+function SubText(props: PropsWithChildren<SubTextProps>) {
+  return (
+    <Text style={{ fontSize: ds.font.sizes.sub, ...props.style }}>
+      {props.children}
+    </Text>
+  )
+}
+
+export { MinorText, SubText }

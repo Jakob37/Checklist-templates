@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
 import { useContext, useState } from 'react'
-import { ScrollView, TouchableOpacity, View } from 'react-native'
+import { ScrollView, TouchableWithoutFeedback, View } from 'react-native'
 import { StorageContext } from '../storage/context'
 import { instantiateTemplate } from '../storage/util'
 import { ds } from '../ux/design'
@@ -8,7 +8,7 @@ import { icons } from '../ux/icons'
 import { HoverButton, IconButton } from '../views/iconbutton'
 import { ViewTemplate } from './viewtemplate'
 import { ChecklistTemplate } from '../storage/interfaces'
-import { MinorText } from '../views/text'
+import { MinorText, SubText } from '../views/text'
 import { makeConfirmDialog } from '../views/dialogs'
 
 function Templates() {
@@ -69,10 +69,7 @@ function Templates() {
                   })
                 }}
                 onToggleStar={() => {
-                  console.log('Toggling star')
-                  // FIXME: For migration purposes, remove when not needed
-                  template.favorite =
-                    template.favorite != undefined ? !template.favorite : true
+                  template.favorite = !template.favorite
                   saveTemplate(template)
                 }}></TemplateCard>
             ))}
@@ -120,9 +117,12 @@ function TemplateCard(props: TemplateCardProps) {
         onPress={props.onToggleStar}
         icon={icons.star}></IconButton>
       <View style={{ flex: 1 }}>
-        <TouchableOpacity onPress={props.onInstantiate}>
-          <MinorText>{props.template.label}</MinorText>
-        </TouchableOpacity>
+        <View style={{ flexDirection: 'column' }}>
+          <TouchableWithoutFeedback onPress={props.onInstantiate}>
+            <MinorText>{props.template.label}</MinorText>
+          </TouchableWithoutFeedback>
+          <SubText>{props.template.stacks[0].tasks.length} tasks</SubText>
+        </View>
       </View>
       <View style={{ flexDirection: 'row' }}>
         {/* FIXME: Remove, bake into the template display */}

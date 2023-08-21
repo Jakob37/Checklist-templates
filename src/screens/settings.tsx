@@ -14,7 +14,6 @@ function Settings() {
       templates,
     }
     const exportObjStr = JSON.stringify(exportObj)
-    // console.log(exportObjStr)
     return exportObjStr
   }
 
