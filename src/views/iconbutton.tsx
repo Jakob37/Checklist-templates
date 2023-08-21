@@ -4,6 +4,7 @@ import {
   Text,
   TextStyle,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
   ViewStyle,
 } from 'react-native'
@@ -22,32 +23,34 @@ function IconButton(props: {
   labelPos?: 'left' | 'right'
 }) {
   return (
-    <TouchableOpacity onPress={props.onPress} style={props.containerStyle}>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}>
-        {props.label !== '' && props.labelPos === 'left' ? (
-          <Text style={[props.labelStyle, { paddingHorizontal: ds.sizes.s }]}>
-            {props.label}
-          </Text>
-        ) : (
-          ''
-        )}
-        <Icon
-          name={props.icon}
-          size={props.size}
-          style={props.iconStyle}></Icon>
-        {props.label !== '' && props.labelPos === 'right' ? (
-          <Text style={[props.labelStyle, { paddingHorizontal: ds.sizes.s }]}>
-            {props.label}
-          </Text>
-        ) : (
-          ''
-        )}
-      </View>
-    </TouchableOpacity>
+    <View style={props.containerStyle}>
+      <TouchableWithoutFeedback onPress={props.onPress}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          {props.label !== '' && props.labelPos === 'left' ? (
+            <Text style={[props.labelStyle, { paddingHorizontal: ds.sizes.s }]}>
+              {props.label}
+            </Text>
+          ) : (
+            ''
+          )}
+          <Icon
+            name={props.icon}
+            size={props.size}
+            style={props.iconStyle}></Icon>
+          {props.label !== '' && props.labelPos === 'right' ? (
+            <Text style={[props.labelStyle, { paddingHorizontal: ds.sizes.s }]}>
+              {props.label}
+            </Text>
+          ) : (
+            ''
+          )}
+        </View>
+      </TouchableWithoutFeedback>
+    </View>
   )
 }
 IconButton.defaultProps = {

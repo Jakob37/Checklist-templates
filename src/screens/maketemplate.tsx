@@ -103,14 +103,6 @@ function EnterTemplate({ route }) {
     setTemplateId(generateId('template'))
   }
 
-  function addSection(sectionLabel: string) {
-    const newSection = {
-      sectionLabel,
-      enterTaskLabel: '',
-      tasks: [],
-    }
-    setSections([...sections, newSection])
-  }
   return (
     <View style={{ flex: 1 }}>
       <ScrollView keyboardShouldPersistTaps="handled">
