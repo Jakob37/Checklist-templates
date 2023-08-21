@@ -1,4 +1,4 @@
-import { ScrollView, Text, TextInput, View } from 'react-native'
+import { Button, ScrollView, Text, TextInput, View } from 'react-native'
 
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 import { useContext, useEffect, useState } from 'react'
@@ -63,15 +63,13 @@ function EnterTemplate({ route }) {
     )
   }, [isFocused])
 
-  const handleAddDefaultCheckbox = () => {
-    if (taskLabel !== '') {
-      const newTask: Task = {
-        id: String(Date.now()),
-        label: taskLabel,
-      }
-      setDefaultTasks([...defaultTasks, newTask])
-      setTaskLabel('')
+  const handleAddDefaultTask = () => {
+    const newTask: Task = {
+      id: String(Date.now()),
+      label: '',
     }
+    setDefaultTasks([...defaultTasks, newTask])
+    // setTaskLabel('')
   }
 
   const handleRemoveTask = (id: string) => {
@@ -130,16 +128,17 @@ function EnterTemplate({ route }) {
             sectionLabel=""
             enterTaskLabel={taskLabel}
             onChangeTaskLabel={(text) => setTaskLabel(text)}
-            onAddCheckbox={handleAddDefaultCheckbox}
-            onRenameCheckbox={(text, i) => {
-              defaultTasks[i].label = text
+            onAddTask={handleAddDefaultTask}
+            onRenameCheckbox={(id, text) => {
+              const taskIndex = defaultTasks.findIndex((task) => task.id === id)
+              defaultTasks[taskIndex].label = text
             }}
             tasks={defaultTasks}
             onRemoveTask={handleRemoveTask}
             onRemoveSection={() => {}}></ChecklistSection>
         </BlueWell>
 
-        {sections.length > 0 ? (
+        {/* {sections.length > 0 ? (
           <View>
             {sections.map((section, sectionIndex) => {
               return (
@@ -165,7 +164,8 @@ function EnterTemplate({ route }) {
                           (section.tasks[taskIndex].label = newLabel),
                       )
                     }}
-                    onAddCheckbox={() => {
+                    onAddTask={() => {
+                      console.log('Adding task')
                       mutateStateAtIndex(
                         sections,
                         setSections,
@@ -204,7 +204,7 @@ function EnterTemplate({ route }) {
           </View>
         ) : (
           ''
-        )}
+        )} */}
 
         {/* FIXME: Fix the styling here */}
 
@@ -276,8 +276,8 @@ type ChecklistSectionProps = {
   sectionLabel: string
   enterTaskLabel: string
   onChangeTaskLabel: (text: string) => void
-  onAddCheckbox: () => void
-  onRenameCheckbox: (newName: string, index: number) => void
+  onAddTask: () => void
+  onRenameCheckbox: (id: string, taskLabel: string) => void
   tasks: Task[]
   onRemoveTask: (id: string) => void
   onRemoveSection: () => void
@@ -295,25 +295,29 @@ function ChecklistSection(props: ChecklistSectionProps) {
       ) : (
         ''
       )}
+      <Button
+        onPress={props.onAddTask}
+        color={ds.colors.highlight1}
+        title="Add task"></Button>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <View style={{ paddingRight: ds.sizes.s }}>
+        {/* <View style={{ paddingRight: ds.sizes.s }}>
           <IconButton
             onPress={props.onAddCheckbox}
             icon={icons.plus}></IconButton>
-        </View>
+        </View> */}
 
-        <EnterTask
+        {/* <EnterTask
           taskLabel={props.enterTaskLabel}
           onAddCheckbox={props.onAddCheckbox}
-          onChangeText={props.onChangeTaskLabel}></EnterTask>
+          onChangeText={props.onChangeTaskLabel}></EnterTask> */}
       </View>
 
-      {props.tasks.map((task, i) => (
+      {props.tasks.map((task) => (
         <ChecklistTask
           key={task.id}
-          handleRemoveTask={props.onRemoveTask}
-          onRenameTask={(newLabel) => {
-            props.onRenameCheckbox(newLabel, i)
+          onRemoveTask={props.onRemoveTask}
+          onEditTask={(id, newLabel) => {
+            props.onRenameCheckbox(id, newLabel)
           }}
           id={task.id}
           label={task.label}></ChecklistTask>
@@ -322,92 +326,106 @@ function ChecklistSection(props: ChecklistSectionProps) {
   )
 }
 
-type EnterTaskProps = {
-  taskLabel: string
-  onAddCheckbox: () => void
-  onChangeText: (text: string) => void
-}
-function EnterTask(props: EnterTaskProps) {
-  return (
-    <TextInput
-      placeholder="Enter task..."
-      value={props.taskLabel}
-      onSubmitEditing={props.onAddCheckbox}
-      editable={true}
-      onChangeText={(text) => props.onChangeText(text)}></TextInput>
-  )
-}
+// type EnterTaskProps = {
+//   taskLabel: string
+//   onAddCheckbox: () => void
+//   onChangeText: (text: string) => void
+// }
+// function EnterTask(props: EnterTaskProps) {
+//   return (
+//     <TextInput
+//       placeholder="Enter task..."
+//       value={props.taskLabel}
+//       onSubmitEditing={props.onAddCheckbox}
+//       editable={true}
+//       onChangeText={(text) => props.onChangeText(text)}></TextInput>
+//   )
+// }
 
 type ChecklistTaskProps = {
-  handleRemoveTask: (id: string) => void
-  onRenameTask: (newName: string) => void
-  label: string
   id: string
+  label: string
+  onRemoveTask: (id: string) => void
+  onEditTask: (id: string, text: string) => void
 }
 function ChecklistTask(props: ChecklistTaskProps) {
-  const [isEditMode, setIsEditMode] = useState(false)
-  const [editText, setEditText] = useState('')
-
   return (
-    <View>
-      {isEditMode ? (
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}>
-          <TextInput
-            placeholder={props.label}
-            onChangeText={(text) => setEditText(text)}></TextInput>
-          <View style={{ flexDirection: 'row' }}>
-            {/* FIXME: Use same styling as the non edit mode */}
-            <IconButton
-              iconStyle={{ paddingRight: ds.sizes.s }}
-              icon={icons.close}
-              onPress={() => {
-                setIsEditMode(false)
-              }}></IconButton>
-            <IconButton
-              icon={icons.save}
-              onPress={() => {
-                props.onRenameTask(editText)
-                setIsEditMode(false)
-              }}></IconButton>
-          </View>
-        </View>
-      ) : (
-        <View
-          style={{
-            flexDirection: 'row',
-            paddingBottom: ds.sizes.s,
-            justifyContent: 'space-between',
-            paddingLeft: ds.sizes.s,
-          }}>
-          <View>
-            <Text style={{ fontSize: ds.font.sizes.minor }}>{props.label}</Text>
-          </View>
-          <View style={{ flexDirection: 'row' }}>
-            <IconButton
-              onPress={() => {
-                setIsEditMode(true)
-              }}
-              icon={icons.pen}
-              size={ds.icons.medium}
-              color="white"
-              iconStyle={{ paddingHorizontal: ds.sizes.s }}></IconButton>
-            <IconButton
-              onPress={() => {
-                props.handleRemoveTask(props.id)
-              }}
-              icon={icons.trash}
-              size={ds.icons.medium}
-              color="white"
-              iconStyle={{ paddingHorizontal: ds.sizes.s }}></IconButton>
-          </View>
-        </View>
-      )}
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      }}>
+      <TextInput
+        placeholder="Enter your task..."
+        onChangeText={(text) => {
+          props.onEditTask(props.id, props.label)
+        }}>
+        {props.label}
+      </TextInput>
+      <IconButton
+        icon={icons.trash}
+        onPress={() => props.onRemoveTask(props.id)}></IconButton>
     </View>
+    // <View>
+    //   {isEditMode ? (
+    //     <View
+    //       style={{
+    //         flexDirection: 'row',
+    //         alignItems: 'center',
+    //         justifyContent: 'space-between',
+    //       }}>
+    //       <TextInput
+    //         placeholder={props.label}
+    //         onChangeText={(text) => setEditText(text)}></TextInput>
+    //       <View style={{ flexDirection: 'row' }}>
+    //         {/* FIXME: Use same styling as the non edit mode */}
+    //         <IconButton
+    //           iconStyle={{ paddingRight: ds.sizes.s }}
+    //           icon={icons.close}
+    //           onPress={() => {
+    //             setIsEditMode(false)
+    //           }}></IconButton>
+    //         <IconButton
+    //           icon={icons.save}
+    //           onPress={() => {
+    //             props.onRenameTask(editText)
+    //             setIsEditMode(false)
+    //           }}></IconButton>
+    //       </View>
+    //     </View>
+    //   ) : (
+    //     <View
+    //       style={{
+    //         flexDirection: 'row',
+    //         paddingBottom: ds.sizes.s,
+    //         justifyContent: 'space-between',
+    //         paddingLeft: ds.sizes.s,
+    //       }}>
+    //       <View>
+    //         <Text style={{ fontSize: ds.font.sizes.minor }}>{props.label}</Text>
+    //       </View>
+    //       <View style={{ flexDirection: 'row' }}>
+    //         <IconButton
+    //           onPress={() => {
+    //             setIsEditMode(true)
+    //           }}
+    //           icon={icons.pen}
+    //           size={ds.icons.medium}
+    //           color="white"
+    //           iconStyle={{ paddingHorizontal: ds.sizes.s }}></IconButton>
+    //         <IconButton
+    //           onPress={() => {
+    //             props.handleRemoveTask(props.id)
+    //           }}
+    //           icon={icons.trash}
+    //           size={ds.icons.medium}
+    //           color="white"
+    //           iconStyle={{ paddingHorizontal: ds.sizes.s }}></IconButton>
+    //       </View>
+    //     </View>
+    //   )}
+    // </View>
   )
 }
 
