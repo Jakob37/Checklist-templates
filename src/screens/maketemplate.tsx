@@ -112,7 +112,6 @@ function EnterTemplate({ route }) {
     }
     setSections([...sections, newSection])
   }
-
   return (
     <View style={{ flex: 1 }}>
       <ScrollView keyboardShouldPersistTaps="handled">
@@ -129,13 +128,19 @@ function EnterTemplate({ route }) {
             enterTaskLabel={taskLabel}
             onChangeTaskLabel={(text) => setTaskLabel(text)}
             onAddTask={handleAddDefaultTask}
-            onRenameCheckbox={(id, text) => {
+            onRenameTask={(id, text) => {
+              console.log(`Renaming ${id} ${text}`)
               const taskIndex = defaultTasks.findIndex((task) => task.id === id)
-              defaultTasks[taskIndex].label = text
+              // defaultTasks[taskIndex].label = text
+              const tasks = [...defaultTasks]
+              tasks[taskIndex].label = text
+              setDefaultTasks(tasks)
             }}
             tasks={defaultTasks}
             onRemoveTask={handleRemoveTask}
-            onRemoveSection={() => {}}></ChecklistSection>
+            onRemoveSection={() => {
+              console.error('Cannot remove default section')
+            }}></ChecklistSection>
         </BlueWell>
 
         {/* {sections.length > 0 ? (
@@ -206,63 +211,8 @@ function EnterTemplate({ route }) {
           ''
         )} */}
 
-        {/* FIXME: Fix the styling here */}
-
-        {/* <SimpleInputModal
-          modalVisible={modalVisible}
-          onSubmit={() => {
-            addSection(newSectionLabel)
-            setModalVisible(false)
-          }}
-          onCancel={() => {
-            setModalVisible(false)
-          }}></SimpleInputModal> */}
-
-        {/* FIXME: This should be reactivated for the sections */}
-        {/* <BlueWell style={{ paddingTop: ds.sizes.s }}>
-          {addingNewSectionNew ? (
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}>
-              <TextInput
-                placeholder="Enter label"
-                onChangeText={(text) =>
-                  setNewEnterSectionLabel(text)
-                }></TextInput>
-              <View style={{ flexDirection: 'row' }}>
-                <IconButton
-                  icon={icons.done}
-                  containerStyle={{ paddingRight: ds.sizes.s }}
-                  onPress={() => {
-                    if (newEnterSectionLabel === '') {
-                      console.log('You need to enter a value')
-                      return
-                    }
-                    setAddingNewSectionNew(false)
-                    addSection(newEnterSectionLabel)
-                  }}></IconButton>
-                <IconButton
-                  icon={icons.trash}
-                  onPress={() => {
-                    setAddingNewSectionNew(false)
-                  }}></IconButton>
-              </View>
-            </View>
-          ) : (
-            <TouchableOpacity
-              onPress={() => {
-                // addSection()
-                setAddingNewSectionNew(true)
-              }}>
-              <Text>Click to add new section</Text>
-            </TouchableOpacity>
-          )}
-        </BlueWell> */}
-
-        {templateName !== '' && defaultTasks.length > 0 ? (
+        {templateName !== '' &&
+        defaultTasks.filter((task) => task.label !== '').length > 0 ? (
           <SaveTemplate onSubmit={handleSubmitList}></SaveTemplate>
         ) : (
           ''
@@ -277,7 +227,7 @@ type ChecklistSectionProps = {
   enterTaskLabel: string
   onChangeTaskLabel: (text: string) => void
   onAddTask: () => void
-  onRenameCheckbox: (id: string, taskLabel: string) => void
+  onRenameTask: (id: string, taskLabel: string) => void
   tasks: Task[]
   onRemoveTask: (id: string) => void
   onRemoveSection: () => void
@@ -316,9 +266,7 @@ function ChecklistSection(props: ChecklistSectionProps) {
         <ChecklistTask
           key={task.id}
           onRemoveTask={props.onRemoveTask}
-          onEditTask={(id, newLabel) => {
-            props.onRenameCheckbox(id, newLabel)
-          }}
+          onRenameTask={props.onRenameTask}
           id={task.id}
           label={task.label}></ChecklistTask>
       ))}
@@ -346,7 +294,7 @@ type ChecklistTaskProps = {
   id: string
   label: string
   onRemoveTask: (id: string) => void
-  onEditTask: (id: string, text: string) => void
+  onRenameTask: (id: string, text: string) => void
 }
 function ChecklistTask(props: ChecklistTaskProps) {
   return (
@@ -359,7 +307,7 @@ function ChecklistTask(props: ChecklistTaskProps) {
       <TextInput
         placeholder="Enter your task..."
         onChangeText={(text) => {
-          props.onEditTask(props.id, props.label)
+          props.onRenameTask(props.id, text)
         }}>
         {props.label}
       </TextInput>
@@ -367,65 +315,6 @@ function ChecklistTask(props: ChecklistTaskProps) {
         icon={icons.trash}
         onPress={() => props.onRemoveTask(props.id)}></IconButton>
     </View>
-    // <View>
-    //   {isEditMode ? (
-    //     <View
-    //       style={{
-    //         flexDirection: 'row',
-    //         alignItems: 'center',
-    //         justifyContent: 'space-between',
-    //       }}>
-    //       <TextInput
-    //         placeholder={props.label}
-    //         onChangeText={(text) => setEditText(text)}></TextInput>
-    //       <View style={{ flexDirection: 'row' }}>
-    //         {/* FIXME: Use same styling as the non edit mode */}
-    //         <IconButton
-    //           iconStyle={{ paddingRight: ds.sizes.s }}
-    //           icon={icons.close}
-    //           onPress={() => {
-    //             setIsEditMode(false)
-    //           }}></IconButton>
-    //         <IconButton
-    //           icon={icons.save}
-    //           onPress={() => {
-    //             props.onRenameTask(editText)
-    //             setIsEditMode(false)
-    //           }}></IconButton>
-    //       </View>
-    //     </View>
-    //   ) : (
-    //     <View
-    //       style={{
-    //         flexDirection: 'row',
-    //         paddingBottom: ds.sizes.s,
-    //         justifyContent: 'space-between',
-    //         paddingLeft: ds.sizes.s,
-    //       }}>
-    //       <View>
-    //         <Text style={{ fontSize: ds.font.sizes.minor }}>{props.label}</Text>
-    //       </View>
-    //       <View style={{ flexDirection: 'row' }}>
-    //         <IconButton
-    //           onPress={() => {
-    //             setIsEditMode(true)
-    //           }}
-    //           icon={icons.pen}
-    //           size={ds.icons.medium}
-    //           color="white"
-    //           iconStyle={{ paddingHorizontal: ds.sizes.s }}></IconButton>
-    //         <IconButton
-    //           onPress={() => {
-    //             props.handleRemoveTask(props.id)
-    //           }}
-    //           icon={icons.trash}
-    //           size={ds.icons.medium}
-    //           color="white"
-    //           iconStyle={{ paddingHorizontal: ds.sizes.s }}></IconButton>
-    //       </View>
-    //     </View>
-    //   )}
-    // </View>
   )
 }
 
