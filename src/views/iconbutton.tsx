@@ -16,7 +16,7 @@ function IconButton(props: {
   onPress: () => void
   icon: string
   size?: number
-  iconStyle?: StyleProp<ViewStyle>
+  iconStyle?: StyleProp<TextStyle>
   containerStyle?: StyleProp<ViewStyle>
   labelStyle?: StyleProp<TextStyle>
   label?: string

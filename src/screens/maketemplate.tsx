@@ -8,7 +8,7 @@ import { buildTemplateObject } from '../storage/util'
 import { generateId } from '../util/util'
 import { ds, styles } from '../ux/design'
 import { icons } from '../ux/icons'
-import { IconButton } from '../views/iconbutton'
+import { HoverButton, IconButton } from '../views/iconbutton'
 import { BlueWell } from '../views/wells'
 
 type SectionState = {
@@ -114,7 +114,6 @@ function EnterTemplate({ route }) {
             sectionLabel=""
             enterTaskLabel={taskLabel}
             onChangeTaskLabel={(text) => setTaskLabel(text)}
-            onAddTask={onAddTask}
             onRenameTask={(id, text) => {
               const taskIndex = tasks.findIndex((task) => task.id === id)
               const tasksCopy = [...tasks]
@@ -135,6 +134,7 @@ function EnterTemplate({ route }) {
           ''
         )}
       </ScrollView>
+      <HoverButton onPress={onAddTask}></HoverButton>
     </View>
   )
 }
@@ -143,7 +143,6 @@ type ChecklistSectionProps = {
   sectionLabel: string
   enterTaskLabel: string
   onChangeTaskLabel: (text: string) => void
-  onAddTask: () => void
   onRenameTask: (id: string, taskLabel: string) => void
   tasks: Task[]
   onRemoveTask: (id: string) => void
@@ -162,10 +161,6 @@ function ChecklistSection(props: ChecklistSectionProps) {
       ) : (
         ''
       )}
-      <Button
-        onPress={props.onAddTask}
-        color={ds.colors.highlight1}
-        title="Add task"></Button>
 
       {props.tasks.map((task) => (
         <ChecklistTask
