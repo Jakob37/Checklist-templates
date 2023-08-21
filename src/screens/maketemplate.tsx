@@ -93,8 +93,7 @@ function EnterTemplate({ route }) {
     )
     saveTemplate(template)
     reset()
-    // @ts-ignore
-    navigate.navigate('Templates')
+    navigate.goBack()
   }
 
   function reset() {
