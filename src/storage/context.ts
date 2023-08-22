@@ -22,7 +22,7 @@ const StorageContext = createContext<{
   removeTemplate: (id: TemplateId) => void
   saveTemplate: (template: ChecklistTemplate) => void
 
-  toggleCheck: (checklistId: ChecklistId, checkboxId: CheckboxId) => void
+  setCheck: (checklistId: ChecklistId, checkboxId: CheckboxId) => void
 }>({
   checklists: [],
   // @ts-ignore
@@ -45,7 +45,7 @@ const StorageContext = createContext<{
     console.error(PLACEHOLDER_ERROR)
   },
   saveChecklist: (_checklist) => {},
-  toggleCheck: (_checklistId, _checkboxId) => {
+  setCheck: (_checklistId, _checkboxId) => {
     console.error(PLACEHOLDER_ERROR)
   },
   saveTemplate: async (_template) => {

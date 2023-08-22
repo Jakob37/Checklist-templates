@@ -117,15 +117,12 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
     }
   }
 
-  async function toggleCheck(checklistId: string, checkboxId: string) {
+  async function setCheck(checklistId: string, checkboxId: string) {
     const targetChecklist = getChecklistById(checklistId)
     const updatedChecklist = { ...targetChecklist }
     updatedChecklist.checkboxes = targetChecklist.checkboxes.map((checkbox) => {
       if (checkbox.id === checkboxId) {
-        const newChecked =
-          checkbox.checked === CheckboxStatus.checked
-            ? CheckboxStatus.unchecked
-            : CheckboxStatus.checked
+        const newChecked = checkbox.checked
         const newCheckbox = { ...checkbox }
         newCheckbox.checked = newChecked
         return newCheckbox
@@ -188,7 +185,7 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
         saveChecklist,
         removeChecklist,
 
-        toggleCheck,
+        setCheck,
         resetChecklist,
         isChecklistDone,
       }}>

@@ -117,12 +117,12 @@ function TemplateCard(props: TemplateCardProps) {
         onPress={props.onToggleStar}
         icon={icons.star}></IconButton>
       <View style={{ flex: 1 }}>
-        <View style={{ flexDirection: 'column' }}>
-          <TouchableWithoutFeedback onPress={props.onInstantiate}>
+        <TouchableWithoutFeedback onPress={props.onInstantiate}>
+          <View style={{ flexDirection: 'column' }}>
             <MinorText>{props.template.label}</MinorText>
-          </TouchableWithoutFeedback>
-          <SubText>{props.template.stacks[0].tasks.length} tasks</SubText>
-        </View>
+            <SubText>{props.template.stacks[0].tasks.length} tasks</SubText>
+          </View>
+        </TouchableWithoutFeedback>
       </View>
       <View style={{ flexDirection: 'row' }}>
         {/* FIXME: Remove, bake into the template display */}

@@ -1,20 +1,48 @@
 import { Button, ScrollView, Text, View } from 'react-native'
 import { StorageContext } from '../storage/context'
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { IconButton } from '../views/iconbutton'
 import { icons } from '../ux/icons'
 import { ds, styles } from '../ux/design'
 import { BlueWell } from '../views/wells'
 import { useNavigation } from '@react-navigation/native'
+import { CheckboxStatus, Checklist } from '../storage/interfaces'
 
 function Checklists() {
   const {
     checklists,
     removeChecklist,
-    toggleCheck,
+    setCheck: toggleCheck,
     resetChecklist,
     isChecklistDone,
   } = useContext(StorageContext)
+
+  const [checklistsLocal, setChecklistsLocal] = useState<Checklist[]>([])
+
+  useEffect(() => {
+    setChecklistsLocal(checklists)
+  }, checklists)
+
+  function toggleCheckLocal(checklistId: string, checkboxId: string) {
+    console.log('Toggling local')
+
+    const tmpState = [...checklistsLocal]
+    const targetChecklist = tmpState.filter(
+      (tmpChecklist) => tmpChecklist.id === checklistId,
+    )
+    const extractedTargetChecklist = targetChecklist[0]
+    const targetCheckbox = extractedTargetChecklist.checkboxes.filter(
+      (checkbox) => checkbox.id === checkboxId,
+    )
+    const extractedTargetCheckbox = targetCheckbox[0]
+    extractedTargetCheckbox.checked =
+      extractedTargetCheckbox.checked === CheckboxStatus.checked
+        ? CheckboxStatus.unchecked
+        : CheckboxStatus.checked
+    setChecklistsLocal(tmpState)
+
+    toggleCheck(checklistId, checkboxId)
+  }
 
   const navigate = useNavigation()
 
@@ -66,7 +94,7 @@ function Checklists() {
                       checkboxId={checkbox.id}
                       checked={checkbox.checked}
                       label={checkbox.label}
-                      toggleCheck={toggleCheck}></Checkbox>
+                      toggleCheck={toggleCheckLocal}></Checkbox>
                   </View>
                 )
               })}
