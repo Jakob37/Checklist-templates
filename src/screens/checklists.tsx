@@ -12,7 +12,7 @@ function Checklists() {
   const {
     checklists,
     removeChecklist,
-    setCheck: toggleCheck,
+    setCheck,
     resetChecklist,
     isChecklistDone,
   } = useContext(StorageContext)
@@ -24,8 +24,6 @@ function Checklists() {
   }, checklists)
 
   function toggleCheckLocal(checklistId: string, checkboxId: string) {
-    console.log('Toggling local')
-
     const tmpState = [...checklistsLocal]
     const targetChecklist = tmpState.filter(
       (tmpChecklist) => tmpChecklist.id === checklistId,
@@ -41,7 +39,7 @@ function Checklists() {
         : CheckboxStatus.checked
     setChecklistsLocal(tmpState)
 
-    toggleCheck(checklistId, checkboxId)
+    setCheck(checklistId, checkboxId)
   }
 
   const navigate = useNavigation()
