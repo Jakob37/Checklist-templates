@@ -1,5 +1,12 @@
 import { useContext, useEffect, useState } from 'react'
-import { Button, ScrollView, Text, TextInput, View } from 'react-native'
+import {
+  Button,
+  ScrollView,
+  Text,
+  TextInput,
+  View,
+  TouchableOpacity,
+} from 'react-native'
 
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 import { StorageContext } from '../storage/context'
@@ -10,6 +17,7 @@ import { ds, styles } from '../ux/design'
 import { icons } from '../ux/icons'
 import { HoverButton, IconButton } from '../views/iconbutton'
 import { BlueWell } from '../views/wells'
+import DraggableFlatList from 'react-native-draggable-flatlist'
 
 type SectionState = {
   sectionLabel: string
@@ -99,43 +107,67 @@ function EnterTemplate({ route }) {
     setTemplateId(generateId('template'))
   }
 
+  const [dragDataTemp, setDragDataTemp] = useState([
+    { d: 1, k: 'A' },
+    { d: 2, k: 'B' },
+  ])
+
   return (
     <View style={{ flex: 1 }}>
-      <ScrollView keyboardShouldPersistTaps="handled">
-        <BlueWell style={{ marginTop: ds.sizes.s }}>
-          <TextInput
-            autoFocus={true}
-            placeholder="Enter template name"
-            value={templateName}
-            onChangeText={(text) => setTemplateName(text)}></TextInput>
-        </BlueWell>
+      {/* <ScrollView keyboardShouldPersistTaps="handled"> */}
+      <BlueWell style={{ marginTop: ds.sizes.s }}>
+        <TextInput
+          autoFocus={true}
+          placeholder="Enter template name"
+          value={templateName}
+          onChangeText={(text) => setTemplateName(text)}></TextInput>
+      </BlueWell>
 
-        <BlueWell style={{ marginTop: ds.sizes.s }}>
-          <ChecklistSection
-            sectionLabel=""
-            enterTaskLabel={taskLabel}
-            onChangeTaskLabel={(text) => setTaskLabel(text)}
-            onRenameTask={(id, text) => {
-              const taskIndex = tasks.findIndex((task) => task.id === id)
-              const tasksCopy = [...tasks]
-              tasksCopy[taskIndex].label = text
-              setTasks(tasksCopy)
-            }}
-            tasks={tasks}
-            onRemoveTask={handleRemoveTask}
-            onRemoveSection={() => {
-              console.error('Cannot remove default section')
-            }}></ChecklistSection>
-        </BlueWell>
+      <BlueWell style={{ marginTop: ds.sizes.s }}>
+        <ChecklistSection
+          sectionLabel=""
+          enterTaskLabel={taskLabel}
+          onChangeTaskLabel={(text) => setTaskLabel(text)}
+          onRenameTask={(id, text) => {
+            const taskIndex = tasks.findIndex((task) => task.id === id)
+            const tasksCopy = [...tasks]
+            tasksCopy[taskIndex].label = text
+            setTasks(tasksCopy)
+          }}
+          tasks={tasks}
+          onRemoveTask={handleRemoveTask}
+          onRemoveSection={() => {
+            console.error('Cannot remove default section')
+          }}></ChecklistSection>
+      </BlueWell>
 
-        {templateName !== '' &&
-        tasks.filter((task) => task.label !== '').length > 0 ? (
-          <SaveTemplate onSubmit={handleSubmitList}></SaveTemplate>
-        ) : (
-          ''
-        )}
-      </ScrollView>
+      {templateName !== '' &&
+      tasks.filter((task) => task.label !== '').length > 0 ? (
+        <SaveTemplate onSubmit={handleSubmitList}></SaveTemplate>
+      ) : (
+        ''
+      )}
+      {/* </ScrollView> */}
       <HoverButton onPress={onAddTask}></HoverButton>
+      <DraggableFlatList
+        data={dragDataTemp}
+        renderItem={({ item, drag, isActive }) => (
+          <BlueWell style={{ backgroundColor: 'green' }}>
+            <View style={{ flexDirection: 'row', backgroundColor: 'red' }}>
+              <TouchableOpacity style={{ flex: 1 }}>
+                <Text style={{ fontSize: ds.sizes.l }}>{item.d}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ backgroundColor: 'blue', flex: 1 }}
+                onPress={drag}>
+                <View>
+                  <Text style={{ fontSize: ds.sizes.l }}>X</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </BlueWell>
+        )}
+        keyExtractor={(item) => item.k}></DraggableFlatList>
     </View>
   )
 }
