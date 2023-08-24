@@ -160,7 +160,13 @@ function EnterTemplate({ route }) {
               </TouchableOpacity>
               <TouchableOpacity style={{ flex: 1 }} onLongPress={drag}>
                 <View>
-                  <Text style={{ fontSize: ds.sizes.l }}>X</Text>
+                  <Text
+                    style={{
+                      fontSize: ds.sizes.l,
+                      backgroundColor: isActive ? 'green' : 'blue',
+                    }}>
+                    X
+                  </Text>
                 </View>
               </TouchableOpacity>
             </View>
