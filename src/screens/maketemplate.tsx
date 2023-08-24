@@ -149,17 +149,16 @@ function EnterTemplate({ route }) {
       )}
       {/* </ScrollView> */}
       <HoverButton onPress={onAddTask}></HoverButton>
+      <View style={{ height: ds.sizes.l }}></View>
       <DraggableFlatList
         data={dragDataTemp}
         renderItem={({ item, drag, isActive }) => (
-          <BlueWell style={{ backgroundColor: 'green' }}>
-            <View style={{ flexDirection: 'row', backgroundColor: 'red' }}>
+          <BlueWell>
+            <View style={{ flexDirection: 'row' }}>
               <TouchableOpacity style={{ flex: 1 }}>
                 <Text style={{ fontSize: ds.sizes.l }}>{item.d}</Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                style={{ backgroundColor: 'blue', flex: 1 }}
-                onPress={drag}>
+              <TouchableOpacity style={{ flex: 1 }} onLongPress={drag}>
                 <View>
                   <Text style={{ fontSize: ds.sizes.l }}>X</Text>
                 </View>
