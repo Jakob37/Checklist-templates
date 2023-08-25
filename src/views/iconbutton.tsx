@@ -13,7 +13,8 @@ import { ds, styles } from '../ux/design'
 import { icons } from '../ux/icons'
 
 function IconButton(props: {
-  onPress: () => void
+  onPress?: () => void
+  onLongPress?: () => void
   icon: string
   size?: number
   iconStyle?: StyleProp<TextStyle>
@@ -24,7 +25,7 @@ function IconButton(props: {
 }) {
   return (
     <View style={props.containerStyle}>
-      <TouchableWithoutFeedback onPress={props.onPress}>
+      <TouchableOpacity onPress={props.onPress} onLongPress={props.onLongPress}>
         <View
           style={{
             flexDirection: 'row',
@@ -49,11 +50,13 @@ function IconButton(props: {
             ''
           )}
         </View>
-      </TouchableWithoutFeedback>
+      </TouchableOpacity>
     </View>
   )
 }
 IconButton.defaultProps = {
+  onPress: () => {},
+  onLongPress: () => {},
   size: ds.icons.medium,
   color: ds.colors.primary,
   iconStyle: {},

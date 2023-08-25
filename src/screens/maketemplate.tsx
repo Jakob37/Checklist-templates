@@ -107,10 +107,10 @@ function EnterTemplate({ route }) {
     setTemplateId(generateId('template'))
   }
 
-  const [dragDataTemp, setDragDataTemp] = useState([
-    { d: 1, k: 'A' },
-    { d: 2, k: 'B' },
-  ])
+  // const [dragDataTemp, setDragDataTemp] = useState([
+  //   { d: 1, k: 'A' },
+  //   { d: 2, k: 'B' },
+  // ])
 
   return (
     <View style={{ flex: 1 }}>
@@ -150,7 +150,7 @@ function EnterTemplate({ route }) {
       {/* </ScrollView> */}
       <HoverButton onPress={onAddTask}></HoverButton>
       <View style={{ height: ds.sizes.l }}></View>
-      <DraggableFlatList
+      {/* <DraggableFlatList
         data={dragDataTemp}
         renderItem={({ item, drag, isActive }) => (
           <BlueWell>
@@ -172,7 +172,7 @@ function EnterTemplate({ route }) {
             </View>
           </BlueWell>
         )}
-        keyExtractor={(item) => item.k}></DraggableFlatList>
+        keyExtractor={(item) => item.k}></DraggableFlatList> */}
     </View>
   )
 }
@@ -187,6 +187,11 @@ type ChecklistSectionProps = {
   onRemoveSection: () => void
 }
 function ChecklistSection(props: ChecklistSectionProps) {
+  const [dragDataTemp, setDragDataTemp] = useState([
+    { d: 1, k: 'A' },
+    { d: 2, k: 'B' },
+  ])
+
   return (
     <View>
       {props.sectionLabel !== '' ? (
@@ -200,15 +205,42 @@ function ChecklistSection(props: ChecklistSectionProps) {
         ''
       )}
 
-      {props.tasks.map((task, i) => (
+      {/* {props.tasks.map((task, i) => (
         <ChecklistTask
           key={task.id}
           onRemoveTask={props.onRemoveTask}
           onRenameTask={props.onRenameTask}
+          onDrag={() => {}}
           id={task.id}
           label={task.label}
           autoFocus={i !== 0}></ChecklistTask>
-      ))}
+      ))} */}
+
+      <DraggableFlatList
+        data={props.tasks}
+        renderItem={({ item, drag, isActive }) => (
+          <View>
+            <ChecklistTask
+              onRemoveTask={() => {}}
+              onRenameTask={() => {}}
+              onDrag={() => {}}
+              id={item.id}
+              label={item.label}
+              autoFocus={true}></ChecklistTask>
+            {/* <TouchableOpacity style={{ flex: 1 }} onLongPress={drag}>
+              <View>
+                <Text
+                  style={{
+                    fontSize: ds.sizes.l,
+                    backgroundColor: isActive ? 'green' : 'blue',
+                  }}>
+                  X
+                </Text>
+              </View>
+            </TouchableOpacity> */}
+          </View>
+        )}
+        keyExtractor={(item) => item.k}></DraggableFlatList>
     </View>
   )
 }
@@ -218,6 +250,7 @@ type ChecklistTaskProps = {
   label: string
   onRemoveTask: (id: string) => void
   onRenameTask: (id: string, text: string) => void
+  onDrag: () => void
   autoFocus: boolean
 }
 function ChecklistTask(props: ChecklistTaskProps) {
@@ -228,6 +261,10 @@ function ChecklistTask(props: ChecklistTaskProps) {
         alignItems: 'center',
         justifyContent: 'space-between',
       }}>
+      <IconButton
+        icon={icons.bars}
+        onPress={() => {}}
+        onLongPress={props.onDrag}></IconButton>
       <TextInput
         autoFocus={props.autoFocus}
         placeholder="Enter your task..."
