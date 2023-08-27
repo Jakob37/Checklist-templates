@@ -219,11 +219,11 @@ function ChecklistSection(props: ChecklistSectionProps) {
       <DraggableFlatList
         data={props.tasks}
         renderItem={({ item, drag, isActive }) => (
-          <View>
+          <View key={item.id}>
             <ChecklistTask
-              onRemoveTask={() => {}}
-              onRenameTask={() => {}}
-              onDrag={() => {}}
+              onRemoveTask={props.onRemoveTask}
+              onRenameTask={props.onRenameTask}
+              onDrag={drag}
               id={item.id}
               label={item.label}
               autoFocus={true}></ChecklistTask>
@@ -240,7 +240,7 @@ function ChecklistSection(props: ChecklistSectionProps) {
             </TouchableOpacity> */}
           </View>
         )}
-        keyExtractor={(item) => item.k}></DraggableFlatList>
+        keyExtractor={(item) => item.id}></DraggableFlatList>
     </View>
   )
 }
