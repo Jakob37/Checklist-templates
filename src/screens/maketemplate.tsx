@@ -6,6 +6,7 @@ import {
   TextInput,
   View,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native'
 
 import { useIsFocused, useNavigation } from '@react-navigation/native'
@@ -123,7 +124,12 @@ function EnterTemplate({ route }) {
           onChangeText={(text) => setTemplateName(text)}></TextInput>
       </BlueWell>
 
-      <BlueWell style={{ marginTop: ds.sizes.s }}>
+      <BlueWell
+        style={{
+          marginTop: ds.sizes.s,
+          // FIXME: How to do this elegantly?
+          height: Dimensions.get('window').height - 300,
+        }}>
         <ChecklistSection
           sectionLabel=""
           enterTaskLabel={taskLabel}
@@ -138,6 +144,10 @@ function EnterTemplate({ route }) {
           onRemoveTask={handleRemoveTask}
           onRemoveSection={() => {
             console.error('Cannot remove default section')
+          }}
+          onRearrangeTasks={(newOrderTasks) => {
+            const copy = [...newOrderTasks]
+            setTasks(copy)
           }}></ChecklistSection>
       </BlueWell>
 
@@ -150,29 +160,6 @@ function EnterTemplate({ route }) {
       {/* </ScrollView> */}
       <HoverButton onPress={onAddTask}></HoverButton>
       <View style={{ height: ds.sizes.l }}></View>
-      {/* <DraggableFlatList
-        data={dragDataTemp}
-        renderItem={({ item, drag, isActive }) => (
-          <BlueWell>
-            <View style={{ flexDirection: 'row' }}>
-              <TouchableOpacity style={{ flex: 1 }}>
-                <Text style={{ fontSize: ds.sizes.l }}>{item.d}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={{ flex: 1 }} onLongPress={drag}>
-                <View>
-                  <Text
-                    style={{
-                      fontSize: ds.sizes.l,
-                      backgroundColor: isActive ? 'green' : 'blue',
-                    }}>
-                    X
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          </BlueWell>
-        )}
-        keyExtractor={(item) => item.k}></DraggableFlatList> */}
     </View>
   )
 }
@@ -185,6 +172,7 @@ type ChecklistSectionProps = {
   tasks: Task[]
   onRemoveTask: (id: string) => void
   onRemoveSection: () => void
+  onRearrangeTasks: (newOrder: Task[]) => void
 }
 function ChecklistSection(props: ChecklistSectionProps) {
   const [dragDataTemp, setDragDataTemp] = useState([
@@ -205,17 +193,6 @@ function ChecklistSection(props: ChecklistSectionProps) {
         ''
       )}
 
-      {/* {props.tasks.map((task, i) => (
-        <ChecklistTask
-          key={task.id}
-          onRemoveTask={props.onRemoveTask}
-          onRenameTask={props.onRenameTask}
-          onDrag={() => {}}
-          id={task.id}
-          label={task.label}
-          autoFocus={i !== 0}></ChecklistTask>
-      ))} */}
-
       <DraggableFlatList
         data={props.tasks}
         renderItem={({ item, drag, isActive }) => (
@@ -227,20 +204,12 @@ function ChecklistSection(props: ChecklistSectionProps) {
               id={item.id}
               label={item.label}
               autoFocus={true}></ChecklistTask>
-            {/* <TouchableOpacity style={{ flex: 1 }} onLongPress={drag}>
-              <View>
-                <Text
-                  style={{
-                    fontSize: ds.sizes.l,
-                    backgroundColor: isActive ? 'green' : 'blue',
-                  }}>
-                  X
-                </Text>
-              </View>
-            </TouchableOpacity> */}
           </View>
         )}
-        keyExtractor={(item) => item.id}></DraggableFlatList>
+        keyExtractor={(item) => item.id}
+        onDragEnd={({ data }) => {
+          props.onRearrangeTasks(data)
+        }}></DraggableFlatList>
     </View>
   )
 }
@@ -261,18 +230,21 @@ function ChecklistTask(props: ChecklistTaskProps) {
         alignItems: 'center',
         justifyContent: 'space-between',
       }}>
-      <IconButton
-        icon={icons.bars}
-        onPress={() => {}}
-        onLongPress={props.onDrag}></IconButton>
-      <TextInput
-        autoFocus={props.autoFocus}
-        placeholder="Enter your task..."
-        onChangeText={(text) => {
-          props.onRenameTask(props.id, text)
-        }}>
-        {props.label}
-      </TextInput>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <IconButton
+          icon={icons.bars}
+          onPress={() => {}}
+          onLongPress={props.onDrag}
+          containerStyle={{ paddingRight: ds.sizes.s }}></IconButton>
+        <TextInput
+          autoFocus={props.autoFocus}
+          placeholder="Enter your task..."
+          onChangeText={(text) => {
+            props.onRenameTask(props.id, text)
+          }}>
+          {props.label}
+        </TextInput>
+      </View>
       <IconButton
         icon={icons.trash}
         containerStyle={{ paddingRight: ds.sizes.s }}
