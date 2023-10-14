@@ -9,7 +9,7 @@ export const ds = {
     l: 20,
     hoverButton: 60,
     scrollBottom: 260,
-    bottomBarHeight: 80,
+    bottomBarHeight: 100,
   },
   entries: {
     height: 40,
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   orangePanel: {
     backgroundColor: ds.colors.highlight1,
     marginHorizontal: ds.sizes.s,
-    marginTop: ds.sizes.m,
+    marginTop: ds.sizes.s,
     paddingVertical: ds.sizes.s,
     paddingHorizontal: ds.sizes.s,
     borderRadius: ds.border.radius,
