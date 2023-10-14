@@ -19,6 +19,48 @@ function Templates() {
   const [viewSingleTemplate, setViewSingleTemplate] =
     useState<ChecklistTemplate | null>(null)
 
+  function makeTemplateCard(template: ChecklistTemplate) {
+    return (
+      <TemplateCard
+        key={template.id}
+        template={template}
+        onInstantiate={() => {
+          const checklist = instantiateTemplate(template)
+          saveChecklist(checklist)
+          // @ts-ignore
+          navigate.navigate('Checklists')
+        }}
+        onView={() => {
+          setViewSingleTemplate(template)
+        }}
+        onRemove={() => {
+          makeConfirmDialog(
+            `Remove template`,
+            `Are you sure you want to remove ${template.label}?`,
+            () => removeTemplate(template.id),
+          )
+        }}
+        onCopy={() => {
+          // @ts-ignore
+          navigate.navigate('Make template', {
+            templateId: template.id,
+            isNew: true,
+          })
+        }}
+        onEdit={() => {
+          // @ts-ignore
+          navigate.navigate('Make template', {
+            templateId: template.id,
+            isNew: false,
+          })
+        }}
+        onToggleStar={() => {
+          template.favorite = !template.favorite
+          saveTemplate(template)
+        }}></TemplateCard>
+    )
+  }
+
   return (
     <View style={{ flex: 1 }}>
       {viewSingleTemplate !== null ? (
@@ -33,46 +75,13 @@ function Templates() {
           style={{ flex: 1, paddingBottom: ds.sizes.scrollBottom }}
           contentContainerStyle={{ flexGrow: 1 }}>
           {templates
+            .filter((template) => template.favorite)
             .sort((t1, t2) => (t1.label < t2.label ? -1 : 1))
-            .map((template) => (
-              <TemplateCard
-                key={template.id}
-                template={template}
-                onInstantiate={() => {
-                  const checklist = instantiateTemplate(template)
-                  saveChecklist(checklist)
-                  // @ts-ignore
-                  navigate.navigate('Checklists')
-                }}
-                onView={() => {
-                  setViewSingleTemplate(template)
-                }}
-                onRemove={() => {
-                  makeConfirmDialog(
-                    `Remove template`,
-                    `Are you sure you want to remove ${template.label}?`,
-                    () => removeTemplate(template.id),
-                  )
-                }}
-                onCopy={() => {
-                  // @ts-ignore
-                  navigate.navigate('Make template', {
-                    templateId: template.id,
-                    isNew: true,
-                  })
-                }}
-                onEdit={() => {
-                  // @ts-ignore
-                  navigate.navigate('Make template', {
-                    templateId: template.id,
-                    isNew: false,
-                  })
-                }}
-                onToggleStar={() => {
-                  template.favorite = !template.favorite
-                  saveTemplate(template)
-                }}></TemplateCard>
-            ))}
+            .map((template) => makeTemplateCard(template))}
+          {templates
+            .filter((template) => !template.favorite)
+            .sort((t1, t2) => (t1.label < t2.label ? -1 : 1))
+            .map((template) => makeTemplateCard(template))}
           <View
             style={{ paddingTop: ds.sizes.hoverButton + ds.sizes.m }}></View>
         </ScrollView>
