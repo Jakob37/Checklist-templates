@@ -1,24 +1,16 @@
 import { useContext, useEffect, useState } from 'react'
-import {
-  Button,
-  ScrollView,
-  Text,
-  TextInput,
-  View,
-  TouchableOpacity,
-  Dimensions,
-} from 'react-native'
+import { Text, TextInput, View } from 'react-native'
 
 import { useIsFocused, useNavigation } from '@react-navigation/native'
+import DraggableFlatList from 'react-native-draggable-flatlist'
 import { StorageContext } from '../storage/context'
 import { Task } from '../storage/interfaces'
 import { buildTemplateObject } from '../storage/util'
 import { generateId } from '../util/util'
 import { ds, styles } from '../ux/design'
 import { icons } from '../ux/icons'
-import { HoverButton, IconButton } from '../views/iconbutton'
+import { IconButton } from '../views/iconbutton'
 import { BlueWell } from '../views/wells'
-import DraggableFlatList from 'react-native-draggable-flatlist'
 
 type SectionState = {
   sectionLabel: string
@@ -108,13 +100,8 @@ function EnterTemplate({ route }) {
     setTemplateId(generateId('template'))
   }
 
-  // const [dragDataTemp, setDragDataTemp] = useState([
-  //   { d: 1, k: 'A' },
-  //   { d: 2, k: 'B' },
-  // ])
-
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, flexDirection: 'column' }}>
       {/* <ScrollView keyboardShouldPersistTaps="handled"> */}
       <BlueWell style={{ marginTop: ds.sizes.s }}>
         <TextInput
@@ -128,7 +115,9 @@ function EnterTemplate({ route }) {
         style={{
           marginTop: ds.sizes.s,
           // FIXME: How to do this elegantly?
-          height: Dimensions.get('window').height - 300,
+          flexGrow: 1,
+          marginBottom: ds.sizes.bottomBarHeight + ds.sizes.s,
+          // height: Dimensions.get('window').height - 300,
         }}>
         <ChecklistSection
           sectionLabel=""
@@ -150,6 +139,9 @@ function EnterTemplate({ route }) {
             setTasks(copy)
           }}></ChecklistSection>
       </BlueWell>
+      {/* <BlueWell style={{ height: 100, marginBottom: 200 }}>
+        <IconButton icon={icons.plus} onPress={onAddTask}></IconButton>
+      </BlueWell> */}
 
       {templateName !== '' &&
       tasks.filter((task) => task.label !== '').length > 0 ? (
@@ -157,8 +149,6 @@ function EnterTemplate({ route }) {
       ) : (
         ''
       )}
-      {/* </ScrollView> */}
-      <HoverButton onPress={onAddTask}></HoverButton>
       <View style={{ height: ds.sizes.l }}></View>
     </View>
   )
@@ -175,11 +165,6 @@ type ChecklistSectionProps = {
   onRearrangeTasks: (newOrder: Task[]) => void
 }
 function ChecklistSection(props: ChecklistSectionProps) {
-  const [dragDataTemp, setDragDataTemp] = useState([
-    { d: 1, k: 'A' },
-    { d: 2, k: 'B' },
-  ])
-
   return (
     <View>
       {props.sectionLabel !== '' ? (
@@ -195,6 +180,7 @@ function ChecklistSection(props: ChecklistSectionProps) {
 
       <DraggableFlatList
         data={props.tasks}
+        persistentScrollbar={true}
         renderItem={({ item, drag, isActive }) => (
           <View key={item.id}>
             <ChecklistTask

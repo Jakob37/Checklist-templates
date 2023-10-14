@@ -9,6 +9,7 @@ export const ds = {
     l: 20,
     hoverButton: 60,
     scrollBottom: 260,
+    bottomBarHeight: 80,
   },
   entries: {
     height: 40,
