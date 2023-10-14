@@ -48,7 +48,7 @@ function TemplateNavigation() {
           headerShown: false,
         }}></Tab.Screen>
       <Tab.Screen
-        name="Make template"
+        name="Edit template"
         initialParams={{ templateId: null, isNew: false }}
         component={MakeTemplate}></Tab.Screen>
     </Stack.Navigator>
@@ -73,7 +73,7 @@ function Navigation() {
             iconName = icons.gear
             // iconName = focused ? icons.tag : icons.done
             // iconName = focused ? icons.copy : icons.reset
-          } else if (route.name === 'Make template') {
+          } else if (route.name === 'Edit template') {
             iconName = icons.plus
           }
 
@@ -95,33 +95,6 @@ function Navigation() {
         name="Templates"
         component={TemplateNavigation}
         options={{ headerShown: false }}></Tab.Screen>
-      {/* <Tab.Screen
-        name="Templates"
-        component={Templates}
-        options={{
-          headerShown: false,
-          // tabBarBadge: 3,
-          // headerRight: () => (
-          //   <IconButton
-          //     onPress={() =>
-          //       // @ts-ignore
-          //       navigation.navigate('Make template', {
-          //         templateId: null,
-          //         isNew: true,
-          //       })
-          //     }
-          //     icon={icons.plus}
-          //     color={ds.colors.highlight1}
-          //     iconStyle={{ paddingRight: ds.padding.m }}></IconButton>
-          // ),
-        }}></Tab.Screen>
-      <Tab.Screen
-        name="Make template"
-        initialParams={{ templateId: null, isNew: false }}
-        component={MakeTemplate}
-        options={{
-          headerShown: false,
-        }}></Tab.Screen> */}
       <Tab.Screen
         name="Checklists"
         component={Checklists}

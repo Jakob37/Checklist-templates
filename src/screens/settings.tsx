@@ -3,6 +3,7 @@ import { ds } from '../ux/design'
 import { useContext } from 'react'
 import { StorageContext } from '../storage/context'
 import RNFS from 'react-native-fs'
+import { BlueWell } from '../views/wells'
 
 function Settings() {
   const { checklists, templates } = useContext(StorageContext)
@@ -18,25 +19,28 @@ function Settings() {
   }
 
   return (
-    <View>
-      <View style={{ paddingTop: ds.sizes.s, paddingHorizontal: ds.sizes.s }}>
-        <Text>
-          You can export the full data containing your templates and ongoing
-          checklists in JSON format.
-        </Text>
-        <View style={{ paddingTop: ds.sizes.s }}>
-          <Button
-            onPress={() => {
-              writeJSON(
-                getJSONExportString(),
-                `Checklist-templates-${Date.now()}`,
-              )
-            }}
-            title="Export data as JSON"
-            color={ds.colors.highlight1}></Button>
-        </View>
+    <BlueWell
+      style={{
+        paddingTop: ds.sizes.s,
+        paddingHorizontal: ds.sizes.s,
+        marginTop: ds.sizes.s,
+      }}>
+      <Text>
+        You can export the full data containing your templates and ongoing
+        checklists in JSON format.
+      </Text>
+      <View style={{ paddingTop: ds.sizes.s }}>
+        <Button
+          onPress={() => {
+            writeJSON(
+              getJSONExportString(),
+              `Checklist-templates-${Date.now()}`,
+            )
+          }}
+          title="Export data as JSON"
+          color={ds.colors.highlight1}></Button>
       </View>
-    </View>
+    </BlueWell>
   )
 }
 

@@ -42,14 +42,14 @@ function Templates() {
         }}
         onCopy={() => {
           // @ts-ignore
-          navigate.navigate('Make template', {
+          navigate.navigate('Edit template', {
             templateId: template.id,
             isNew: true,
           })
         }}
         onEdit={() => {
           // @ts-ignore
-          navigate.navigate('Make template', {
+          navigate.navigate('Edit template', {
             templateId: template.id,
             isNew: false,
           })
@@ -89,7 +89,7 @@ function Templates() {
       <HoverButton
         onPress={() =>
           // @ts-ignore
-          navigate.navigate('Make template', { templateId: null, isNew: true })
+          navigate.navigate('Edit template', { templateId: null, isNew: true })
         }></HoverButton>
     </View>
   )
