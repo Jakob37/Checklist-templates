@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "myandroid": "react-native run-android --deviceId 3f3bb3ddd3d7",
+    "android-release": "react-native build-android --mode=release",
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
