@@ -311,7 +311,7 @@ function SaveTemplate(props: SaveTemplateProps) {
         onPress={props.onSubmit}
         icon={icons.save}
         size={ds.icons.medium}
-        labelStyle={{ fontSize: ds.font.sizes.major }}
+        labelStyle={{ fontSize: ds.text.sizes.major }}
         label="Save template"></IconButton>
     </View>
   )

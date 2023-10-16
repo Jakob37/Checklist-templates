@@ -95,7 +95,8 @@ android {
 
     namespace "com.checklists"
     defaultConfig {
-        applicationId "com.jakobwillforss.checklisttemplates"
+        applicationId "com.checklists"
+        // applicationId "com.jakobwillforss.checklisttemplates"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

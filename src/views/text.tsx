@@ -7,7 +7,12 @@ type MinorTextProps = {
 }
 function MinorText(props: PropsWithChildren<MinorTextProps>) {
   return (
-    <Text style={{ fontSize: ds.font.sizes.minor, ...props.style }}>
+    <Text
+      style={{
+        fontSize: ds.text.sizes.minor,
+        color: ds.text.color.light,
+        ...props.style,
+      }}>
       {props.children}
     </Text>
   )
@@ -18,7 +23,7 @@ type SubTextProps = {
 }
 function SubText(props: PropsWithChildren<SubTextProps>) {
   return (
-    <Text style={{ fontSize: ds.font.sizes.sub, ...props.style }}>
+    <Text style={{ fontSize: ds.text.sizes.sub, ...props.style }}>
       {props.children}
     </Text>
   )

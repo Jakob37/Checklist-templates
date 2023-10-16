@@ -61,7 +61,7 @@ IconButton.defaultProps = {
   color: ds.colors.primary,
   iconStyle: {},
   containerStyle: {},
-  labelStyle: { fontSize: ds.font.sizes.minor },
+  labelStyle: { fontSize: ds.text.sizes.minor },
   label: '',
   labelPos: 'right',
 }
@@ -71,7 +71,7 @@ function TopBarIconButton(props: { icon: string; onPress: () => void }) {
     <IconButton
       onPress={props.onPress}
       icon={props.icon}
-      size={ds.font.sizes.huge}
+      size={ds.text.sizes.huge}
       color={ds.colors.secondary}
       iconStyle={{ padding: ds.sizes.s }}></IconButton>
   )

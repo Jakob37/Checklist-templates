@@ -1,13 +1,7 @@
 import React, { useContext } from 'react'
-import { createDrawerNavigator } from '@react-navigation/drawer'
 import { createStackNavigator } from '@react-navigation/stack'
 
-import {
-  DefaultTheme,
-  DrawerActions,
-  NavigationContainer,
-  useNavigation,
-} from '@react-navigation/native'
+import { DefaultTheme, NavigationContainer } from '@react-navigation/native'
 import MakeTemplate from './src/screens/maketemplate'
 import Templates from './src/screens/templates'
 import { StorageProvider } from './src/storage/provider'
@@ -16,8 +10,6 @@ import {
   CHECKLISTS_STORAGE_KEY,
   TEMPLATES_STORAGE_KEY,
 } from './src/storage/storage'
-import { Button, Text, TouchableOpacity, View } from 'react-native'
-import { IconButton } from './src/views/iconbutton'
 import { icons } from './src/ux/icons'
 import { ds } from './src/ux/design'
 import Settings from './src/screens/settings'
@@ -30,6 +22,7 @@ const MyTheme = {
   colors: {
     ...DefaultTheme.colors,
     dark: ds.colors.primary,
+    light: ds.colors.primary,
     background: ds.colors.primary,
   },
 }
@@ -56,8 +49,6 @@ function TemplateNavigation() {
 }
 
 function Navigation() {
-  const navigation = useNavigation()
-
   const { checklists } = useContext(StorageContext)
   return (
     <Tab.Navigator
@@ -66,18 +57,14 @@ function Navigation() {
           let iconName = icons.eye
           if (route.name === 'Templates') {
             iconName = icons.paste
-            // iconName = focused ? icons.bars : icons.check
           } else if (route.name === 'Checklists') {
             iconName = icons.check
           } else if (route.name === 'Settings') {
             iconName = icons.gear
-            // iconName = focused ? icons.tag : icons.done
-            // iconName = focused ? icons.copy : icons.reset
           } else if (route.name === 'Edit template') {
             iconName = icons.plus
           }
 
-          // return <Text>test</Text>>
           return (
             <Icon
               name={iconName}

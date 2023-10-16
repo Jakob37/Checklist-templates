@@ -14,13 +14,16 @@ export const ds = {
   entries: {
     height: 40,
   },
-  font: {
+  text: {
     sizes: {
       huge: 32,
       major: 24,
       minor: 18,
       sub: 12
     },
+    color: {
+      light: '#B9CEE1'
+    }
   },
   colors: {
     primary: '#468B97',

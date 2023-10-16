@@ -22,7 +22,7 @@ function Checklists() {
     <ScrollView>
       {checklists.length === 0 ? (
         <BlueWell style={{ marginTop: ds.sizes.s }}>
-          <Text style={{ fontSize: ds.font.sizes.major }}>
+          <Text style={{ fontSize: ds.text.sizes.major }}>
             Currently no active checklists
           </Text>
           <View style={{ paddingTop: ds.sizes.s }}>
@@ -81,7 +81,7 @@ function Checklists() {
                   icon={icons.done}
                   size={ds.icons.large}
                   labelStyle={{
-                    fontSize: ds.font.sizes.huge,
+                    fontSize: ds.text.sizes.huge,
                   }}
                   label="Done"></IconButton>
               </View>
@@ -112,7 +112,7 @@ function ChecklistHeader(props: ChecklistHeaderProps) {
         style={{
           fontWeight: 'bold',
           paddingRight: ds.sizes.s,
-          fontSize: ds.font.sizes.major,
+          fontSize: ds.text.sizes.major,
         }}>
         {props.label}
       </Text>
