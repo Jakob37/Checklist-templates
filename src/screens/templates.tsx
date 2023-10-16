@@ -121,7 +121,9 @@ function TemplateCard(props: TemplateCardProps) {
       <IconButton
         iconStyle={{
           paddingRight: ds.sizes.s,
-          color: props.template.favorite ? ds.colors.highlight2 : undefined,
+          color: props.template.favorite
+            ? ds.colors.highlight2
+            : ds.colors.light,
         }}
         onPress={props.onToggleStar}
         icon={icons.star}></IconButton>
@@ -136,11 +138,11 @@ function TemplateCard(props: TemplateCardProps) {
       <View style={{ flexDirection: 'row' }}>
         {/* FIXME: Remove, bake into the template display */}
         <IconButton
-          iconStyle={{ paddingHorizontal: ds.sizes.s }}
+          iconStyle={{ paddingHorizontal: ds.sizes.s, color: ds.colors.light }}
           onPress={props.onEdit}
           icon={icons.pen}></IconButton>
         <IconButton
-          iconStyle={{ paddingHorizontal: ds.sizes.s }}
+          iconStyle={{ paddingHorizontal: ds.sizes.s, color: ds.colors.light }}
           onPress={props.onRemove}
           icon={icons.trash}></IconButton>
       </View>

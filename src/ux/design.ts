@@ -21,15 +21,13 @@ export const ds = {
       minor: 18,
       sub: 12
     },
-    color: {
-      light: '#B9CEE1'
-    }
   },
   colors: {
     primary: '#468B97',
     secondary: '#1D5B79',
     highlight1: '#EF6262',
     highlight2: '#F3AA60',
+    light: '#B9CEE1'
   },
   icons: {
     medium: 24,
