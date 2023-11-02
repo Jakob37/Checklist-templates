@@ -6,6 +6,7 @@ import { icons } from '../ux/icons'
 import { ds, styles } from '../ux/design'
 import { BlueWell } from '../views/wells'
 import { useNavigation } from '@react-navigation/native'
+import { Header, MinorText } from '../views/text'
 
 function Checklists() {
   const {
@@ -22,9 +23,9 @@ function Checklists() {
     <ScrollView>
       {checklists.length === 0 ? (
         <BlueWell style={{ marginTop: ds.sizes.s }}>
-          <Text style={{ fontSize: ds.text.sizes.major }}>
+          <MinorText style={{ fontSize: ds.text.sizes.major }}>
             Currently no active checklists
-          </Text>
+          </MinorText>
           <View style={{ paddingTop: ds.sizes.s }}>
             <Button
               onPress={() => {
@@ -108,14 +109,7 @@ function ChecklistHeader(props: ChecklistHeaderProps) {
         alignItems: 'center',
         justifyContent: 'space-between',
       }}>
-      <Text
-        style={{
-          fontWeight: 'bold',
-          paddingRight: ds.sizes.s,
-          fontSize: ds.text.sizes.major,
-        }}>
-        {props.label}
-      </Text>
+      <Header>{props.label}</Header>
       <View style={{ flexDirection: 'row' }}>
         <IconButton
           containerStyle={{ paddingRight: ds.sizes.l }}

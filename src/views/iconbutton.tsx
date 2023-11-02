@@ -43,7 +43,11 @@ function IconButton(props: {
             size={props.size}
             style={props.iconStyle}></Icon>
           {props.label !== '' && props.labelPos === 'right' ? (
-            <Text style={[props.labelStyle, { paddingHorizontal: ds.sizes.s }]}>
+            <Text
+              style={[
+                props.labelStyle,
+                { paddingHorizontal: ds.sizes.s, color: ds.colors.light },
+              ]}>
               {props.label}
             </Text>
           ) : (
@@ -58,8 +62,10 @@ IconButton.defaultProps = {
   onPress: () => {},
   onLongPress: () => {},
   size: ds.icons.medium,
-  color: ds.colors.primary,
-  iconStyle: {},
+  color: ds.colors.light,
+  iconStyle: {
+    color: ds.colors.light,
+  },
   containerStyle: {},
   labelStyle: { fontSize: ds.text.sizes.minor },
   label: '',
@@ -90,7 +96,10 @@ function HoverButton(props: HoverButtonProps) {
           styles.hoverButton,
           { alignItems: 'center', justifyContent: 'center' },
         ]}>
-        <Icon name={icons.plus} size={ds.icons.large}></Icon>
+        <Icon
+          style={{ color: ds.colors.white }}
+          name={icons.plus}
+          size={ds.icons.large}></Icon>
       </View>
     </TouchableOpacity>
   )

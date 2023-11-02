@@ -4,6 +4,7 @@ import { useContext } from 'react'
 import { StorageContext } from '../storage/context'
 import RNFS from 'react-native-fs'
 import { BlueWell } from '../views/wells'
+import { SubText } from '../views/text'
 
 function Settings() {
   const { checklists, templates } = useContext(StorageContext)
@@ -25,10 +26,10 @@ function Settings() {
         paddingHorizontal: ds.sizes.s,
         marginTop: ds.sizes.s,
       }}>
-      <Text>
+      <SubText>
         You can export the full data containing your templates and ongoing
         checklists in JSON format.
-      </Text>
+      </SubText>
       <View style={{ paddingTop: ds.sizes.s }}>
         <Button
           onPress={() => {

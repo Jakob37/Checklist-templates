@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
-import { Text, TextInput, View, useWindowDimensions } from 'react-native'
+import { Text, TextInput, View } from 'react-native'
 
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 import DraggableFlatList from 'react-native-draggable-flatlist'
@@ -32,7 +32,7 @@ function EnterTemplate({ route }) {
   const { saveTemplate, getTemplateById } = useContext(StorageContext)
 
   const [tasks, setTasks] = useState<Task[]>([getDefaultTask()])
-  const [sections, setSections] = useState<SectionState[]>([])
+  const [sections, _setSections] = useState<SectionState[]>([])
   const isFocused = useIsFocused()
 
   useEffect(() => {
@@ -130,6 +130,10 @@ function Header(props: HeaderProps) {
   return (
     <BlueWell style={{ marginTop: ds.sizes.s }}>
       <TextInput
+        style={{
+          color: ds.colors.light,
+        }}
+        placeholderTextColor={ds.colors.faint}
         autoFocus={true}
         placeholder="Enter template name"
         value={props.templateName}
@@ -276,6 +280,10 @@ function ChecklistTask(props: ChecklistTaskProps) {
           onLongPress={props.onDrag}
           containerStyle={{ paddingRight: ds.sizes.s }}></IconButton>
         <TextInput
+          style={{
+            color: ds.colors.light,
+          }}
+          placeholderTextColor={ds.colors.faint}
           autoFocus={props.autoFocus}
           placeholder="Enter your task..."
           onChangeText={(text) => {

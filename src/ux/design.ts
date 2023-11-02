@@ -27,7 +27,9 @@ export const ds = {
     secondary: '#1D5B79',
     highlight1: '#EF6262',
     highlight2: '#F3AA60',
-    light: '#B9CEE1'
+    light: '#B9CEE1',
+    faint: '#99AEC1',
+    white: '#FFFFFF'
   },
   icons: {
     medium: 24,

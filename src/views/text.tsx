@@ -1,6 +1,23 @@
-import { Text, TextStyle } from 'react-native'
+import { StyleProp, Text, TextStyle } from 'react-native'
 import { ds } from '../ux/design'
 import { PropsWithChildren } from 'react'
+
+type HeaderProps = {
+  style?: TextStyle
+}
+function Header(props: PropsWithChildren<HeaderProps>) {
+  return (
+    <Text
+      style={{
+        fontWeight: 'bold',
+        fontSize: ds.text.sizes.major,
+        color: ds.colors.light,
+        ...props,
+      }}>
+      {props.children}
+    </Text>
+  )
+}
 
 type MinorTextProps = {
   style?: TextStyle
@@ -19,7 +36,7 @@ function MinorText(props: PropsWithChildren<MinorTextProps>) {
 }
 
 type SubTextProps = {
-  style?: TextStyle
+  style?: StyleProp<TextStyle>[]
 }
 function SubText(props: PropsWithChildren<SubTextProps>) {
   return (
@@ -34,4 +51,4 @@ function SubText(props: PropsWithChildren<SubTextProps>) {
   )
 }
 
-export { MinorText, SubText }
+export { Header, MinorText, SubText }
