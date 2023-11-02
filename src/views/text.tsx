@@ -3,6 +3,7 @@ import { ds } from '../ux/design'
 import { PropsWithChildren } from 'react'
 
 type HeaderProps = {
+  text: string
   style?: TextStyle
 }
 function Header(props: PropsWithChildren<HeaderProps>) {
@@ -14,7 +15,7 @@ function Header(props: PropsWithChildren<HeaderProps>) {
         color: ds.colors.light,
         ...props,
       }}>
-      {props.children}
+      {props.text}
     </Text>
   )
 }

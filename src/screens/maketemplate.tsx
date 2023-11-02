@@ -196,6 +196,7 @@ function Footer(props: FooterProps) {
       <BlueWell>
         <IconButton
           icon={icons.plus}
+          labelStyle={{ color: ds.colors.light }}
           onPress={props.onAddTask}
           label="Add task"></IconButton>
       </BlueWell>
@@ -319,7 +320,7 @@ function SaveTemplate(props: SaveTemplateProps) {
         onPress={props.onSubmit}
         icon={icons.save}
         size={ds.icons.medium}
-        labelStyle={{ fontSize: ds.text.sizes.major }}
+        labelStyle={{ fontSize: ds.text.sizes.major, color: ds.colors.white }}
         label="Save template"></IconButton>
     </View>
   )

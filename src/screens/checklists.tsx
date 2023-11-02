@@ -109,7 +109,7 @@ function ChecklistHeader(props: ChecklistHeaderProps) {
         alignItems: 'center',
         justifyContent: 'space-between',
       }}>
-      <Header>{props.label}</Header>
+      <Header text={props.label}></Header>
       <View style={{ flexDirection: 'row' }}>
         <IconButton
           containerStyle={{ paddingRight: ds.sizes.l }}

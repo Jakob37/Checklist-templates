@@ -1,10 +1,8 @@
 import {
   StyleProp,
-  StyleSheet,
   Text,
   TextStyle,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   View,
   ViewStyle,
 } from 'react-native'
@@ -43,11 +41,7 @@ function IconButton(props: {
             size={props.size}
             style={props.iconStyle}></Icon>
           {props.label !== '' && props.labelPos === 'right' ? (
-            <Text
-              style={[
-                props.labelStyle,
-                { paddingHorizontal: ds.sizes.s, color: ds.colors.light },
-              ]}>
+            <Text style={[props.labelStyle, { paddingHorizontal: ds.sizes.s }]}>
               {props.label}
             </Text>
           ) : (
@@ -67,7 +61,7 @@ IconButton.defaultProps = {
     color: ds.colors.light,
   },
   containerStyle: {},
-  labelStyle: { fontSize: ds.text.sizes.minor },
+  labelStyle: { fontSize: ds.text.sizes.minor, color: ds.colors.light },
   label: '',
   labelPos: 'right',
 }
