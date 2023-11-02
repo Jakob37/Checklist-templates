@@ -6,4 +6,7 @@ I hope it will be useful for others as well!
 
 ### FIXME for release
 
+- [ ] Rebuild an AAB bundle
+- [ ] Upload and generate test release
 - [ ] Prevent un-favoriting when updating a template
+- [ ] Setup real release
