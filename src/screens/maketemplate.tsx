@@ -34,6 +34,7 @@ function EnterTemplate({ route }) {
   const [tasks, setTasks] = useState<Task[]>([getDefaultTask()])
   const [sections, _setSections] = useState<SectionState[]>([])
   const isFocused = useIsFocused()
+  const [isFavorite, setIsFavorite] = useState(false)
 
   useEffect(() => {
     const templateId = route.params.templateId
@@ -51,8 +52,10 @@ function EnterTemplate({ route }) {
 
     if (isNew) {
       setTemplateId(generateId('template'))
+      setIsFavorite(false)
     } else {
       setTemplateId(templateId)
+      setIsFavorite(template.favorite)
     }
 
     setTemplateName(template != null ? template.label : '')
@@ -80,6 +83,7 @@ function EnterTemplate({ route }) {
     const template = buildTemplateObject(
       templateId,
       templateName,
+      isFavorite,
       tasks.map((task) => task.label),
       sections.map((section) => {
         return {

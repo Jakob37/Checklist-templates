@@ -13,7 +13,7 @@ function Header(props: PropsWithChildren<HeaderProps>) {
         fontWeight: 'bold',
         fontSize: ds.text.sizes.major,
         color: ds.colors.light,
-        ...props,
+        ...props.style,
       }}>
       {props.text}
     </Text>

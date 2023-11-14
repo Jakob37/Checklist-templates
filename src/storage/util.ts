@@ -15,6 +15,7 @@ type TaskData = {
 function buildTemplateObject(
   templateId: string,
   templateName: string,
+  isFavorite: boolean,
   taskLabels: string[],
   additionalStacksData: TaskData[],
 ): ChecklistTemplate {
@@ -53,7 +54,7 @@ function buildTemplateObject(
     id: templateId,
     label: templateName,
     stacks,
-    favorite: false,
+    favorite: isFavorite,
   }
 }
 
