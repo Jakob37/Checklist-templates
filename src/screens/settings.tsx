@@ -2,9 +2,28 @@ import { Alert, Button, Platform, Text, View } from 'react-native'
 import { ds } from '../ux/design'
 import { useContext } from 'react'
 import { StorageContext } from '../storage/context'
-import RNFS from 'react-native-fs'
+import RNFS, { readFile } from 'react-native-fs'
 import { BlueWell } from '../views/wells'
 import { SubText } from '../views/text'
+import DocumentPicker from 'react-native-document-picker'
+
+async function selectFile() {
+  try {
+    const res = await DocumentPicker.pick({
+      type: 'application/json',
+    })
+
+    const fileContent = await readFile(res[0].uri)
+    const jsonData = JSON.parse(fileContent)
+    console.log('Imported JSON data:', jsonData)
+  } catch (err) {
+    if (DocumentPicker.isCancel(err)) {
+      console.log('User cancel')
+    } else {
+      throw err
+    }
+  }
+}
 
 function Settings() {
   const { checklists, templates } = useContext(StorageContext)
@@ -20,28 +39,50 @@ function Settings() {
   }
 
   return (
-    <BlueWell
-      style={{
-        paddingTop: ds.sizes.s,
-        paddingHorizontal: ds.sizes.s,
-        marginTop: ds.sizes.s,
-      }}>
-      <SubText>
-        You can export the full data containing your templates and ongoing
-        checklists in JSON format.
-      </SubText>
-      <View style={{ paddingTop: ds.sizes.s }}>
-        <Button
-          onPress={() => {
-            writeJSON(
-              getJSONExportString(),
-              `Checklist-templates-${Date.now()}`,
-            )
-          }}
-          title="Export data as JSON"
-          color={ds.colors.highlight1}></Button>
-      </View>
-    </BlueWell>
+    <>
+      <BlueWell
+        style={{
+          paddingTop: ds.sizes.s,
+          paddingHorizontal: ds.sizes.s,
+          marginTop: ds.sizes.s,
+        }}>
+        <SubText>
+          You can export the full data containing your templates and ongoing
+          checklists in JSON format.
+        </SubText>
+        <View style={{ paddingTop: ds.sizes.s }}>
+          <Button
+            onPress={() => {
+              writeJSON(
+                getJSONExportString(),
+                `Checklist-templates-${Date.now()}`,
+              )
+            }}
+            title="Export data as JSON"
+            color={ds.colors.highlight1}></Button>
+        </View>
+      </BlueWell>
+      <BlueWell style={{ marginTop: ds.sizes.s }}>
+        <SubText>
+          Import lists from exported JSON. This will not erase any data. You
+          will be prompted before import.
+        </SubText>
+        <View style={{ paddingTop: ds.sizes.s }}>
+          <Button
+            onPress={() => {
+              console.log('Testing to import')
+              selectFile()
+              // importJSON()
+              // writeJSON(
+              //   getJSONExportString(),
+              //   `Checklist-templates-${Date.now()}`,
+              // )
+            }}
+            title="Import data"
+            color={ds.colors.highlight1}></Button>
+        </View>
+      </BlueWell>
+    </>
   )
 }
 
