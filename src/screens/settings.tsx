@@ -6,8 +6,10 @@ import RNFS, { readFile } from 'react-native-fs'
 import { BlueWell } from '../views/wells'
 import { SubText } from '../views/text'
 import DocumentPicker from 'react-native-document-picker'
+import { Checklist, ChecklistTemplate } from '../storage/interfaces'
+import { makeConfirmDialog } from '../views/dialogs'
 
-async function selectFile() {
+async function importJSON(): Promise<{ templates: ChecklistTemplate[] }> {
   try {
     const res = await DocumentPicker.pick({
       type: 'application/json',
@@ -15,10 +17,10 @@ async function selectFile() {
 
     const fileContent = await readFile(res[0].uri)
     const jsonData = JSON.parse(fileContent)
-    console.log('Imported JSON data:', jsonData)
+    return jsonData
   } catch (err) {
     if (DocumentPicker.isCancel(err)) {
-      console.log('User cancel')
+      return { templates: [] }
     } else {
       throw err
     }
@@ -26,7 +28,8 @@ async function selectFile() {
 }
 
 function Settings() {
-  const { checklists, templates } = useContext(StorageContext)
+  const { checklists, templates, saveNewTemplates, getTemplateExists } =
+    useContext(StorageContext)
 
   function getJSONExportString(): string {
     const exportObj = {
@@ -69,14 +72,30 @@ function Settings() {
         </SubText>
         <View style={{ paddingTop: ds.sizes.s }}>
           <Button
-            onPress={() => {
-              console.log('Testing to import')
-              selectFile()
-              // importJSON()
-              // writeJSON(
-              //   getJSONExportString(),
-              //   `Checklist-templates-${Date.now()}`,
-              // )
+            onPress={async () => {
+              const result = await importJSON()
+              if (result.hasOwnProperty('templates')) {
+                const templates = result.templates
+                const newTemplates = templates.filter((template) => {
+                  return !getTemplateExists(template.id)
+                })
+                const nbrExists = templates.length - newTemplates.length
+                const s = newTemplates.length != 1 ? 's' : ''
+                const alreadyExists =
+                  nbrExists > 0 ? `(${nbrExists} already exists)` : ''
+
+                if (newTemplates.length > 0) {
+                  makeConfirmDialog(
+                    'Import JSON',
+                    `Import ${newTemplates.length} checklist template${s}? ${alreadyExists}`,
+                    () => {
+                      saveNewTemplates(newTemplates)
+                    },
+                  )
+                } else {
+                  Alert.alert('No new templates found')
+                }
+              }
             }}
             title="Import data"
             color={ds.colors.highlight1}></Button>

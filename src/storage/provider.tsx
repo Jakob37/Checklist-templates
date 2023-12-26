@@ -6,9 +6,8 @@ import {
   Checklist,
   ChecklistId,
   ChecklistTemplate,
-  TemplateId,
 } from './interfaces'
-import { assert, printObject, removeAtIndex, removeOne } from '../util/util'
+import { assert, removeOne } from '../util/util'
 
 interface DataProviderProps {
   templates_storage_key: string
@@ -17,7 +16,7 @@ interface DataProviderProps {
 }
 
 const StorageProvider: React.FC<DataProviderProps> = (props) => {
-  const [templates, setTemplates] = useState<ChecklistTemplate[]>([])
+  const [allTemplates, setTemplates] = useState<ChecklistTemplate[]>([])
   const [checklists, setChecklists] = useState<Checklist[]>([])
 
   function getChecklistById(checklistId: ChecklistId): Checklist {
@@ -32,12 +31,25 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
   }
 
   function getTemplateById(templateId: string): ChecklistTemplate {
-    const template = templates.filter((template) => template.id === templateId)
+    const template = allTemplates.filter(
+      (template) => template.id === templateId,
+    )
     assert(
       template.length === 1,
       `Expected one match, found: ${JSON.stringify(template, null, 2)}`,
     )
     return template[0]
+  }
+
+  function getTemplateExists(templateId: string): boolean {
+    const template = allTemplates.filter(
+      (template) => template.id === templateId,
+    )
+    assert(
+      template.length < 2,
+      `Expected zero or one match, found: ${JSON.stringify(template, null, 2)}`,
+    )
+    return template.length === 1
   }
 
   // Load data from async storage
@@ -85,7 +97,7 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
 
   async function removeTemplate(id: string): Promise<ChecklistTemplate[]> {
     const retainedTemplates = removeOne(
-      templates,
+      allTemplates,
       (template) => template.id === id,
     )
     await saveTemplates(retainedTemplates)
@@ -141,11 +153,15 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
   }
 
   async function saveTemplate(template: ChecklistTemplate) {
-    const templatesWithoutCurrent = templates.filter(
-      (t) => t.id !== template.id,
-    )
+    saveNewTemplates([template])
+  }
 
-    templatesWithoutCurrent.push(template)
+  async function saveNewTemplates(newTemplates: ChecklistTemplate[]) {
+    const newTemplateIds = new Set(newTemplates.map((template) => template.id))
+    const templatesWithoutCurrent = allTemplates.filter(
+      (t) => !newTemplateIds.has(t.id),
+    )
+    templatesWithoutCurrent.push(...newTemplates)
     await saveTemplates(templatesWithoutCurrent)
   }
 
@@ -179,8 +195,10 @@ const StorageProvider: React.FC<DataProviderProps> = (props) => {
     <StorageContext.Provider
       value={{
         getTemplateById,
-        templates,
+        getTemplateExists,
+        templates: allTemplates,
         saveTemplate,
+        saveNewTemplates,
         removeTemplate,
 
         getChecklistById,

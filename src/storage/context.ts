@@ -19,8 +19,10 @@ const StorageContext = createContext<{
 
   templates: ChecklistTemplate[]
   getTemplateById: (id: TemplateId) => ChecklistTemplate
+  getTemplateExists: (id: TemplateId) => boolean
   removeTemplate: (id: TemplateId) => void
   saveTemplate: (template: ChecklistTemplate) => void
+  saveNewTemplates: (template: ChecklistTemplate[]) => void
 
   toggleCheck: (checklistId: ChecklistId, checkboxId: CheckboxId) => void
 }>({
