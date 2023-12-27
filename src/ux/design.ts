@@ -59,6 +59,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: ds.sizes.s,
     borderRadius: ds.border.radius,
   },
+  grayPanel: {
+    backgroundColor: ds.colors.faint,
+    marginHorizontal: ds.sizes.s,
+    marginTop: ds.sizes.s,
+    paddingVertical: ds.sizes.s,
+    paddingHorizontal: ds.sizes.s,
+    borderRadius: ds.border.radius,
+    color: ds.colors.light
+  },
   modalContainer: {
     flex: 1,
     justifyContent: 'center',

@@ -20,10 +20,14 @@ function IconButton(props: {
   labelStyle?: StyleProp<TextStyle>
   label?: string
   labelPos?: 'left' | 'right'
+  disabled?: boolean
 }) {
   return (
     <View style={props.containerStyle}>
-      <TouchableOpacity onPress={props.onPress} onLongPress={props.onLongPress}>
+      <TouchableOpacity
+        disabled={props.disabled}
+        onPress={props.onPress}
+        onLongPress={props.onLongPress}>
         <View
           style={{
             flexDirection: 'row',
@@ -64,6 +68,7 @@ IconButton.defaultProps = {
   labelStyle: { fontSize: ds.text.sizes.minor, color: ds.colors.light },
   label: '',
   labelPos: 'right',
+  disabled: false,
 }
 
 function TopBarIconButton(props: { icon: string; onPress: () => void }) {

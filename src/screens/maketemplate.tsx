@@ -205,14 +205,17 @@ function Footer(props: FooterProps) {
           label="Add task"></IconButton>
       </BlueWell>
 
-      {props.templateName !== '' &&
-      props.tasks.filter((task) => task.label !== '').length > 0 ? (
-        <SaveTemplate onSubmit={props.handleSubmitList}></SaveTemplate>
-      ) : (
-        ''
-      )}
+      <SaveTemplate
+        getIsActive={() => getSaveIsActive(props.templateName, props.tasks)}
+        onSubmit={props.handleSubmitList}></SaveTemplate>
+
       <View style={{ height: ds.sizes.s }}></View>
     </View>
+  )
+}
+function getSaveIsActive(templateName: string, tasks: Task[]): boolean {
+  return (
+    templateName !== '' && tasks.filter((task) => task.label !== '').length > 0
   )
 }
 
@@ -307,12 +310,13 @@ function ChecklistTask(props: ChecklistTaskProps) {
 
 type SaveTemplateProps = {
   onSubmit: () => void
+  getIsActive: () => boolean
 }
 function SaveTemplate(props: SaveTemplateProps) {
   return (
     <View
       style={[
-        styles.orangePanel,
+        props.getIsActive() ? styles.orangePanel : styles.grayPanel,
         {
           flexDirection: 'row',
           alignItems: 'center',
@@ -322,9 +326,13 @@ function SaveTemplate(props: SaveTemplateProps) {
       <IconButton
         iconStyle={{ paddingHorizontal: ds.sizes.s }}
         onPress={props.onSubmit}
+        disabled={!props.getIsActive()}
         icon={icons.save}
         size={ds.icons.medium}
-        labelStyle={{ fontSize: ds.text.sizes.major, color: ds.colors.white }}
+        labelStyle={{
+          fontSize: ds.text.sizes.major,
+          color: props.getIsActive() ? ds.colors.white : ds.colors.light,
+        }}
         label="Save template"></IconButton>
     </View>
   )
