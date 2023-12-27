@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
 import { useContext, useState } from 'react'
-import { ScrollView, TouchableWithoutFeedback, View } from 'react-native'
+import { ScrollView, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { StorageContext } from '../storage/context'
 import { instantiateTemplate } from '../storage/util'
 import { ds } from '../ux/design'
@@ -10,6 +10,7 @@ import { ViewTemplate } from './viewtemplate'
 import { ChecklistTemplate } from '../storage/interfaces'
 import { MinorText, SubText } from '../views/text'
 import { makeConfirmDialog } from '../views/dialogs'
+import { BlueWell } from '../views/wells'
 
 function Templates() {
   const { templates, removeTemplate, saveChecklist, saveTemplate } =
@@ -70,7 +71,7 @@ function Templates() {
             setViewSingleTemplate(null)
           }}
         />
-      ) : (
+      ) : templates.length > 0 ? (
         <ScrollView
           style={{ flex: 1, paddingBottom: ds.sizes.scrollBottom }}
           contentContainerStyle={{ flexGrow: 1 }}>
@@ -85,6 +86,10 @@ function Templates() {
           <View
             style={{ paddingTop: ds.sizes.hoverButton + ds.sizes.m }}></View>
         </ScrollView>
+      ) : (
+        <BlueWell style={{ marginTop: ds.sizes.s }}>
+          <SubText>Add templates to see them here</SubText>
+        </BlueWell>
       )}
       <HoverButton
         onPress={() =>
