@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react'
+import { createRef, useContext, useEffect, useRef, useState } from 'react'
 import { SectionList, Text, TextInput, View } from 'react-native'
 
 import { useIsFocused, useNavigation } from '@react-navigation/native'
@@ -18,24 +18,37 @@ type SectionState = {
   tasks: Task[]
 }
 
-function getDefaultTask(): Task {
-  return { id: generateId('task'), label: '' }
-}
-
 // @ts-ignore
 function EnterTemplate({ route }) {
   const navigate = useNavigation()
 
   const templateNameRef = useRef<TextInput | null>(null)
+  const taskInputRefs = useRef(new Map()).current
+
   const [templateName, setTemplateName] = useState('')
   const [taskLabel, setTaskLabel] = useState('')
   const [templateId, setTemplateId] = useState(generateId('template'))
   const { saveTemplate, getTemplateById } = useContext(StorageContext)
 
-  const [tasks, setTasks] = useState<Task[]>([getDefaultTask()])
+  // FIXME: Maybe remove default tasks
+  const generateDefaultTask = (): Task => {
+    const taskId = generateId('task')
+    taskInputRefs.set(taskId, createRef())
+    return { id: taskId, label: '' }
+  }
+
+  const [tasks, setTasks] = useState<Task[]>([generateDefaultTask()])
   const [sections, _setSections] = useState<SectionState[]>([])
   const isFocused = useIsFocused()
   const [isFavorite, setIsFavorite] = useState(false)
+
+  useEffect(() => {
+    const lastTaskId = tasks[tasks.length - 1]?.id
+    if (lastTaskId && taskInputRefs.has(lastTaskId) && tasks.length > 1) {
+      const ref = taskInputRefs.get(lastTaskId)
+      ref.current?.focus()
+    }
+  }, [tasks])
 
   useEffect(() => {
     const templateId = route.params.templateId
@@ -67,21 +80,26 @@ function EnterTemplate({ route }) {
     setTasks(
       template != null
         ? template.stacks.flatMap((stack) => stack.tasks)
-        : [getDefaultTask()],
+        : [generateDefaultTask()],
     )
   }, [isFocused])
 
   const onAddTask = () => {
+    console.log('On add task')
+    const taskId = generateId('task')
     const newTask: Task = {
-      id: generateId('task'),
+      id: taskId,
       label: '',
     }
     setTasks([...tasks, newTask])
+    taskInputRefs.set(taskId, createRef())
   }
 
   const handleRemoveTask = (id: string) => {
     const updatedTasks = tasks.filter((checkbox) => checkbox.id !== id)
     setTasks(updatedTasks)
+
+    taskInputRefs.delete(id)
   }
 
   const handleSubmitList = async () => {
@@ -105,7 +123,7 @@ function EnterTemplate({ route }) {
   function reset() {
     setTaskLabel('')
     setTemplateName('')
-    setTasks([getDefaultTask()])
+    setTasks([generateDefaultTask()])
     setTemplateId(generateId('template'))
   }
 
@@ -118,7 +136,6 @@ function EnterTemplate({ route }) {
             color: ds.colors.light,
           }}
           placeholderTextColor={ds.colors.faint}
-          // autoFocus={true}
           placeholder="Enter template name"
           value={templateName}
           onChangeText={(text) => setTemplateName(text)}></TextInput>
@@ -127,7 +144,6 @@ function EnterTemplate({ route }) {
       <BlueWell
         style={{
           flexDirection: 'column',
-          // flexGrow: 1,
           flex: 1,
           paddingBottom: ds.sizes.s,
           marginTop: ds.sizes.s,
@@ -146,6 +162,10 @@ function EnterTemplate({ route }) {
           onRemoveTask={handleRemoveTask}
           onRemoveSection={() => {
             console.error('Cannot remove default section')
+          }}
+          attachRef={(id, el) => {
+            console.log(id)
+            taskInputRefs.get(id).current = el
           }}
           onRearrangeTasks={(newOrderTasks) => {
             const copy = [...newOrderTasks]
@@ -183,6 +203,7 @@ type ChecklistSectionProps = {
   onChangeTaskLabel: (text: string) => void
   onRenameTask: (id: string, taskLabel: string) => void
   tasks: Task[]
+  attachRef: (id: string, el: TextInput) => void
   onRemoveTask: (id: string) => void
   onRemoveSection: () => void
   onRearrangeTasks: (newOrder: Task[]) => void
@@ -200,6 +221,7 @@ function ChecklistSection(props: ChecklistSectionProps) {
               onRenameTask={props.onRenameTask}
               onDrag={drag}
               id={item.id}
+              attachRef={props.attachRef}
               label={item.label}></ChecklistTask>
           </View>
         )}
@@ -214,6 +236,7 @@ function ChecklistSection(props: ChecklistSectionProps) {
 type ChecklistTaskProps = {
   id: string
   label: string
+  attachRef: (id: string, el: TextInput) => void
   onRemoveTask: (id: string) => void
   onRenameTask: (id: string, text: string) => void
   onDrag: () => void
@@ -233,6 +256,8 @@ function ChecklistTask(props: ChecklistTaskProps) {
           onLongPress={props.onDrag}
           containerStyle={{ paddingRight: ds.sizes.s }}></IconButton>
         <TextInput
+          ref={(el) => (el != null ? props.attachRef(props.id, el) : '')}
+          // ref={(el) => (taskInputRefs.get(item.id).current = el)}
           style={{
             color: ds.colors.light,
           }}
