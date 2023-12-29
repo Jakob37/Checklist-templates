@@ -26,7 +26,7 @@ function getDefaultTask(): Task {
 function EnterTemplate({ route }) {
   const navigate = useNavigation()
 
-  const templateNameRef = useRef()
+  const templateNameRef = useRef<TextInput | null>(null)
   const [templateName, setTemplateName] = useState('')
   const [taskLabel, setTaskLabel] = useState('')
   const [templateId, setTemplateId] = useState(generateId('template'))
@@ -38,10 +38,12 @@ function EnterTemplate({ route }) {
   const [isFavorite, setIsFavorite] = useState(false)
 
   useEffect(() => {
-    console.log('Main useEffect triggered')
-
     const templateId = route.params.templateId
     const isNew = route.params.isNew
+
+    if (isFocused) {
+      templateNameRef.current?.focus()
+    }
 
     if (templateId === null) {
       if (isNew) {
