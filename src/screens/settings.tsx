@@ -1,4 +1,4 @@
-import { Alert, Button, Platform, Text, View } from 'react-native'
+import { Alert, Button, Platform, View } from 'react-native'
 import { ds } from '../ux/design'
 import { useContext } from 'react'
 import { StorageContext } from '../storage/context'
@@ -6,7 +6,7 @@ import RNFS, { readFile } from 'react-native-fs'
 import { BlueWell } from '../views/wells'
 import { SubText } from '../views/text'
 import DocumentPicker from 'react-native-document-picker'
-import { Checklist, ChecklistTemplate } from '../storage/interfaces'
+import { ChecklistTemplate } from '../storage/interfaces'
 import { makeConfirmDialog } from '../views/dialogs'
 
 async function importJSON(): Promise<{ templates: ChecklistTemplate[] }> {

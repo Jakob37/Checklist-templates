@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from 'react'
-import { Text, TextInput, View } from 'react-native'
+import { useContext, useEffect, useRef, useState } from 'react'
+import { SectionList, Text, TextInput, View } from 'react-native'
 
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 import DraggableFlatList from 'react-native-draggable-flatlist'
@@ -26,6 +26,7 @@ function getDefaultTask(): Task {
 function EnterTemplate({ route }) {
   const navigate = useNavigation()
 
+  const templateNameRef = useRef()
   const [templateName, setTemplateName] = useState('')
   const [taskLabel, setTaskLabel] = useState('')
   const [templateId, setTemplateId] = useState(generateId('template'))
@@ -37,6 +38,8 @@ function EnterTemplate({ route }) {
   const [isFavorite, setIsFavorite] = useState(false)
 
   useEffect(() => {
+    console.log('Main useEffect triggered')
+
     const templateId = route.params.templateId
     const isNew = route.params.isNew
 
@@ -106,113 +109,67 @@ function EnterTemplate({ route }) {
 
   return (
     <View style={{ flex: 1 }}>
-      {/* <ScrollView keyboardShouldPersistTaps="handled"> */}
-      <Header
-        templateName={templateName}
-        setTemplateName={setTemplateName}></Header>
-
-      <Content
-        taskLabel={taskLabel}
-        setTaskLabel={setTaskLabel}
-        tasks={tasks}
-        setTasks={setTasks}
-        handleRemoveTask={handleRemoveTask}></Content>
-      <Footer
-        onAddTask={onAddTask}
-        templateName={templateName}
-        tasks={tasks}
-        handleSubmitList={handleSubmitList}></Footer>
-    </View>
-  )
-}
-
-type HeaderProps = {
-  templateName: string
-  setTemplateName: (name: string) => void
-}
-function Header(props: HeaderProps) {
-  return (
-    <BlueWell style={{ marginTop: ds.sizes.s }}>
-      <TextInput
-        style={{
-          color: ds.colors.light,
-        }}
-        placeholderTextColor={ds.colors.faint}
-        autoFocus={true}
-        placeholder="Enter template name"
-        value={props.templateName}
-        onChangeText={(text) => props.setTemplateName(text)}></TextInput>
-    </BlueWell>
-  )
-}
-
-type ContentProps = {
-  taskLabel: string
-  setTaskLabel: (label: string) => void
-  tasks: Task[]
-  setTasks: (tasks: Task[]) => void
-  handleRemoveTask: (id: string) => void
-}
-function Content(props: ContentProps) {
-  // return <View style={{ flex: 1, backgroundColor: 'green' }}></View>
-  return (
-    <BlueWell
-      style={{
-        flexDirection: 'column',
-        // flexGrow: 1,
-        flex: 1,
-        paddingBottom: ds.sizes.s,
-        marginTop: ds.sizes.s,
-        marginBottom: ds.sizes.s,
-      }}>
-      <ChecklistSection
-        sectionLabel=""
-        enterTaskLabel={props.taskLabel}
-        onChangeTaskLabel={(text) => props.setTaskLabel(text)}
-        onRenameTask={(id, text) => {
-          const taskIndex = props.tasks.findIndex((task) => task.id === id)
-          const tasksCopy = [...props.tasks]
-          tasksCopy[taskIndex].label = text
-          props.setTasks(tasksCopy)
-        }}
-        tasks={props.tasks}
-        onRemoveTask={props.handleRemoveTask}
-        onRemoveSection={() => {
-          console.error('Cannot remove default section')
-        }}
-        onRearrangeTasks={(newOrderTasks) => {
-          const copy = [...newOrderTasks]
-          props.setTasks(copy)
-        }}></ChecklistSection>
-    </BlueWell>
-  )
-}
-
-type FooterProps = {
-  onAddTask: () => void
-  templateName: string
-  tasks: Task[]
-  handleSubmitList: () => void
-}
-function Footer(props: FooterProps) {
-  return (
-    <View>
-      <BlueWell>
-        <IconButton
-          icon={icons.plus}
-          labelStyle={{ color: ds.colors.light }}
-          onPress={props.onAddTask}
-          label="Add task"></IconButton>
+      <BlueWell style={{ marginTop: ds.sizes.s }}>
+        <TextInput
+          ref={templateNameRef}
+          style={{
+            color: ds.colors.light,
+          }}
+          placeholderTextColor={ds.colors.faint}
+          // autoFocus={true}
+          placeholder="Enter template name"
+          value={templateName}
+          onChangeText={(text) => setTemplateName(text)}></TextInput>
       </BlueWell>
 
-      <SaveTemplate
-        getIsActive={() => getSaveIsActive(props.templateName, props.tasks)}
-        onSubmit={props.handleSubmitList}></SaveTemplate>
+      <BlueWell
+        style={{
+          flexDirection: 'column',
+          // flexGrow: 1,
+          flex: 1,
+          paddingBottom: ds.sizes.s,
+          marginTop: ds.sizes.s,
+          marginBottom: ds.sizes.s,
+        }}>
+        <ChecklistSection
+          enterTaskLabel={taskLabel}
+          onChangeTaskLabel={(text) => setTaskLabel(text)}
+          onRenameTask={(id, text) => {
+            const taskIndex = tasks.findIndex((task) => task.id === id)
+            const tasksCopy = [...tasks]
+            tasksCopy[taskIndex].label = text
+            setTasks(tasksCopy)
+          }}
+          tasks={tasks}
+          onRemoveTask={handleRemoveTask}
+          onRemoveSection={() => {
+            console.error('Cannot remove default section')
+          }}
+          onRearrangeTasks={(newOrderTasks) => {
+            const copy = [...newOrderTasks]
+            setTasks(copy)
+          }}></ChecklistSection>
+      </BlueWell>
 
-      <View style={{ height: ds.sizes.s }}></View>
+      <View>
+        <BlueWell>
+          <IconButton
+            icon={icons.plus}
+            labelStyle={{ color: ds.colors.light }}
+            onPress={onAddTask}
+            label="Add task"></IconButton>
+        </BlueWell>
+
+        <SaveTemplate
+          getIsActive={() => getSaveIsActive(templateName, tasks)}
+          onSubmit={handleSubmitList}></SaveTemplate>
+
+        <View style={{ height: ds.sizes.s }}></View>
+      </View>
     </View>
   )
 }
+
 function getSaveIsActive(templateName: string, tasks: Task[]): boolean {
   return (
     templateName !== '' && tasks.filter((task) => task.label !== '').length > 0
@@ -220,7 +177,6 @@ function getSaveIsActive(templateName: string, tasks: Task[]): boolean {
 }
 
 type ChecklistSectionProps = {
-  sectionLabel: string
   enterTaskLabel: string
   onChangeTaskLabel: (text: string) => void
   onRenameTask: (id: string, taskLabel: string) => void
@@ -232,17 +188,6 @@ type ChecklistSectionProps = {
 function ChecklistSection(props: ChecklistSectionProps) {
   return (
     <View>
-      {props.sectionLabel !== '' ? (
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <Text>{props.sectionLabel}</Text>
-          <IconButton
-            onPress={props.onRemoveSection}
-            icon={icons.trash}></IconButton>
-        </View>
-      ) : (
-        ''
-      )}
-
       <DraggableFlatList
         data={props.tasks}
         persistentScrollbar={true}
@@ -253,8 +198,7 @@ function ChecklistSection(props: ChecklistSectionProps) {
               onRenameTask={props.onRenameTask}
               onDrag={drag}
               id={item.id}
-              label={item.label}
-              autoFocus={true}></ChecklistTask>
+              label={item.label}></ChecklistTask>
           </View>
         )}
         keyExtractor={(item) => item.id}
@@ -271,7 +215,6 @@ type ChecklistTaskProps = {
   onRemoveTask: (id: string) => void
   onRenameTask: (id: string, text: string) => void
   onDrag: () => void
-  autoFocus: boolean
 }
 function ChecklistTask(props: ChecklistTaskProps) {
   return (
@@ -292,7 +235,7 @@ function ChecklistTask(props: ChecklistTaskProps) {
             color: ds.colors.light,
           }}
           placeholderTextColor={ds.colors.faint}
-          autoFocus={props.autoFocus}
+          // autoFocus={props.autoFocus}
           placeholder="Enter your task..."
           onChangeText={(text) => {
             props.onRenameTask(props.id, text)
