@@ -84,6 +84,7 @@ function Checklists() {
                   labelStyle={{
                     fontSize: ds.text.sizes.huge,
                   }}
+                  iconStyle={{ color: ds.colors.white }}
                   label="Done"></IconButton>
               </View>
             ) : (
