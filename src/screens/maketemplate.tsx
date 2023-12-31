@@ -1,5 +1,5 @@
 import { createRef, useContext, useEffect, useRef, useState } from 'react'
-import { SectionList, Text, TextInput, View } from 'react-native'
+import { TextInput, View } from 'react-native'
 
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 import DraggableFlatList from 'react-native-draggable-flatlist'
@@ -54,7 +54,7 @@ function EnterTemplate({ route }) {
     const templateId = route.params.templateId
     const isNew = route.params.isNew
 
-    if (isFocused) {
+    if (isFocused && templateNameRef != null) {
       templateNameRef.current?.focus()
     }
 
@@ -77,15 +77,19 @@ function EnterTemplate({ route }) {
     }
 
     setTemplateName(template != null ? template.label : '')
-    setTasks(
-      template != null
-        ? template.stacks.flatMap((stack) => stack.tasks)
-        : [generateDefaultTask()],
-    )
+    if (template != null) {
+      const preloadedTasks = template.stacks.flatMap((stack) => stack.tasks)
+      setTasks(preloadedTasks)
+      const preloadedIds = preloadedTasks.map((task) => task.id)
+      for (const id of preloadedIds) {
+        taskInputRefs.set(id, createRef())
+      }
+    } else {
+      setTasks([generateDefaultTask()])
+    }
   }, [isFocused])
 
   const onAddTask = () => {
-    console.log('On add task')
     const taskId = generateId('task')
     const newTask: Task = {
       id: taskId,
@@ -164,7 +168,6 @@ function EnterTemplate({ route }) {
             console.error('Cannot remove default section')
           }}
           attachRef={(id, el) => {
-            console.log(id)
             taskInputRefs.get(id).current = el
           }}
           onRearrangeTasks={(newOrderTasks) => {
@@ -257,7 +260,6 @@ function ChecklistTask(props: ChecklistTaskProps) {
           containerStyle={{ paddingRight: ds.sizes.s }}></IconButton>
         <TextInput
           ref={(el) => (el != null ? props.attachRef(props.id, el) : '')}
-          // ref={(el) => (taskInputRefs.get(item.id).current = el)}
           style={{
             color: ds.colors.light,
           }}
