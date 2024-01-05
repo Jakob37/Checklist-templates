@@ -43,6 +43,9 @@ function Settings() {
 
   return (
     <>
+      <BlueWell style={{ marginTop: ds.sizes.s }}>
+        <SubText>Version: v1.0.0</SubText>
+      </BlueWell>
       <BlueWell
         style={{
           paddingTop: ds.sizes.s,
