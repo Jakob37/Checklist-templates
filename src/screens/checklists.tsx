@@ -82,7 +82,7 @@ function Checklists() {
                   icon={icons.done}
                   size={ds.icons.large}
                   labelStyle={{
-                    fontSize: ds.text.sizes.huge,
+                    fontSize: ds.text.sizes.major,
                   }}
                   iconStyle={{ color: ds.colors.white }}
                   label="Done"></IconButton>
@@ -112,12 +112,12 @@ function ChecklistHeader(props: ChecklistHeaderProps) {
       }}>
       <Header text={props.label}></Header>
       <View style={{ flexDirection: 'row' }}>
-        <IconButton
+        {/* <IconButton
           containerStyle={{ paddingRight: ds.sizes.l }}
           onPress={() => {
             props.resetChecklist()
           }}
-          icon={icons.reset}></IconButton>
+          icon={icons.reset}></IconButton> */}
         <IconButton
           containerStyle={{ paddingRight: ds.sizes.s }}
           onPress={() => {

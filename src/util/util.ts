@@ -60,7 +60,7 @@ function removeOne<T>(
     )
   }
   const arrAfterRemove = removeAtIndex(arr, indicesToRemove[0])
-  printObject(arrAfterRemove)
+  // printObject(arrAfterRemove)
   return arrAfterRemove
 }
 

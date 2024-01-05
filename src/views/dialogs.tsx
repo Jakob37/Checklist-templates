@@ -56,7 +56,6 @@ function makeConfirmDialog(label: string, message: string, onYes: () => void) {
       text: 'Yes',
       onPress: () => {
         onYes()
-        console.log('Yes')
       },
     },
     { text: 'No' },

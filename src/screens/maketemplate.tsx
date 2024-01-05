@@ -112,12 +112,6 @@ function EnterTemplate({ route }) {
       templateName,
       isFavorite,
       tasks.map((task) => task.label),
-      sections.map((section) => {
-        return {
-          label: section.sectionLabel,
-          tasks: section.tasks.map((task) => task.label),
-        }
-      }),
     )
     saveTemplate(template)
     reset()

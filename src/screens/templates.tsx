@@ -1,8 +1,19 @@
 import { useNavigation } from '@react-navigation/native'
 import { useContext, useState } from 'react'
-import { ScrollView, Text, TouchableWithoutFeedback, View } from 'react-native'
+import {
+  Button,
+  ScrollView,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native'
 import { StorageContext } from '../storage/context'
-import { instantiateTemplate } from '../storage/util'
+import {
+  instantiateTemplate,
+  makeBeforeSleepExampleTemplate,
+  makeBeforeSocialExampleTemplate,
+  makeExampleTemplate,
+  makeLeavingHomeExampleTemplate,
+} from '../storage/util'
 import { ds } from '../ux/design'
 import { icons } from '../ux/icons'
 import { HoverButton, IconButton } from '../views/iconbutton'
@@ -88,7 +99,33 @@ function Templates() {
         </ScrollView>
       ) : (
         <BlueWell style={{ marginTop: ds.sizes.s }}>
-          <SubText>Add templates to see them here</SubText>
+          <MinorText>
+            Press "+" button to add templates. Or try one of the examples below.
+          </MinorText>
+          <View style={{ paddingTop: ds.sizes.s }}>
+            <Button
+              title='Add "Leaving home" example'
+              onPress={() => {
+                const template = makeLeavingHomeExampleTemplate()
+                saveTemplate(template)
+              }}></Button>
+          </View>
+          <View style={{ paddingTop: ds.sizes.s }}>
+            <Button
+              title='Add "Before sleep" example'
+              onPress={() => {
+                const template = makeBeforeSleepExampleTemplate()
+                saveTemplate(template)
+              }}></Button>
+          </View>
+          <View style={{ paddingTop: ds.sizes.s }}>
+            <Button
+              title='Add "Before social" example'
+              onPress={() => {
+                const template = makeBeforeSocialExampleTemplate()
+                saveTemplate(template)
+              }}></Button>
+          </View>
         </BlueWell>
       )}
       <HoverButton
