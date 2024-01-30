@@ -13,7 +13,7 @@ type TaskData = {
 }
 
 function makeLeavingHomeExampleTemplate(): ChecklistTemplate {
-  const id = generateId('template')
+  const id = generateId('exampletemplate-1')
   const templateName = "Leaving home (example)"
   const isFavorite = false
   const taskLabels = ["Keys", "Wallet", "Phone", "Laptop", "Gloves"]
@@ -21,7 +21,7 @@ function makeLeavingHomeExampleTemplate(): ChecklistTemplate {
 }
 
 function makeBeforeSleepExampleTemplate() {
-  const id = generateId('template')
+  const id = generateId('exampletemplate-2')
   const templateName = "Before sleep (example)"
   const isFavorite = false
   const taskLabels = ["Dim lights", "Brush teeth", "Pack tomorrow's things", "Put aside the phone"]
@@ -29,7 +29,7 @@ function makeBeforeSleepExampleTemplate() {
 }
 
 function makeBeforeSocialExampleTemplate() {
-  const id = generateId('template')
+  const id = generateId('exampletemplate-3')
   const templateName = "Before social (example)"
   const isFavorite = false
   const taskLabels = [

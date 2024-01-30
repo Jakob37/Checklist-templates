@@ -11,7 +11,6 @@ import {
   instantiateTemplate,
   makeBeforeSleepExampleTemplate,
   makeBeforeSocialExampleTemplate,
-  makeExampleTemplate,
   makeLeavingHomeExampleTemplate,
 } from '../storage/util'
 import { ds } from '../ux/design'
@@ -24,8 +23,13 @@ import { makeConfirmDialog } from '../views/dialogs'
 import { BlueWell } from '../views/wells'
 
 function Templates() {
-  const { templates, removeTemplate, saveChecklist, saveTemplate } =
-    useContext(StorageContext)
+  const {
+    templates,
+    removeTemplate,
+    saveChecklist,
+    saveTemplate,
+    saveNewTemplates,
+  } = useContext(StorageContext)
 
   const navigate = useNavigation()
   const [viewSingleTemplate, setViewSingleTemplate] =
@@ -100,30 +104,20 @@ function Templates() {
       ) : (
         <BlueWell style={{ marginTop: ds.sizes.s }}>
           <MinorText>
-            Press "+" button to add templates. Or try one of the examples below.
+            Press "+" button to add templates. Or try the example templates.
           </MinorText>
           <View style={{ paddingTop: ds.sizes.s }}>
             <Button
-              title='Add "Leaving home" example'
+              title="Add example templates"
               onPress={() => {
-                const template = makeLeavingHomeExampleTemplate()
-                saveTemplate(template)
-              }}></Button>
-          </View>
-          <View style={{ paddingTop: ds.sizes.s }}>
-            <Button
-              title='Add "Before sleep" example'
-              onPress={() => {
-                const template = makeBeforeSleepExampleTemplate()
-                saveTemplate(template)
-              }}></Button>
-          </View>
-          <View style={{ paddingTop: ds.sizes.s }}>
-            <Button
-              title='Add "Before social" example'
-              onPress={() => {
-                const template = makeBeforeSocialExampleTemplate()
-                saveTemplate(template)
+                const leaveHomeTemplate = makeLeavingHomeExampleTemplate()
+                const beforeSleepTemplate = makeBeforeSleepExampleTemplate()
+                const beforeSocialTemplate = makeBeforeSocialExampleTemplate()
+                saveNewTemplates([
+                  leaveHomeTemplate,
+                  beforeSleepTemplate,
+                  beforeSocialTemplate,
+                ])
               }}></Button>
           </View>
         </BlueWell>
