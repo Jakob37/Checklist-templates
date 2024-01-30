@@ -3,10 +3,3 @@ As a new father I found myself confused and overwhelmed in the many details need
 What I needed was checklists, that could be rapidly reused. I didn't find what I needed, so I built this app, and rely heavily on it for my daily survival.
 
 I hope it will be useful for others as well!
-
-### FIXME for release
-
-- [ ] Rebuild an AAB bundle
-- [ ] Upload and generate test release
-- [ ] Prevent un-favoriting when updating a template
-- [ ] Setup real release
