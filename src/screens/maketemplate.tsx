@@ -38,15 +38,19 @@ function EnterTemplate({ route }) {
   }
 
   const [tasks, setTasks] = useState<Task[]>([generateDefaultTask()])
-  const [sections, _setSections] = useState<SectionState[]>([])
   const isFocused = useIsFocused()
   const [isFavorite, setIsFavorite] = useState(false)
 
+  const [lastNbrTasks, setLastNbrTasks] = useState(0)
+
   useEffect(() => {
-    const lastTaskId = tasks[tasks.length - 1]?.id
-    if (lastTaskId && taskInputRefs.has(lastTaskId) && tasks.length > 1) {
-      const ref = taskInputRefs.get(lastTaskId)
-      ref.current?.focus()
+    if (tasks.length != lastNbrTasks) {
+      const lastTaskId = tasks[tasks.length - 1]?.id
+      if (lastTaskId && taskInputRefs.has(lastTaskId) && tasks.length > 1) {
+        const ref = taskInputRefs.get(lastTaskId)
+        ref.current?.focus()
+      }
+      setLastNbrTasks(tasks.length)
     }
   }, [tasks])
 
