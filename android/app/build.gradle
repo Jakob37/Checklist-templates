@@ -99,7 +99,7 @@ android {
         // applicationId "com.jakobwillforss.checklisttemplates"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 3
+        versionCode 5
         versionName "1.2"
     }
     signingConfigs {

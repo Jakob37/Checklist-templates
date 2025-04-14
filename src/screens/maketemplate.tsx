@@ -1,7 +1,19 @@
-import { createRef, useContext, useEffect, useRef, useState } from 'react'
+import {
+  createRef,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import { TextInput, View } from 'react-native'
 
-import { useIsFocused, useNavigation } from '@react-navigation/native'
+import {
+  RouteProp,
+  useIsFocused,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native'
 import DraggableFlatList from 'react-native-draggable-flatlist'
 import { StorageContext } from '../storage/context'
 import { Task } from '../storage/interfaces'
@@ -12,72 +24,95 @@ import { icons } from '../ux/icons'
 import { IconButton } from '../views/iconbutton'
 import { BlueWell } from '../views/wells'
 
-type SectionState = {
-  sectionLabel: string
-  enterTaskLabel: string
-  tasks: Task[]
+type RootStackParamList = {
+  EnterTemplate: { templateId: string | null; isNew?: boolean }
 }
+type EnterTemplateScreenRouteProp = RouteProp<
+  RootStackParamList,
+  'EnterTemplate'
+>
 
-// @ts-ignore
-function EnterTemplate({ route }) {
+function EnterTemplate() {
   const navigate = useNavigation()
-
-  const templateNameRef = useRef<TextInput | null>(null)
-  const taskInputRefs = useRef(new Map()).current
-
-  const [templateName, setTemplateName] = useState('')
-  const [taskLabel, setTaskLabel] = useState('')
-  const [templateId, setTemplateId] = useState(generateId('template'))
+  const route = useRoute<EnterTemplateScreenRouteProp>()
   const { saveTemplate, getTemplateById } = useContext(StorageContext)
 
-  // FIXME: Maybe remove default tasks
-  const generateDefaultTask = (): Task => {
-    const taskId = generateId('task')
-    taskInputRefs.set(taskId, createRef())
-    return { id: taskId, label: '' }
-  }
+  const templateNameRef = useRef<TextInput>(null)
+  // const taskInputRefs = useRef<Record<string, React.RefObject<TextInput>>>({})
+  const taskInputRefs = useRef<Map<string, TextInput | null>>(new Map()).current
 
-  const [tasks, setTasks] = useState<Task[]>([generateDefaultTask()])
-  const isFocused = useIsFocused()
+  const [templateName, setTemplateName] = useState('')
+  const [tasks, setTasks] = useState<Task[]>([])
+  const [templateId, setTemplateId] = useState(generateId('template'))
   const [isFavorite, setIsFavorite] = useState(false)
+  const isFocused = useIsFocused()
 
-  const [lastNbrTasks, setLastNbrTasks] = useState(0)
+  const prevTaskCountRef = useRef(tasks.length)
 
   useEffect(() => {
-    if (tasks.length != lastNbrTasks) {
-      const lastTaskId = tasks[tasks.length - 1]?.id
-      if (lastTaskId && taskInputRefs.has(lastTaskId) && tasks.length > 1) {
-        const ref = taskInputRefs.get(lastTaskId)
-        ref.current?.focus()
+    const currentTaskCount = tasks.length
+    const prevTaskCount = prevTaskCountRef.current
+
+    if (currentTaskCount > prevTaskCount) {
+      const lastTaskId = tasks[currentTaskCount - 1]?.id
+      if (lastTaskId) {
+        setTimeout(() => {
+          const inputNode = taskInputRefs.get(lastTaskId)
+          if (inputNode) {
+            inputNode.focus()
+          } else {
+            console.warn(`Node not found in ref map for task ID: ${lastTaskId}`)
+          }
+        }, 50)
       }
-      setLastNbrTasks(tasks.length)
     }
-  }, [tasks])
+    prevTaskCountRef.current = currentTaskCount
+  }, [tasks, taskInputRefs])
+
+  const registerTaskInputRef = useCallback(
+    (id: string, node: TextInput | null) => {
+      if (node) {
+        taskInputRefs.set(id, node)
+      } else {
+        taskInputRefs.delete(id)
+      }
+    },
+    [taskInputRefs],
+  )
+
+  const reset = useCallback(() => {
+    setTemplateName('')
+    setTasks([])
+    setTemplateId(generateId('template'))
+    setIsFavorite(false)
+  }, [])
 
   useEffect(() => {
-    const templateId = route.params.templateId
-    const isNew = route.params.isNew
+    const currentTemplateId = route.params?.templateId ?? null
+    const isNew = route.params?.isNew ?? currentTemplateId === null
 
-    if (isFocused && templateNameRef != null) {
+    if (isFocused) {
       templateNameRef.current?.focus()
     }
 
-    if (templateId === null) {
+    if (currentTemplateId === null) {
       if (isNew) {
-        route.params.isNew = false
         reset()
       }
       return
     }
 
-    const template = getTemplateById(templateId)
+    const template = getTemplateById(currentTemplateId)
 
-    if (isNew) {
-      setTemplateId(generateId('template'))
-      setIsFavorite(false)
-    } else {
-      setTemplateId(templateId)
+    if (template) {
+      setTemplateId(template.id)
       setIsFavorite(template.favorite)
+      setTemplateName(template.label)
+      const preloadedTasks = template.stacks.flatMap((stack) => stack.tasks)
+      setTasks(preloadedTasks)
+    } else {
+      console.warn(`Template ID ${currentTemplateId} not found. Resetting.`)
+      reset()
     }
 
     setTemplateName(template != null ? template.label : '')
@@ -85,29 +120,36 @@ function EnterTemplate({ route }) {
       const preloadedTasks = template.stacks.flatMap((stack) => stack.tasks)
       setTasks(preloadedTasks)
       const preloadedIds = preloadedTasks.map((task) => task.id)
-      for (const id of preloadedIds) {
-        taskInputRefs.set(id, createRef())
-      }
-    } else {
-      setTasks([generateDefaultTask()])
+      // for (const id of preloadedIds) {
+      //   taskInputRefs.set(id, createRef())
+      // }
     }
-  }, [isFocused])
+    //  else {
+    //   setTasks([generateDefaultTask()])
+    // }
+  }, [isFocused, route.params, getTemplateById, reset])
 
   const onAddTask = () => {
     const taskId = generateId('task')
+    // const ref = createRef<TextInput>()
+    // taskInputRefs.set(taskId, ref)
+
     const newTask: Task = {
       id: taskId,
       label: '',
     }
     setTasks([...tasks, newTask])
-    taskInputRefs.set(taskId, createRef())
+
+    // setTimeout(() => {
+    //   ref.current?.focus();
+    // }, 0)
   }
 
   const handleRemoveTask = (id: string) => {
     const updatedTasks = tasks.filter((checkbox) => checkbox.id !== id)
     setTasks(updatedTasks)
 
-    taskInputRefs.delete(id)
+    // taskInputRefs.delete(id)
   }
 
   const handleSubmitList = async () => {
@@ -122,12 +164,13 @@ function EnterTemplate({ route }) {
     navigate.goBack()
   }
 
-  function reset() {
-    setTaskLabel('')
-    setTemplateName('')
-    setTasks([generateDefaultTask()])
-    setTemplateId(generateId('template'))
-  }
+  // function reset() {
+  //   // setTaskLabel('')
+  //   setTemplateName('')
+  //   // setTasks([generateDefaultTask()])
+  //   setTasks([])
+  //   setTemplateId(generateId('template'))
+  // }
 
   return (
     <View style={{ flex: 1 }}>
@@ -152,8 +195,8 @@ function EnterTemplate({ route }) {
           marginBottom: ds.sizes.s,
         }}>
         <ChecklistSection
-          enterTaskLabel={taskLabel}
-          onChangeTaskLabel={(text) => setTaskLabel(text)}
+          // enterTaskLabel={taskLabel}
+          // onChangeTaskLabel={(text) => setTaskLabel(text)}
           onRenameTask={(id, text) => {
             const taskIndex = tasks.findIndex((task) => task.id === id)
             const tasksCopy = [...tasks]
@@ -165,13 +208,14 @@ function EnterTemplate({ route }) {
           onRemoveSection={() => {
             console.error('Cannot remove default section')
           }}
-          attachRef={(id, el) => {
-            taskInputRefs.get(id).current = el
-          }}
+          // attachRef={(id, el) => {
+          //   taskInputRefs.get(id).current = el
+          // }}
           onRearrangeTasks={(newOrderTasks) => {
             const copy = [...newOrderTasks]
             setTasks(copy)
-          }}></ChecklistSection>
+          }}
+          registerTaskRef={registerTaskInputRef}></ChecklistSection>
       </BlueWell>
 
       <View>
@@ -200,14 +244,15 @@ function getSaveIsActive(templateName: string, tasks: Task[]): boolean {
 }
 
 type ChecklistSectionProps = {
-  enterTaskLabel: string
-  onChangeTaskLabel: (text: string) => void
+  // enterTaskLabel: string
+  // onChangeTaskLabel: (text: string) => void
   onRenameTask: (id: string, taskLabel: string) => void
   tasks: Task[]
-  attachRef: (id: string, el: TextInput) => void
+  // attachRef: (id: string, el: TextInput) => void
   onRemoveTask: (id: string) => void
   onRemoveSection: () => void
   onRearrangeTasks: (newOrder: Task[]) => void
+  registerTaskRef: (id: string, node: TextInput | null) => void
 }
 function ChecklistSection(props: ChecklistSectionProps) {
   return (
@@ -222,7 +267,8 @@ function ChecklistSection(props: ChecklistSectionProps) {
               onRenameTask={props.onRenameTask}
               onDrag={drag}
               id={item.id}
-              attachRef={props.attachRef}
+              registerTaskRef={props.registerTaskRef}
+              // attachRef={props.attachRef}
               label={item.label}></ChecklistTask>
           </View>
         )}
@@ -237,7 +283,8 @@ function ChecklistSection(props: ChecklistSectionProps) {
 type ChecklistTaskProps = {
   id: string
   label: string
-  attachRef: (id: string, el: TextInput) => void
+  // attachRef: (id: string, el: TextInput) => void
+  registerTaskRef: (id: string, node: TextInput | null) => void
   onRemoveTask: (id: string) => void
   onRenameTask: (id: string, text: string) => void
   onDrag: () => void
@@ -257,7 +304,8 @@ function ChecklistTask(props: ChecklistTaskProps) {
           onLongPress={props.onDrag}
           containerStyle={{ paddingRight: ds.sizes.s }}></IconButton>
         <TextInput
-          ref={(el) => (el != null ? props.attachRef(props.id, el) : '')}
+          ref={(node) => props.registerTaskRef(props.id, node)}
+          // ref={(el) => (el != null ? props.attachRef(props.id, el) : '')}
           style={{
             color: ds.colors.light,
           }}
